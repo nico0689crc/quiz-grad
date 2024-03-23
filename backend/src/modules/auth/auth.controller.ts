@@ -17,7 +17,7 @@ import { ResetPasswordDto } from './dtos/reset-password-dto';
 @UseInterceptors(TransformInterceptor)
 @Controller(Routes.AUTH)
 export class AuthController {
-  constructor(@Inject(Services.AUTH) private authService: IAuthService) { }
+  constructor(@Inject(Services.AUTH) private authService: IAuthService) {}
 
   @UseGuards(DoesUserExist)
   @Post(Routes.REGISTER)

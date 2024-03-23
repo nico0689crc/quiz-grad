@@ -17,7 +17,6 @@ import { EmailService } from 'src/core/email/email.service';
 
 import { IAuthService } from './interfaces/auth';
 import { IUserService } from 'src/modules/users/interfaces/user';
-import { faker } from '@faker-js/faker';
 import { UserRole } from '../users/entities/user.entity';
 
 @Injectable()
@@ -25,7 +24,7 @@ export class AuthService implements IAuthService {
   constructor(
     @Inject(Services.USERS) private readonly userService: IUserService,
     private readonly emailService: EmailService
-  ) { }
+  ) {}
 
   async createUserDemo(administratorUser: Express.User & { email: string }): Promise<MessageEntityResponse<User>> {
     if (administratorUser.email !== process.env.EMAIL_ADMINISTRATOR) {
@@ -41,11 +40,11 @@ export class AuthService implements IAuthService {
       emailVerified: true,
       role: UserRole.QUIZ_CREATOR,
       email: process.env.USER_DEMO,
-      password: password
+      password: password,
     });
 
     return {
-      message: "Congratulations User Demo created successfully.",
+      message: 'Congratulations User Demo created successfully.',
       result: plainToClass(User, user),
     };
   }
