@@ -52,7 +52,7 @@ const QuizModeratorWaitingPlayers = () => {
             </Divider>
             <Typography variant='subtitle1'>{t('waiting_for_players.labels.invite_qr')}</Typography>
             <QRCode
-              value={`${process.env.NEXT_PUBLIC_HOST_APP}/playground/${room.quiz?.quizUUID}`}
+              value={`${process.env.NEXT_PUBLIC_FRONTEND_HOST_DOMAIN}/playground/${room.quiz?.quizUUID}`}
               includeMargin
               level='H'
             />
