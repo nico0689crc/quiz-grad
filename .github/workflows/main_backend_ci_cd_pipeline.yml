@@ -18,7 +18,7 @@ jobs:
         run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker stop ${{secrets.MYSQL_DATABASE_MAIN}} || true
       - name: Run Docker Container
         run: |
-          echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
+          echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d --restart \
             --name ${{secrets.MYSQL_DATABASE_MAIN}} \
             -v data-main-qg:/var/lib/mysql \
             -e MYSQL_DATABASE=${{secrets.MYSQL_DATABASE_MAIN}} \
@@ -59,7 +59,7 @@ jobs:
         run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker stop quiz-grad-backend-main || true
       - name: Run Docker Container
         run: |
-          echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
+          echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d --restart \
             -p ${{secrets.BACKEND_HOST_PORT_MAIN}}:${{secrets.BACKEND_CONTAINER_PORT_MAIN}} \
             -e BACKEND_CONTAINER_PORT=${{secrets.BACKEND_CONTAINER_PORT_MAIN}} \
             -e MYSQL_HOST=${{secrets.MYSQL_DATABASE_MAIN}} \
