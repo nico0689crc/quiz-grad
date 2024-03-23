@@ -1,0 +1,69 @@
+version: '3.8'
+services:
+  #########################################
+  #   Setup Database container
+  #########################################
+  database:
+    container_name: database-prod
+    image: mysql:8.3.0
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${MYSQL_HOST_PORT}:${MYSQL_CONTAINER_PORT}"
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - server-prod
+  #########################################
+  #   Setup Backend container
+  #########################################
+  backend:
+    depends_on:
+      - database
+    container_name: backend-prod
+    image: ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_BACKEND_IMAGE}:prod
+    build:
+      context: ./backend
+      target: production
+    environment:
+      - BACKEND_CONTAINER_PORT=${BACKEND_CONTAINER_PORT}
+      - FRONTEND_HOST_DOMAIN=${FRONTEND_HOST_DOMAIN}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_CONTAINER_PORT}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - COOKIE_SECRET=${COOKIE_SECRET}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - SENDGRID_VERIFIED_EMAIL=${SENDGRID_VERIFIED_EMAIL}
+      - APP_NAME=${APP_NAME}
+      - EMAIL_ADMINISTRATOR=${EMAIL_ADMINISTRATOR}
+      - USER_DEMO=${USER_DEMO}
+      - PASSWORD_DEMO=${PASSWORD_DEMO}
+    ports:
+      - "${BACKEND_HOST_PORT}:${BACKEND_CONTAINER_PORT}"
+    networks:
+      - server-prod
+  #########################################
+  #   Setup Frontend container
+  #########################################
+  frontend:
+    depends_on:
+      - backend
+    container_name: frontend-prod
+    image: ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_FRONTEND_IMAGE}:prod
+    build:
+      context: ./frontend
+      target: production
+      args:
+        - NEXT_PUBLIC_BACKEND_HOST_DOMAIN=${BACKEND_HOST_DOMAIN}
+        - NEXT_PUBLIC_FRONTEND_HOST_DOMAIN=${FRONTEND_HOST_DOMAIN}
+    ports:
+      - "${FRONTEND_HOST_PORT}:${FRONTEND_CONTAINER_PORT}"
+volumes:
+  db:
+networks:
+  server-prod:

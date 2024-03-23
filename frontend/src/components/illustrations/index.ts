@@ -1,0 +1,9 @@
+export { default as IllustrationContainer } from './illustration-container';
+export { default as PageNotFoundIllustration } from './componentes/page-not-found-illustration';
+export { default as WellcomeIllustration } from './componentes/wellcome-illustration';
+export { default as AuthenticateIllustration } from './componentes/authenticate-illustration';
+export { default as PageErrorIllustration } from './componentes/page-error-illustration';
+export { default as NoDataIllustration } from './componentes/no-data-illustration';
+export { default as WorkInProgressIllustration } from './componentes/work-in-progress-illustration';
+export { default as HeroIllustration } from './componentes/hero-illustration';
+export { default as StartToPlayIllustration } from './componentes/start-to-play-illustration';

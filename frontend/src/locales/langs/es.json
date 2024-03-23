@@ -1,0 +1,177 @@
+{
+  "language": "Español",
+  "common": {
+    "labels": {
+      "positions": "Posiciones",
+      "correct": "Correcto",
+      "incorrect": "Incorrecto",
+      "or": "Ó",
+      "players": "Participantes",
+      "create_quiz": "Crear un Quiz",
+      "questions": "Preguntas",
+      "question": "Pregunta",
+      "time_left": "Tiempo restante:",
+      "seconds": "segundos",
+      "view": "Ver",
+      "cancel": "Cancelar",
+      "add": "Agregar",
+      "adding": "Agregando",
+      "remove": "Eliminar",
+      "removing": "Eliminando",
+      "edit": "Editar",
+      "editing": "Editando",
+      "close": "Cerrar",
+      "update": "Actualizar",
+      "updating": "Actualizando",
+      "lets_play": "Vamos a jugar!",
+      "something_went_wrong": "Something went wrong.",
+      "something_went_wrong_2": "Lo sentimos, parece que ha ocurrido un error al cargar el título y el subtítulo del sitio web. Por favor, inténtelo de nuevo más tarde o póngase en contacto con el soporte técnico si el problema persiste.",
+      "not_found_title": "Lo sentimos, ¡Página no encontrada!",
+      "not_found_subtitle": "Lo siento, no pudimos encontrar la página que estás buscando. ¿Quizás escribiste mal la URL? Asegúrate de revisar la ortografía.",
+      "not_found_cabutton_home": "Ir a inicio",
+      "not_found_cabutton_unauthenticated": "Ir a iniciar sesión",
+      "work_progress_title": "Trabajo en Progreso",
+      "work_progress_subtitle": "Esta página aún está en construcción. Por favor, vuelva más tarde.",
+      "no_data_title": "¡Ups! No se encontró ningún quiz.",
+      "no_data_subtitle": "¡Prepárate para desatar tu creatividad! Únete a mí para crear una experiencia de quiz atractiva e interactiva. ¡Comencemos!"
+    }
+  },
+  "buttons": {
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "signout": "Cerrar sesión"
+  },
+  "navbar": {
+    "home": "Inicio",
+    "how_works": "Como funciona?",
+    "features": "Qué te ofrecemos?",
+    "about_us": "Sobre nosotros",
+    "copyright": "© 2024 QuizGrad - Nicolas Ariel Fernandez",
+    "terms": "Terminos",
+    "privacy": "Privacidad"
+  },
+  "home": {
+    "hero": {
+      "title": "Explora el Paisaje del Conocimiento",
+      "body": "¡Bienvenido a Quiz Grad, donde el viaje a través del conocimiento te lleva a través de diversos paisajes de trivialidades y hechos! Prepárate para embarcarte en una emocionante aventura que pondrá a prueba tu ingenio, desafiará tu intelecto y ampliará tu comprensión. Desde las cumbres de la historia hasta los valles de la ciencia, y desde los bosques de la literatura hasta los desiertos de la cultura pop, hay algo para cada explorador de la mente. ¡Únete a nosotros mientras atravesamos el rico terreno de información en este emocionante paisaje de juegos de preguntas!",
+      "get_started_label": "¡Comenzar!"
+    }
+  },
+  "login": {
+    "validation": {
+      "email_required": "El correo electrónico es obligatorio.",
+      "email_format": "El correo electrónico debe tener un formato válido.",
+      "password_required": "La contraseña es obligatoria."
+    },
+    "labels": {
+      "title": "Iniciar sesión",
+      "new_user": "¿Nuevo usuario?",
+      "create_account": "Crear una cuenta",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "forgot_password": "¿Olvidaste tu contraseña?",
+      "login": "Iniciar sesión",
+      "login_loading": "Autenticando...",
+      "welcome": "Bienvenido {{name}}, disfruta de QuizGrad!"
+    }
+  },
+  "register": {
+    "validation": {
+      "email_required": "Correo electrónico obligatorio.",
+      "email_format": "El correo electrónico debe ser válido.",
+      "password_required": "Contraseña obligatoria.",
+      "first_name_required": "Nombre obligatorio.",
+      "last_name_required": "Apellido obligatorio."
+    },
+    "labels": {
+      "title": "Comience absolutamente gratis",
+      "have_account": "¿Ya tienes una cuenta?",
+      "sign_in": "Iniciar sesión",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "passwordConfirmation": "Confirmar contraseña",
+      "create_account": "Crear una cuenta",
+      "create_account_loading": "Creando...",
+      "register_success": "Su registro se ha completado exitosamente. Por favor, revise su correo electrónico para recibir instrucciones de activación. Esperamos darle la bienvenida a nuestra comunidad."
+    }
+  },
+  "verify": {
+    "validation": {
+      "email_required": "Correo electrónico obligatorio.",
+      "email_format": "El correo electrónico debe ser válido.",
+      "code_required": "Se requiere el código.",
+      "code_format": "El código debe tener al menos 6 caracteres."
+    },
+    "labels": {
+      "title": "¡Por favor revise su correo electrónico!",
+      "sub_title": "Hemos enviado por correo electrónico un código de confirmación de 6 dígitos a acb@domain. Ingrese el código en el cuadro a continuación para verificar su correo electrónico.",
+      "email": "Correo electrónico",
+      "confirmationCode": "Código de confirmación",
+      "verify": "Verificar",
+      "verifying": "Verificando",
+      "resend_title": "¿No tienes un código?",
+      "resend": "Reenviar codigo",
+      "return": "Volver para iniciar sesión"
+    },
+    "messages": {
+      "success": "Con gratitud, le informamos que la verificación de su correo electrónico se ha completado exitosamente."
+    }
+  },
+  "reset_password": {
+    "validation": {
+      "password_required": "La contraseña obligatoria.",
+      "confirm_password_required": "La confirmacion obligatoria.",
+      "password_length": "La contraseña debe tener al menos 6 caracteres.",
+      "password_match": "Las contraseñas deben coincidir."
+    },
+    "labels": {
+      "title": "Introduce la contraseña nueva",
+      "password": "Nueva contraseña",
+      "passwordConfirmation": "Confirmar nueva contraseña",
+      "submit": "Actualiza contraseña",
+      "submiting": "Actualizando...",
+      "return": "Volver a iniciar sesión",
+      "success_message": "Su contraseña ha sido actualizada correctamente. Agradecemos su atención a la seguridad."
+    }
+  },
+  "request_reset_password": {
+    "validation": {
+      "email_required": "Correo electrónico obligatorio.",
+      "email_format": "El correo electrónico debe ser válido."
+    },
+    "labels": {
+      "title": "¿Olvidaste tu contraseña?",
+      "sub_title": "Ingrese la dirección de correo electrónico asociada con su cuenta y le enviaremos un enlace por correo electrónico para restablecer su contraseña.",
+      "email": "Correo electrónico",
+      "send": "Modificar contraseña",
+      "sending": "Enviando...",
+      "return": "Volver a iniciar sesión"
+    },
+    "messages": {
+      "success": "Te hemos enviado a la dirección de correo electrónico proporcionada las instrucciones que debes seguir para restablecer la contraseña."
+    }
+  },
+  "start_to_play": {
+    "labels": {
+      "title": "¡Comencemos con el Quiz!",
+      "sub_title": "Tu Sala te Espera, ¡Abramos la Puerta a la Diversión, la Risas y Momentos Inolvidables!",
+      "start_to_play_button": "Abrir la sala"
+    }
+  },
+  "waiting_for_players": {
+    "labels": {
+      "send_first_question": "Enviar Primera Pregunta!",
+      "waiting_for_players": "Esperando Participantes",
+      "invite_qr": "Invita participantes con este QR",
+      "invite_code": "Invita participates con este código:",
+      "no_players": "Ninguno de los jugadores está en la sala todavía."
+    }
+  },
+  "playing": {
+    "labels": {
+      "next_question_button": "Siguiente pregunta"
+    }
+  }
+}

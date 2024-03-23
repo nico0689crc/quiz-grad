@@ -1,0 +1,177 @@
+{
+  "language": "English",
+  "common": {
+    "labels": {
+      "positions": "Positions",
+      "correct": "Correct",
+      "incorrect": "Incorrect",
+      "players": "Players",
+      "or": "Or",
+      "create_quiz": "Create a Quiz",
+      "questions": "Questions",
+      "question": "Question",
+      "time_left": "Time left:",
+      "seconds": "seconds",
+      "view": "View",
+      "cancel": "Cancel",
+      "add": "Add",
+      "adding": "Adding",
+      "remove": "Remove",
+      "removing": "Removing",
+      "edit": "Edit",
+      "editing": "Editing",
+      "close": "Close",
+      "update": "Update",
+      "updating": "Updating",
+      "lets_play": "Lets play!",
+      "something_went_wrong": "Something went wrong.",
+      "something_went_wrong_2": "We're sorry, it seems that an error occurred while loading the website's title and subtitle. Please try again later or contact technical support if the issue persists.",
+      "not_found_title": "Sorry, Page Not Found!",
+      "not_found_subtitle": "Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be sure to check your spelling.",
+      "not_found_cabutton_home": "Go to home",
+      "not_found_cabutton_unauthenticated": "Go to login",
+      "work_progress_title": "Work in Progress",
+      "work_progress_subtitle": "This page is still under construction. Please check back later.",
+      "no_data_title": "Oops! Couldn't find any quiz.",
+      "no_data_subtitle": "Get ready to unleash your creativity! Join me in crafting an engaging and interactive quiz experience together. Let's begin!"
+    }
+  },
+  "buttons": {
+    "login": "Login",
+    "signup": "Sign up",
+    "signout": "Sign out"
+  },
+  "navbar": {
+    "home": "Home",
+    "how_works": "How it works?",
+    "features": "Features",
+    "about_us": "About us",
+    "copyright": "© 2024 QuizGrad - Nicolas Ariel Fernandez",
+    "terms": "Terms",
+    "privacy": "Privacy"
+  },
+  "home": {
+    "hero": {
+      "title": "Explore the Landscape of Knowledge",
+      "body": "Welcome to Quiz Grad, where the journey through knowledge takes you across diverse landscapes of trivia and facts! Prepare to embark on an exciting adventure that will test your wits, challenge your intellect, and expand your understanding. From the peaks of history to the valleys of science, and from the forests of literature to the deserts of pop culture, there's something for every explorer of the mind. Join us as we traverse the rich terrain of information in this thrilling quiz game landscape!",
+      "get_started_label": "Ger started!"
+    }
+  },
+  "login": {
+    "validation": {
+      "email_required": "Email is required.",
+      "email_format": "Email must be a valid format.",
+      "password_required": "Password is required."
+    },
+    "labels": {
+      "title": "Sign in",
+      "new_user": "New user?",
+      "create_account": "Create an account",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot password?",
+      "login": "Login",
+      "login_loading": "Authenticating...",
+      "welcome": "Welcome {{name}}, enjoy QuizGrad!"
+    }
+  },
+  "register": {
+    "validation": {
+      "email_required": "Email is required.",
+      "email_format": "Email must be a valid format.",
+      "password_required": "Password is required.",
+      "first_name_required": "First name required.",
+      "last_name_required": "Last name required."
+    },
+    "labels": {
+      "title": "Get started absolutely free",
+      "have_account": "Already have an account?",
+      "sign_in": "Sign in",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "passwordConfirmation": "Confirm password",
+      "create_account": "Create account",
+      "create_account_loading": "Creating...",
+      "register_success": "Your registration has been successfully completed. Kindly check your email for activation instructions. We look forward to welcoming you to our community."
+    }
+  },
+  "verify": {
+    "validation": {
+      "email_required": "Email is required.",
+      "email_format": "Email must be a valid format.",
+      "code_required": "The code is required.",
+      "code_format": "The code must be at least 6 characters."
+    },
+    "labels": {
+      "title": "Please check your email!",
+      "sub_title": "We have emailed a 6-digit confirmation code to acb@domain, please enter the code in below box to verify your email.",
+      "email": "Email",
+      "confirmationCode": "Confirmation code",
+      "verify": "Verify",
+      "verifying": "Verifying",
+      "resend_title": "Don’t have a code?",
+      "resend": "Resend code",
+      "return": "Return to sign in"
+    },
+    "messages": {
+      "success": "With gratitude, we inform you that your email verification has been successfully completed."
+    }
+  },
+  "reset_password": {
+    "validation": {
+      "password_required": "The password is required.",
+      "confirm_password_required": "Confirm the password is required.",
+      "password_length": "The password must be at least 6 characters.",
+      "password_match": "The passwords must match."
+    },
+    "labels": {
+      "title": "Enter the new password",
+      "password": "New password",
+      "passwordConfirmation": "Confirm new password",
+      "submit": "Update password",
+      "submiting": "Updating...",
+      "return": "Return to sign in",
+      "success_message": "Your password has been updated successfully. We appreciate your attention to security."
+    }
+  },
+  "request_reset_password": {
+    "validation": {
+      "email_required": "Email is required.",
+      "email_format": "Email must be a valid format."
+    },
+    "labels": {
+      "title": "Forgot your password?",
+      "sub_title": "Please enter the email address associated with your account and We will email you a link to reset your password.",
+      "email": "Email",
+      "send": "Send request",
+      "sending": "Sending...",
+      "return": "Return to sign in"
+    },
+    "messages": {
+      "success": "We have sent you to the email address provided the instructions you must follow to reset your password."
+    }
+  },
+  "start_to_play": {
+    "labels": {
+      "title": "Let's Get the Quiz Started!",
+      "sub_title": "Your Room Awaits, Let's Open the Door to Fun, Laughter, and Unforgettable Moments!",
+      "start_to_play_button": "Open the room"
+    }
+  },
+  "waiting_for_players": {
+    "labels": {
+      "send_first_question": "Send First Question!",
+      "waiting_for_players": "Waiting for players",
+      "invite_qr": "Inivite players with this QR",
+      "invite_code": "Inivite players with this code:",
+      "no_players": "None of the players are in the room yet"
+    }
+  },
+  "playing": {
+    "labels": {
+      "next_question_button": "Next question"
+    }
+  }
+}
