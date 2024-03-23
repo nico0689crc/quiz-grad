@@ -20,7 +20,7 @@ jobs:
         run: |
           echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
             --name ${{secrets.MYSQL_DATABASE_MAIN}} \
-            -v data-main:/var/lib/mysql \
+            -v data-main-qg:/var/lib/mysql \
             -e MYSQL_DATABASE=${{secrets.MYSQL_DATABASE_MAIN}} \
             -e MYSQL_USER=${{secrets.MYSQL_USER_MAIN}} \
             -e MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD_MAIN}} \
