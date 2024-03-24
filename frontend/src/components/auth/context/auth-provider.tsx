@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useCallback, useContext, useEffect, useMemo, useReducer } from 'react';
-import { AuthContext } from './auth-context';
-import { paths } from '@/routes/paths';
-import { useRouter } from '@/hooks/use-router';
-import axios, { endpoints } from '@/utils/axios';
-import { AuthStateType, Action, Types } from '../types';
-import { AxiosRequestConfig } from 'axios';
+import { useCallback, useContext, useEffect, useMemo, useReducer } from "react";
+import { AuthContext } from "./auth-context";
+import { paths } from "@/routes/paths";
+import { useRouter } from "@/hooks/use-router";
+import axios, { endpoints } from "@/utils/axios";
+import { AuthStateType, Action, Types } from "../types";
+import { AxiosRequestConfig } from "axios";
 
 const initialState: AuthStateType = {
   user: null,
@@ -86,7 +86,13 @@ export const AuthProvider = ({ children }: Props) => {
 
   // REGISTER
   const register = useCallback(
-    async (email: string, password: string, passwordConfirmation: string, firstName: string, lastName: string) => {
+    async (
+      email: string,
+      password: string,
+      passwordConfirmation: string,
+      firstName: string,
+      lastName: string,
+    ) => {
       await axios.post(endpoints.auth.register, {
         email,
         password,
@@ -96,13 +102,19 @@ export const AuthProvider = ({ children }: Props) => {
         returnUrl: process.env.NEXT_PUBLIC_FRONTEND_HOST_DOMAIN,
       });
     },
-    []
+    [],
   );
 
   // CONFIRM REGISTER
-  const verifyEmail = useCallback(async (email: string, confirmationCode: string) => {
-    await axios.post(endpoints.auth.verify_email, { email, confirmationCode });
-  }, []);
+  const verifyEmail = useCallback(
+    async (email: string, confirmationCode: string) => {
+      await axios.post(endpoints.auth.verify_email, {
+        email,
+        confirmationCode,
+      });
+    },
+    [],
+  );
 
   // LOGOUT
   const logout = useCallback(async () => {
@@ -125,7 +137,12 @@ export const AuthProvider = ({ children }: Props) => {
 
   // RESET PASSWORD
   const resetPassword = useCallback(
-    async (uuid: string, token: string, password: string, passwordConfirmation: string) => {
+    async (
+      uuid: string,
+      token: string,
+      password: string,
+      passwordConfirmation: string,
+    ) => {
       await axios.post(endpoints.auth.reset_password, {
         uuid,
         token,
@@ -133,18 +150,18 @@ export const AuthProvider = ({ children }: Props) => {
         passwordConfirmation,
       });
     },
-    []
+    [],
   );
 
-  const checkAuthenticated = state.user ? 'authenticated' : 'unauthenticated';
-  const status = state.loading ? 'loading' : checkAuthenticated;
+  const checkAuthenticated = state.user ? "authenticated" : "unauthenticated";
+  const status = state.loading ? "loading" : checkAuthenticated;
 
   const memoizedValue = useMemo(
     () => ({
       user: state.user,
-      loading: status === 'loading',
-      authenticated: status === 'authenticated',
-      unauthenticated: status === 'unauthenticated',
+      loading: status === "loading",
+      authenticated: status === "authenticated",
+      unauthenticated: status === "unauthenticated",
       login,
       logout,
       register,
@@ -152,17 +169,30 @@ export const AuthProvider = ({ children }: Props) => {
       requestResetPassword,
       verifyEmail,
     }),
-    [login, logout, register, resetPassword, requestResetPassword, verifyEmail, state, status]
+    [
+      login,
+      logout,
+      register,
+      resetPassword,
+      requestResetPassword,
+      verifyEmail,
+      state,
+      status,
+    ],
   );
 
-  return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={memoizedValue}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('useAuthContext context must be use inside AuthProvider');
+    throw new Error("useAuthContext context must be use inside AuthProvider");
   }
 
   return context;

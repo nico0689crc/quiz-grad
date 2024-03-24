@@ -1,11 +1,11 @@
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
 
-import LinkItem from './link-item';
-import { CustomBreadcrumbsProps } from './types';
+import LinkItem from "./link-item";
+import { CustomBreadcrumbsProps } from "./types";
 
 // ----------------------------------------------------------------------
 
@@ -22,11 +22,22 @@ export default function CustomBreadcrumbs({
 
   return (
     <Box sx={{ ...sx }}>
-      <Stack direction={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'flex-start', md: 'center' }} spacing={3}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, width: '100%' }}>
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        alignItems={{ xs: "flex-start", md: "center" }}
+        spacing={3}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            width: "100%",
+          }}
+        >
           {/* HEADING */}
           {heading && (
-            <Typography variant='h4' gutterBottom>
+            <Typography variant="h4" gutterBottom>
               {heading}
             </Typography>
           )}
@@ -35,14 +46,29 @@ export default function CustomBreadcrumbs({
           {!!links.length && (
             <Breadcrumbs separator={<Separator />} {...other}>
               {links.map((link) => (
-                <LinkItem key={link.name || ''} link={link} activeLast={activeLast} disabled={link.name === lastLink} />
+                <LinkItem
+                  key={link.name || ""}
+                  link={link}
+                  activeLast={activeLast}
+                  disabled={link.name === lastLink}
+                />
               ))}
             </Breadcrumbs>
           )}
         </Box>
 
         {action && (
-          <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'flex-end', width: '100%' }}> {action} </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexGrow: 1,
+              justifyContent: "flex-end",
+              width: "100%",
+            }}
+          >
+            {" "}
+            {action}{" "}
+          </Box>
         )}
       </Stack>
 
@@ -50,7 +76,14 @@ export default function CustomBreadcrumbs({
       {!!moreLink && (
         <Box sx={{ mt: 2 }}>
           {moreLink.map((href) => (
-            <Link key={href} href={href} variant='body2' target='_blank' rel='noopener' sx={{ display: 'table' }}>
+            <Link
+              key={href}
+              href={href}
+              variant="body2"
+              target="_blank"
+              rel="noopener"
+              sx={{ display: "table" }}
+            >
               {href}
             </Link>
           ))}
@@ -65,12 +98,12 @@ export default function CustomBreadcrumbs({
 function Separator() {
   return (
     <Box
-      component='span'
+      component="span"
       sx={{
         width: 4,
         height: 4,
-        borderRadius: '50%',
-        bgcolor: 'text.disabled',
+        borderRadius: "50%",
+        bgcolor: "text.disabled",
       }}
     />
   );

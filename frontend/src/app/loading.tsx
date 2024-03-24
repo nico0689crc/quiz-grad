@@ -1,7 +1,7 @@
-import { LoadingSpinner } from '@/components/loading-spinner';
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 export const metadata = {
-  title: 'Loading',
+  title: "Loading",
 };
 
 const Loading = () => {

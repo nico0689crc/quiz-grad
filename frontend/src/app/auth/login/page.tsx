@@ -1,7 +1,7 @@
-import LoginView from '@/sections/auth/login/login-view';
+import LoginView from "@/sections/auth/login/login-view";
 
 export const metadata = {
-  title: 'Login',
+  title: "Login",
 };
 
 export default function Page() {

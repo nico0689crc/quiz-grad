@@ -157,7 +157,12 @@
     "labels": {
       "title": "Let's Get the Quiz Started!",
       "sub_title": "Your Room Awaits, Let's Open the Door to Fun, Laughter, and Unforgettable Moments!",
-      "start_to_play_button": "Open the room"
+      "start_to_play_button": "Open the room",
+      "username": "Name",
+      "start": "Start"
+    },
+    "validation": {
+      "username_required": "Name is required."
     }
   },
   "waiting_for_players": {

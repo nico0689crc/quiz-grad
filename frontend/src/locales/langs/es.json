@@ -157,7 +157,12 @@
     "labels": {
       "title": "¡Comencemos con el Quiz!",
       "sub_title": "Tu Sala te Espera, ¡Abramos la Puerta a la Diversión, la Risas y Momentos Inolvidables!",
-      "start_to_play_button": "Abrir la sala"
+      "start_to_play_button": "Abrir la sala",
+      "username": "Nombre",
+      "start": "Empezar"
+    },
+    "validation": {
+      "username_required": "Nombre obligatorio."
     }
   },
   "waiting_for_players": {

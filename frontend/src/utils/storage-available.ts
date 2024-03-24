@@ -1,6 +1,6 @@
 export function localStorageAvailable() {
   try {
-    const key = 'PROJECT_NAME_LOCAL_STORAGE_KEY';
+    const key = "PROJECT_NAME_LOCAL_STORAGE_KEY";
     window.localStorage.setItem(key, key);
     window.localStorage.removeItem(key);
     return true;
@@ -9,7 +9,7 @@ export function localStorageAvailable() {
   }
 }
 
-export function localStorageGetItem(key: string, defaultValue = '') {
+export function localStorageGetItem(key: string, defaultValue = "") {
   const storageAvailable = localStorageAvailable();
 
   let value;

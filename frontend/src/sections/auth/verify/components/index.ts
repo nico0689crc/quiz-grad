@@ -1,1 +1,1 @@
-export { default as VerifyForm } from './verify-form';
+export { default as VerifyForm } from "./verify-form";

@@ -1,4 +1,4 @@
-import { RoomStatusEnum, User } from '@/types';
+import { RoomStatusEnum, User } from "@/types";
 
 export type QuizModeratorContextType = {
   user: User | null;
@@ -9,7 +9,7 @@ export type QuizModeratorContextType = {
   error: string | null;
   status: RoomStatusEnum;
   sendNextQuestion: () => void;
-  connectToRoom: () => void;
+  connectToRoom: (userName: string) => void;
   setAnswerSelectedHandler: (answerUUID: string) => void;
   sendAnswer: () => void;
 };

@@ -1,5 +1,5 @@
 export type SettingsValueProps = {
-  themeMode: 'light' | 'dark';
+  themeMode: "light" | "dark";
 };
 
 export type SettingsContextProps = SettingsValueProps & {

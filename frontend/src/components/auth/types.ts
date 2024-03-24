@@ -18,12 +18,17 @@ export type AuthContextType = {
     password: string,
     passwordConfirmation: string,
     firstName: string,
-    lastName: string
+    lastName: string,
   ) => Promise<unknown>;
   logout: () => Promise<unknown>;
   verifyEmail: (email: string, code: string) => Promise<void>;
   requestResetPassword: (email: string) => Promise<void>;
-  resetPassword: (uuid: string, token: string, password: string, passwordConfirmation: string) => Promise<void>;
+  resetPassword: (
+    uuid: string,
+    token: string,
+    password: string,
+    passwordConfirmation: string,
+  ) => Promise<void>;
 };
 
 export type ActionMapType<M extends { [index: string]: any }> = {
@@ -40,8 +45,8 @@ export type ActionMapType<M extends { [index: string]: any }> = {
 export type Action = ActionMapType<Payload>[keyof ActionMapType<Payload>];
 
 export enum Types {
-  INITIAL = 'INITIAL',
-  LOGOUT = 'LOGOUT',
+  INITIAL = "INITIAL",
+  LOGOUT = "LOGOUT",
 }
 
 export type Payload = {

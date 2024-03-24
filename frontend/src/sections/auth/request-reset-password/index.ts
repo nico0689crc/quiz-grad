@@ -1,1 +1,1 @@
-export { default as RequestResetPasswordView } from './request-reset-password-view';
+export { default as RequestResetPasswordView } from "./request-reset-password-view";

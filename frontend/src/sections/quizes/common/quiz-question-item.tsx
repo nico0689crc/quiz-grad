@@ -1,8 +1,8 @@
-import { Question } from '@/types';
-import { Card, Collapse, IconButton, Stack, Typography } from '@mui/material';
-import QuizAnswersList from './quiz-answers-list';
-import Iconify from '@/components/iconify';
-import React, { useState } from 'react';
+import { Question } from "@/types";
+import { Card, Collapse, IconButton, Stack, Typography } from "@mui/material";
+import QuizAnswersList from "./quiz-answers-list";
+import Iconify from "@/components/iconify";
+import React, { useState } from "react";
 
 interface QuizQuestionItemProps {
   question: Question;
@@ -26,7 +26,7 @@ export default function QuizQuestionItem({
   const questionTitle = index ? `${++index} - ${title}` : title;
 
   const questionContent = showCollapse ? (
-    <Collapse in={open} timeout='auto' unmountOnExit>
+    <Collapse in={open} timeout="auto" unmountOnExit>
       <QuizAnswersList answers={answers} />
     </Collapse>
   ) : (
@@ -35,12 +35,12 @@ export default function QuizQuestionItem({
 
   return (
     <Stack component={Card} px={3} py={4} spacing={2}>
-      {actions && <Stack alignItems='flex-end'>{actions}</Stack>}
-      <Stack direction='row' justifyContent='space-between' alignItems='center'>
-        <Typography variant='h6'>{questionTitle}</Typography>
+      {actions && <Stack alignItems="flex-end">{actions}</Stack>}
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Typography variant="h6">{questionTitle}</Typography>
         {showCollapse && (
-          <IconButton aria-label='collapse' onClick={handleCollapse}>
-            <Iconify icon={open ? 'ep:arrow-down-bold' : 'ep:arrow-up-bold'} />
+          <IconButton aria-label="collapse" onClick={handleCollapse}>
+            <Iconify icon={open ? "ep:arrow-down-bold" : "ep:arrow-up-bold"} />
           </IconButton>
         )}
       </Stack>

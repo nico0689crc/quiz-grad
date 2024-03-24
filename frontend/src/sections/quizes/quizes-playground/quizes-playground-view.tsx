@@ -1,21 +1,30 @@
-'use client';
+"use client";
 
-import { LoadingSpinner } from '@/components/loading-spinner';
-import { Stack, Typography } from '@mui/material';
-import { QuizModeratorProvider } from '../common/context/quiz-moderator-provider';
-import { QuizModeratorContext } from '../common/context/quiz-moderator-context';
-import QuizesPlaygroundNewPlayer from './quizes-playground-new-player';
-import QuizesPlaygroundBoard from './quizes-playground-board';
+import { LoadingSpinner } from "@/components/loading-spinner";
+import { Stack, Typography } from "@mui/material";
+import { QuizModeratorProvider } from "../common/context/quiz-moderator-provider";
+import { QuizModeratorContext } from "../common/context/quiz-moderator-context";
+import QuizesPlaygroundNewPlayer from "./quizes-playground-new-player";
+import QuizesPlaygroundBoard from "./quizes-playground-board";
 
 export default function QuizPlaygroundView() {
   return (
     <QuizModeratorProvider>
       <QuizModeratorContext.Consumer>
         {({ loading, user, error }) => (
-          <Stack spacing={2}>
+          <Stack
+            sx={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            spacing={2}
+          >
             {loading && <LoadingSpinner />}
-            {!loading && error && <Typography variant='h3'>{error}</Typography>}
-            {!loading && !error && (user ? <QuizesPlaygroundBoard /> : <QuizesPlaygroundNewPlayer />)}
+            {!loading && error && <Typography variant="h3">{error}</Typography>}
+            {!loading && !error && !user && <QuizesPlaygroundNewPlayer />}
+            {!loading && !error && user && <QuizesPlaygroundBoard />}
 
             {/* {!loading && !error && (
               <>

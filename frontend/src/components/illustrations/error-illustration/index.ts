@@ -1,1 +1,1 @@
-export { default } from './error-illustration';
+export { default } from "./error-illustration";

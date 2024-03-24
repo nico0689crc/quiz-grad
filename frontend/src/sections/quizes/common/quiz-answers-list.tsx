@@ -1,6 +1,6 @@
-import { Answer } from '@/types';
-import { Stack } from '@mui/material';
-import QuizAnswerItem from './quiz-answer-item';
+import { Answer } from "@/types";
+import { Stack } from "@mui/material";
+import QuizAnswerItem from "./quiz-answer-item";
 
 interface QuizAnswersListProps {
   answers: Answer[];

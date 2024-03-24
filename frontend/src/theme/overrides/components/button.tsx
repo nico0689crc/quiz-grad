@@ -1,60 +1,71 @@
-import { Theme } from '@mui/material/styles';
-import { ButtonProps } from '@mui/material/Button';
+import { Theme } from "@mui/material/styles";
+import { ButtonProps } from "@mui/material/Button";
 
-const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
+const COLORS = [
+  "primary",
+  "secondary",
+  "info",
+  "success",
+  "warning",
+  "error",
+] as const;
 
 export function button(theme: Theme) {
-  const lightMode = theme.palette.mode === 'light';
+  const lightMode = theme.palette.mode === "light";
 
   const rootStyles = (ownerState: ButtonProps) => {
-    const inheritColor = ownerState.color === 'inherit';
+    const inheritColor = ownerState.color === "inherit";
 
-    const containedVariant = ownerState.variant === 'contained';
+    const containedVariant = ownerState.variant === "contained";
 
-    const outlinedVariant = ownerState.variant === 'outlined';
+    const outlinedVariant = ownerState.variant === "outlined";
 
-    const textVariant = ownerState.variant === 'text';
+    const textVariant = ownerState.variant === "text";
 
-    const smallSize = ownerState.size === 'small';
+    const smallSize = ownerState.size === "small";
 
-    const mediumSize = ownerState.size === 'medium';
+    const mediumSize = ownerState.size === "medium";
 
-    const largeSize = ownerState.size === 'large';
+    const largeSize = ownerState.size === "large";
 
     const defaultStyle = {
       ...(inheritColor && {
         // CONTAINED
         ...(containedVariant && {
-          backgroundColor: lightMode ? theme.palette.grey[800] : theme.palette.common.white,
-          '&:hover': {
-            backgroundColor: lightMode ? theme.palette.grey[700] : theme.palette.grey[400],
+          backgroundColor: lightMode
+            ? theme.palette.grey[800]
+            : theme.palette.common.white,
+          "&:hover": {
+            backgroundColor: lightMode
+              ? theme.palette.grey[700]
+              : theme.palette.grey[400],
           },
         }),
         // OUTLINED
         ...(outlinedVariant && {
           // borderColor: alpha(theme.palette.grey[500], 0.32),
-          '&:hover': {
+          "&:hover": {
             backgroundColor: theme.palette.action.hover,
           },
         }),
         // TEXT
         ...(textVariant && {
-          '&:hover': {
+          "&:hover": {
             backgroundColor: theme.palette.action.hover,
           },
         }),
       }),
       ...(outlinedVariant && {
-        '&:hover': {
+        "&:hover": {
           // borderColor: 'currentColor',
-          boxShadow: '0 0 0 0.5px currentColor',
+          boxShadow: "0 0 0 0.5px currentColor",
         },
       }),
     };
 
     const colorStyle = COLORS.map((color) => ({
       ...(ownerState.color === color && {
-        '&:hover': {
+        "&:hover": {
           boxShadow: theme.customShadows[color],
         },
       }),
@@ -97,7 +108,8 @@ export function button(theme: Theme) {
   return {
     MuiButton: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: ButtonProps }) => rootStyles(ownerState),
+        root: ({ ownerState }: { ownerState: ButtonProps }) =>
+          rootStyles(ownerState),
       },
     },
   };

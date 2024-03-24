@@ -1,14 +1,19 @@
-'use client';
+"use client";
 
-import { useCallback, useEffect, useMemo } from 'react';
-import { useTimer } from 'react-timer-hook';
-import { faker } from '@faker-js/faker';
+import { useCallback, useEffect, useMemo } from "react";
+import { useTimer } from "react-timer-hook";
+import { faker } from "@faker-js/faker";
 
-import { useParams } from '@/hooks/use-params';
-import { getQuizLocalStorageKey, removeStorage, setStorage, useLocalStorage } from '@/hooks/use-local-storage';
-import { useWebSocket } from '@/websocket/use-web-socket';
+import { useParams } from "@/hooks/use-params";
+import {
+  getQuizLocalStorageKey,
+  removeStorage,
+  setStorage,
+  useLocalStorage,
+} from "@/hooks/use-local-storage";
+import { useWebSocket } from "@/websocket/use-web-socket";
 
-import { RootState, useAppDispatch, useAppSelector } from '@/store';
+import { RootState, useAppDispatch, useAppSelector } from "@/store";
 import {
   addQuestion,
   initializeRoom,
@@ -24,14 +29,14 @@ import {
   setShowButtons,
   setShowNextQuestionButton,
   updatePlayerDisconnected,
-} from '@/store/slices/room/roomSlice';
+} from "@/store/slices/room/roomSlice";
 
-import { setError } from '@/store/slices/common/commonSlice';
+import { setError } from "@/store/slices/common/commonSlice";
 
-import { LocalStorageType, ParamsQuizUUID } from '@/types';
-import { QuizModeratorContext } from './quiz-moderator-context';
+import { LocalStorageType, ParamsQuizUUID } from "@/types";
+import { QuizModeratorContext } from "./quiz-moderator-context";
 
-import { useAuthContext } from '@/components/auth/context/auth-provider';
+import { useAuthContext } from "@/components/auth/context/auth-provider";
 
 type Props = {
   children: React.ReactNode;
@@ -52,7 +57,9 @@ export const QuizModeratorProvider = ({ children }: Props) => {
 
   const {
     localStorage: { accessToken },
-  } = useLocalStorage<LocalStorageType>(getQuizLocalStorageKey(quizUUID), { accessToken: null });
+  } = useLocalStorage<LocalStorageType>(getQuizLocalStorageKey(quizUUID), {
+    accessToken: null,
+  });
 
   const { restart, isRunning, totalSeconds } = useTimer({
     autoStart: timer.settings.autoStart,
@@ -60,13 +67,16 @@ export const QuizModeratorProvider = ({ children }: Props) => {
     onExpire: () => {
       if (roomUUID) {
         websocket.emit.onCalculatePointsFromAnswers(
-          { questionUUID: question?.questionUUID as string, roomUUID: roomUUID },
+          {
+            questionUUID: question?.questionUUID as string,
+            roomUUID: roomUUID,
+          },
           ({ confirm, positions, roomStatus }) => {
             if (confirm) {
               dispatch(setPositions(positions));
               dispatch(setRoomStatus(roomStatus));
             }
-          }
+          },
         );
       }
       dispatch(setShowNextQuestionButton(true));
@@ -76,37 +86,49 @@ export const QuizModeratorProvider = ({ children }: Props) => {
   const sendNextQuestion = useCallback(() => {
     dispatch(setShowNextQuestionButton(false));
     if (roomUUID) {
-      websocket.emit.onSendNextQuestion({ roomUUID }, ({ question, confirm, message }) => {
-        if (confirm) {
-          const expiration = new Date();
-          expiration.setSeconds(expiration.getSeconds() + question.secondsToDeliverAnswer);
-          restart(expiration);
-          dispatch(addQuestion(question));
-        } else {
-          dispatch(setError(message));
-        }
-      });
+      websocket.emit.onSendNextQuestion(
+        { roomUUID },
+        ({ question, confirm, message }) => {
+          if (confirm) {
+            const expiration = new Date();
+            expiration.setSeconds(
+              expiration.getSeconds() + question.secondsToDeliverAnswer,
+            );
+            restart(expiration);
+            dispatch(addQuestion(question));
+          } else {
+            dispatch(setError(message));
+          }
+        },
+      );
     }
   }, [roomUUID]);
 
-  const connectToRoom = useCallback(() => {
-    if (!user) {
-      dispatch(setLoading(true));
-      const payload = { quizUUID, userName: faker.internet.userName() };
+  const connectToRoom = useCallback(
+    (userName: string) => {
+      if (!user) {
+        dispatch(setLoading(true));
+        const payload = { quizUUID, userName };
 
-      websocket.emit.onNewPlayerJoinedToRoom(payload, (response) => {
-        const { player, players, room, confirm, message } = response;
-        if (confirm) {
-          const user = { ...player, isUserModerator: false };
-          setStorage(getQuizLocalStorageKey(quizUUID), { accessToken: player.accessToken });
-          dispatch(initializeRoom({ ...room, user, isRoomOpen: true, players }));
-        } else {
-          setError(message);
-        }
-        dispatch(setLoading(false));
-      });
-    }
-  }, [user, quizUUID]);
+        websocket.emit.onNewPlayerJoinedToRoom(payload, (response) => {
+          const { player, players, room, confirm, message } = response;
+          if (confirm) {
+            const user = { ...player, isUserModerator: false };
+            setStorage(getQuizLocalStorageKey(quizUUID), {
+              accessToken: player.accessToken,
+            });
+            dispatch(
+              initializeRoom({ ...room, user, isRoomOpen: true, players }),
+            );
+          } else {
+            setError(message);
+          }
+          dispatch(setLoading(false));
+        });
+      }
+    },
+    [user, quizUUID],
+  );
 
   const setAnswerSelectedHandler = useCallback((answerUUID: string) => {
     dispatch(setAnswerSelected(answerUUID));
@@ -118,14 +140,16 @@ export const QuizModeratorProvider = ({ children }: Props) => {
       dispatch(setShowButtons(false));
 
       const answers =
-        question.answers.filter((answer) => answer.selected).map(({ answerUUID }) => ({ answerUUID })) ?? [];
+        question.answers
+          .filter((answer) => answer.selected)
+          .map(({ answerUUID }) => ({ answerUUID })) ?? [];
 
       websocket.emit.onSendAnswerQuestion(
         { roomUUID, questionUUID: question.questionUUID, answers },
         ({ isAnswerCorrect }) => {
           dispatch(setIsAnswerCorrect(isAnswerCorrect));
           dispatch(setLoading(false));
-        }
+        },
       );
     }
   }, [quiz, roomUUID, question]);
@@ -133,21 +157,26 @@ export const QuizModeratorProvider = ({ children }: Props) => {
   useEffect(() => {
     websocket.connection.socketConnect();
 
-    websocket.emit.onCheckQuizRoomIsAvailable({ quizUUID }, ({ confirm, message }) => {
-      if (confirm) {
-        dispatch(setRoomIsOpen(true));
-      } else {
-        dispatch(setError(message));
-        dispatch(setLoading(false));
-      }
-    });
+    websocket.emit.onCheckQuizRoomIsAvailable(
+      { quizUUID },
+      ({ confirm, message }) => {
+        if (confirm) {
+          dispatch(setRoomIsOpen(true));
+        } else {
+          dispatch(setError(message));
+          dispatch(setLoading(false));
+        }
+      },
+    );
     websocket.on.onNewPlayerJoinedNotification(({ players, positions }) => {
       console.log(positions);
 
       dispatch(setPositions(positions));
       dispatch(setPlayers(players));
     });
-    websocket.on.onPlayerDisconnectFromRoom(({ playerUUID }) => dispatch(updatePlayerDisconnected(playerUUID)));
+    websocket.on.onPlayerDisconnectFromRoom(({ playerUUID }) =>
+      dispatch(updatePlayerDisconnected(playerUUID)),
+    );
 
     return () => {
       websocket.connection.socketDisconnect();
@@ -160,18 +189,20 @@ export const QuizModeratorProvider = ({ children }: Props) => {
   useEffect(() => {
     if (isRoomOpen) {
       if (accessToken) {
-        websocket.emit.onSendAccessTokenForValidation({ accessToken }, (response) => {
-          const { confirm, players, room, message, player } = response;
-          const user = { ...player, isUserModerator: authenticated };
-          if (confirm) {
-            dispatch(initializeRoom({ ...room, players, user }));
-          } else {
-            console.log(message);
-            dispatch(setError(message));
-            removeStorage(getQuizLocalStorageKey(quizUUID));
-          }
-          dispatch(setLoading(false));
-        });
+        websocket.emit.onSendAccessTokenForValidation(
+          { accessToken },
+          (response) => {
+            const { confirm, players, room, message, player } = response;
+            const user = { ...player, isUserModerator: authenticated };
+            if (confirm) {
+              dispatch(initializeRoom({ ...room, players, user }));
+            } else {
+              dispatch(setError(message));
+              removeStorage(getQuizLocalStorageKey(quizUUID));
+            }
+            dispatch(setLoading(false));
+          },
+        );
       } else {
         dispatch(setLoading(false));
       }
@@ -204,8 +235,12 @@ export const QuizModeratorProvider = ({ children }: Props) => {
       connectToRoom,
       setAnswerSelectedHandler,
       sendAnswer,
-    ]
+    ],
   );
 
-  return <QuizModeratorContext.Provider value={memoizedValue}>{children}</QuizModeratorContext.Provider>;
+  return (
+    <QuizModeratorContext.Provider value={memoizedValue}>
+      {children}
+    </QuizModeratorContext.Provider>
+  );
 };

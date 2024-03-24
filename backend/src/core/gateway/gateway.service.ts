@@ -43,7 +43,7 @@ export class GatewayService implements IGatewayService {
     @Inject(Services.ROOM_QUESTION_ANSWER) private roomsQuestionAnswerService: IRoomQuestionAnswerService,
     @Inject(Services.PLAYER) private playersService: IPlayerService,
     @Inject(Services.QUIZ) private quizsService: IQuizService
-  ) {}
+  ) { }
 
   async playerDisconnectFromRoom(socket: Socket): Promise<void> {
     const player = await this.playersService.findOne({ where: { socketId: socket.id }, relations: ['room', 'room.quiz'] });
@@ -69,9 +69,11 @@ export class GatewayService implements IGatewayService {
 
     const room = await this.roomsService.findOne({
       where: { quiz, status: Not([RoomStatus.DONE]) },
+      relations: ['players', 'quiz', 'quiz.questions', 'roomQuestions', 'roomQuestions.question', 'roomQuestions.question.answers'],
       order: { createdAt: 'DESC' },
-      relations: ['quiz', 'quiz.questions'],
     });
+
+
     if (!room) {
       return { confirm: false, message: 'Does not exist a room open here.' };
     }
@@ -114,12 +116,39 @@ export class GatewayService implements IGatewayService {
       player: { ...player, playerUUID: player.uuid, accessToken },
       players,
       room: {
-        status: room.status,
         roomUUID: room.uuid,
+        status: room.status,
+        questionsTotal: quiz.questions.length,
+        inviteCode: room.inviteCode,
         positions,
-        questionsTotal: room.quiz.questions.length,
-        quiz: { ...quiz, quizUUID: quiz.uuid, questions: [] },
+        quiz: {
+          ...quiz,
+          quizUUID: quiz.uuid,
+          questions: room.roomQuestions.map((roomQuestion) => ({
+            questionUUID: roomQuestion.question.uuid,
+            title: roomQuestion.question.title,
+            description: roomQuestion.question.description,
+            secondsToDeliverAnswer: roomQuestion.question.secondsToDeliverAnswer,
+            typeAnswer: roomQuestion.question.typeAnswer,
+            order: roomQuestion.question.order,
+            currentQuestion: roomQuestion.status === RoomQuestionStatus.CURRENT,
+            answerCorrect: !!roomQuestion.question.answers.find((answer) => answer.isCorrect),
+            answers: roomQuestion.question.answers.map((answer) => ({
+              answerUUID: answer.uuid,
+              content: answer.content,
+              isCorrect: answer.isCorrect,
+              order: answer.order,
+            })),
+          })),
+        },
       },
+      // room: {
+      //   status: room.status,
+      //   roomUUID: room.uuid,
+      //   positions,
+      //   questionsTotal: room.quiz.questions.length,
+      //   quiz: { ...quiz, quizUUID: quiz.uuid, questions: [] },
+      // },
     };
   }
 

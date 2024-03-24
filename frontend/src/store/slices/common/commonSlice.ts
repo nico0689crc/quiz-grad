@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { Common } from '@/types';
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { Common } from "@/types";
 
 const initialState: Common = {
   error: null,
@@ -13,7 +13,7 @@ const initialState: Common = {
 };
 
 export const commonSlice = createSlice({
-  name: 'common',
+  name: "common",
   initialState,
   reducers: {
     setError: (state, action: PayloadAction<string>) => {

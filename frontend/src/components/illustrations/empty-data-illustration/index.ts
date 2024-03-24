@@ -1,1 +1,1 @@
-export { default } from './empty-data-illustration';
+export { default } from "./empty-data-illustration";

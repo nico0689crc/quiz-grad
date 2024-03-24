@@ -1,1 +1,1 @@
-export { default } from './quizes-list-view';
+export { default } from "./quizes-list-view";
