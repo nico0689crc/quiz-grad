@@ -86,6 +86,7 @@ export type AnswerUUID = {
 export type WebsocketConfirmationResponse = {
   confirm: boolean;
   message: string;
+  code?: string;
 };
 
 export type WebsocketPlayersResponse = {

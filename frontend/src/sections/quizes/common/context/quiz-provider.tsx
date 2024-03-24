@@ -210,12 +210,12 @@ export const QuizProvider = ({ children }: Props) => {
         websocket.emit.onSendAccessTokenForValidation(
           { accessToken },
           (response) => {
-            const { confirm, players, room, message, player } = response;
+            const { confirm, players, room, message, player, code } = response;
             const user = { ...player, isUserModerator: authenticated };
             if (confirm) {
               dispatch(initializeRoom({ ...room, players, user }));
             } else {
-              dispatch(setError(message));
+              code !== 'room_not_assicated_to_access_token' && dispatch(setError(message));
               removeStorage(getQuizLocalStorageKey(quizUUID));
             }
             dispatch(setLoading(false));

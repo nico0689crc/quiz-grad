@@ -43,7 +43,7 @@ export class GatewayService implements IGatewayService {
     @Inject(Services.ROOM_QUESTION_ANSWER) private roomsQuestionAnswerService: IRoomQuestionAnswerService,
     @Inject(Services.PLAYER) private playersService: IPlayerService,
     @Inject(Services.QUIZ) private quizsService: IQuizService
-  ) {}
+  ) { }
 
   async playerDisconnectFromRoom(socket: Socket): Promise<void> {
     const player = await this.playersService.findOne({ where: { socketId: socket.id }, relations: ['room', 'room.quiz'] });
@@ -172,7 +172,7 @@ export class GatewayService implements IGatewayService {
     });
 
     if (!room) {
-      return { confirm: false, message: 'Room associate with this token does not exist.' };
+      return { confirm: false, message: 'Room associate with this token does not exist.', code: 'room_not_assicated_to_access_token' };
     }
 
     const player = await this.playersService.findOne({ where: { uuid: playerPayload.playerUUID } });
