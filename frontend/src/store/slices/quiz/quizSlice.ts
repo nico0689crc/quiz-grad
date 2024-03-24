@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { Quiz } from '@/types';
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { Quiz } from "@/types";
 
 type QuizState = {
   quiz: Quiz | null;
@@ -13,7 +13,7 @@ const initialState: QuizState = {
 };
 
 export const quizSlice = createSlice({
-  name: 'quiz',
+  name: "quiz",
   initialState,
   reducers: {
     setQuiz: (state, action: PayloadAction<Partial<Quiz>>) => {

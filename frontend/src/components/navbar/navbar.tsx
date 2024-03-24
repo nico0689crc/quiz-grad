@@ -1,28 +1,40 @@
-import { useContext } from 'react';
-import { AnimatePresence, m } from 'framer-motion';
+import { useContext } from "react";
+import { AnimatePresence, m } from "framer-motion";
 
-import { Box, Button, Drawer, IconButton, Link, List, ListItem, Stack, Typography, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import Iconify from '@/components/iconify';
-import { RouterLink } from '@/routes/components';
-import { varFade } from '@/components/animate';
-import ThemeModeButton from '@/components/theme-mode-button/theme-mode-button';
-import LanguageButton from '@/components/language-button/language-button';
+import {
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  Link,
+  List,
+  ListItem,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import Iconify from "@/components/iconify";
+import { RouterLink } from "@/routes/components";
+import { varFade } from "@/components/animate";
+import ThemeModeButton from "@/components/theme-mode-button/theme-mode-button";
+import LanguageButton from "@/components/language-button/language-button";
 
-import { SettingsContext } from '../settings/context/settings-context';
+import { SettingsContext } from "../settings/context/settings-context";
 
-import { useNavbarConfig as menuItems } from './use-navbar-config';
-import { useAuthContext } from '@/components/auth/context/auth-provider';
-import { useTranslate } from '@/locales';
+import { useNavbarConfig as menuItems } from "./use-navbar-config";
+import { useAuthContext } from "@/components/auth/context/auth-provider";
+import { useTranslate } from "@/locales";
 
-import { paths } from '@/routes/paths';
+import { paths } from "@/routes/paths";
 
 const Navbar = () => {
   const { authenticated, logout } = useAuthContext();
   const { t } = useTranslate();
-  const { navbarMobileToggle, toggleMobileNavbar } = useContext(SettingsContext);
+  const { navbarMobileToggle, toggleMobileNavbar } =
+    useContext(SettingsContext);
   const theme = useTheme();
-  const isDownLg = useMediaQuery(theme.breakpoints.down('lg'));
+  const isDownLg = useMediaQuery(theme.breakpoints.down("lg"));
 
   return (
     <>
@@ -30,13 +42,13 @@ const Navbar = () => {
       <AnimatePresence>
         {!isDownLg && (
           <m.div {...varFade().inLeft}>
-            <List component='nav' sx={{ display: 'flex', gap: 1 }}>
+            <List component="nav" sx={{ display: "flex", gap: 1 }}>
               {menuItems.map((item, index) => (
                 <Stack key={index}>
                   {(item.isPublic || authenticated) && (
                     <ListItem dense={true}>
                       <Link component={RouterLink} href={item.href}>
-                        <Typography noWrap variant='button'>
+                        <Typography noWrap variant="button">
                           {t(item.title)}
                         </Typography>
                       </Link>
@@ -51,23 +63,32 @@ const Navbar = () => {
 
       {/* Mobile */}
       {isDownLg && (
-        <Drawer anchor='right' open={navbarMobileToggle} onClose={toggleMobileNavbar}>
-          <Box component='nav' sx={{ p: 3, height: '100%' }}>
+        <Drawer
+          anchor="right"
+          open={navbarMobileToggle}
+          onClose={toggleMobileNavbar}
+        >
+          <Box component="nav" sx={{ p: 3, height: "100%" }}>
             <Stack
               sx={{
-                width: '300px',
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'space-between',
+                width: "300px",
+                height: "100%",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
             >
-              <Stack direction='row' justifyContent='space-between' alignItems='center' width='100%'>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                width="100%"
+              >
                 <m.div {...varFade().inLeft}>
-                  <IconButton color='primary' onClick={toggleMobileNavbar}>
-                    <Iconify icon='iconamoon:close-bold' width={25} />
+                  <IconButton color="primary" onClick={toggleMobileNavbar}>
+                    <Iconify icon="iconamoon:close-bold" width={25} />
                   </IconButton>
                 </m.div>
-                <Stack direction='row' spacing={1} alignItems='center'>
+                <Stack direction="row" spacing={1} alignItems="center">
                   <m.div {...varFade({ durationIn: 0.75 }).inRight}>
                     <LanguageButton />
                   </m.div>
@@ -76,13 +97,22 @@ const Navbar = () => {
                   </m.div>
                 </Stack>
               </Stack>
-              <Stack justifyContent='center' alignItems='center' flexGrow={1} spacing={3}>
+              <Stack
+                justifyContent="center"
+                alignItems="center"
+                flexGrow={1}
+                spacing={3}
+              >
                 {menuItems.map((item, index) => (
                   <Stack key={index}>
                     {(item.isPublic || authenticated) && (
                       <m.div {...varFade({ durationIn: item.duration }).inLeft}>
-                        <Link component={RouterLink} href={item.href} onClick={toggleMobileNavbar}>
-                          <Typography variant='h6'>{t(item.title)}</Typography>
+                        <Link
+                          component={RouterLink}
+                          href={item.href}
+                          onClick={toggleMobileNavbar}
+                        >
+                          <Typography variant="h6">{t(item.title)}</Typography>
                         </Link>
                       </m.div>
                     )}
@@ -91,32 +121,32 @@ const Navbar = () => {
               </Stack>
 
               {!authenticated ? (
-                <Stack spacing={2} direction='row'>
+                <Stack spacing={2} direction="row">
                   <m.div {...varFade({ durationIn: 0.75 }).inUp}>
                     <Button
-                      variant='outlined'
+                      variant="outlined"
                       fullWidth
                       component={RouterLink}
-                      startIcon={<Iconify icon='uil:arrow-to-right' />}
+                      startIcon={<Iconify icon="uil:arrow-to-right" />}
                       onClick={toggleMobileNavbar}
                       href={paths.login}
                     >
-                      <Typography noWrap variant='button'>
-                        {t('buttons.login')}
+                      <Typography noWrap variant="button">
+                        {t("buttons.login")}
                       </Typography>
                     </Button>
                   </m.div>
                   <m.div {...varFade({ durationIn: 1.25 }).inUp}>
                     <Button
-                      variant='contained'
+                      variant="contained"
                       fullWidth
                       component={RouterLink}
-                      startIcon={<Iconify icon='uil:pen' />}
+                      startIcon={<Iconify icon="uil:pen" />}
                       onClick={toggleMobileNavbar}
                       href={paths.register}
                     >
-                      <Typography noWrap variant='button'>
-                        {t('buttons.signup')}
+                      <Typography noWrap variant="button">
+                        {t("buttons.signup")}
                       </Typography>
                     </Button>
                   </m.div>
@@ -124,15 +154,15 @@ const Navbar = () => {
               ) : (
                 <m.div {...varFade({ durationIn: 1.25 }).inUp}>
                   <Button
-                    variant='contained'
-                    startIcon={<Iconify icon='material-symbols:logout' />}
+                    variant="contained"
+                    startIcon={<Iconify icon="material-symbols:logout" />}
                     onClick={() => {
                       toggleMobileNavbar();
                       logout();
                     }}
                   >
-                    <Typography noWrap variant='button'>
-                      {t('buttons.signout')}
+                    <Typography noWrap variant="button">
+                      {t("buttons.signout")}
                     </Typography>
                   </Button>
                 </m.div>

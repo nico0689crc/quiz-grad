@@ -1,5 +1,5 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { HOST_API } from '@/config-global';
+import axios, { AxiosRequestConfig } from "axios";
+import { HOST_API } from "@/config-global";
 
 const config: AxiosRequestConfig = { withCredentials: true };
 

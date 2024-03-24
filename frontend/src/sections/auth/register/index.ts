@@ -1,1 +1,1 @@
-export { default } from './register-view';
+export { default } from "./register-view";

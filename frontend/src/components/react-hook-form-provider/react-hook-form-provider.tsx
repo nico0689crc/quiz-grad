@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface Props {
   children: React.ReactNode;
@@ -9,7 +9,11 @@ interface Props {
   defaultValues: Record<string, string>;
 }
 
-export default function ReactHookFormProvider({ children, schema, defaultValues }: Props) {
+export default function ReactHookFormProvider({
+  children,
+  schema,
+  defaultValues,
+}: Props) {
   const methods = useForm({ resolver: yupResolver(schema), defaultValues });
 
   return <FormProvider {...methods}>{children}</FormProvider>;

@@ -1,3 +1,3 @@
-export * from './config-lang';
+export * from "./config-lang";
 
-export * from './use-locales';
+export * from "./use-locales";

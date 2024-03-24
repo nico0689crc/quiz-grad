@@ -1,28 +1,20 @@
-import { AnimatePresence, m } from 'framer-motion';
-import { RoomStatusEnum } from '@/types';
-import QuizModeratorPlaying from './playing/quiz-moderator-playing';
-import QuizModeratorWaitingPlayers from './waiting-players/quiz-moderator-waiting-players';
-import { varFade } from '@/components/animate';
-import { Box } from '@mui/material';
-import { useQuizModeratorContext } from '../../common/context/use-quiz-moderator-context';
+import { RoomStatusEnum } from "@/types";
+import QuizModeratorPlaying from "./playing/quiz-moderator-playing";
+import QuizModeratorWaitingPlayers from "./waiting-players/quiz-moderator-waiting-players";
+
+import { useQuizContext } from "../../common/context/use-quiz-context";
+import PositionView from "../../common/position-view";
 
 const QuizModeratorBoard = () => {
-  const { status } = useQuizModeratorContext();
+  const { status } = useQuizContext();
   return (
     <>
-      <AnimatePresence>
-        {status === RoomStatusEnum.WAITING_PLAYERS && (
-          <Box component={m.div} {...varFade({ durationOut: 1 }).inDown} sx={{ width: '100%' }}>
-            <QuizModeratorWaitingPlayers />
-          </Box>
-        )}
+      {status === RoomStatusEnum.WAITING_PLAYERS && (
+        <QuizModeratorWaitingPlayers />
+      )}
 
-        {status === RoomStatusEnum.PLAYING && (
-          <Box component={m.div} {...varFade({ durationIn: 2, distance: 300 }).inDown} sx={{ width: '100%' }}>
-            <QuizModeratorPlaying />
-          </Box>
-        )}
-      </AnimatePresence>
+      {status === RoomStatusEnum.PLAYING && <QuizModeratorPlaying />}
+      {status === RoomStatusEnum.DONE && <PositionView />}
     </>
   );
 };

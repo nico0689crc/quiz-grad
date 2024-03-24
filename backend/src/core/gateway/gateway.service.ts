@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Socket } from 'socket.io';
-import { LessThan, Not } from 'typeorm';
+import { LessThan, Not, In } from 'typeorm';
 
 import { Services } from '../constants';
 import { generateAccessToken, generateUUID, verifyAccessToken } from '../helpers';
@@ -43,7 +43,7 @@ export class GatewayService implements IGatewayService {
     @Inject(Services.ROOM_QUESTION_ANSWER) private roomsQuestionAnswerService: IRoomQuestionAnswerService,
     @Inject(Services.PLAYER) private playersService: IPlayerService,
     @Inject(Services.QUIZ) private quizsService: IQuizService
-  ) {}
+  ) { }
 
   async playerDisconnectFromRoom(socket: Socket): Promise<void> {
     const player = await this.playersService.findOne({ where: { socketId: socket.id }, relations: ['room', 'room.quiz'] });
@@ -69,9 +69,10 @@ export class GatewayService implements IGatewayService {
 
     const room = await this.roomsService.findOne({
       where: { quiz, status: Not([RoomStatus.DONE]) },
+      relations: ['players', 'quiz', 'quiz.questions', 'roomQuestions', 'roomQuestions.question', 'roomQuestions.question.answers'],
       order: { createdAt: 'DESC' },
-      relations: ['quiz', 'quiz.questions'],
     });
+
     if (!room) {
       return { confirm: false, message: 'Does not exist a room open here.' };
     }
@@ -114,11 +115,31 @@ export class GatewayService implements IGatewayService {
       player: { ...player, playerUUID: player.uuid, accessToken },
       players,
       room: {
-        status: room.status,
         roomUUID: room.uuid,
+        status: room.status,
+        questionsTotal: quiz.questions.length,
+        inviteCode: room.inviteCode,
         positions,
-        questionsTotal: room.quiz.questions.length,
-        quiz: { ...quiz, quizUUID: quiz.uuid, questions: [] },
+        quiz: {
+          ...quiz,
+          quizUUID: quiz.uuid,
+          questions: room.roomQuestions.map((roomQuestion) => ({
+            questionUUID: roomQuestion.question.uuid,
+            title: roomQuestion.question.title,
+            description: roomQuestion.question.description,
+            secondsToDeliverAnswer: roomQuestion.question.secondsToDeliverAnswer,
+            typeAnswer: roomQuestion.question.typeAnswer,
+            order: roomQuestion.question.order,
+            currentQuestion: roomQuestion.status === RoomQuestionStatus.CURRENT,
+            answerCorrect: !!roomQuestion.question.answers.find((answer) => answer.isCorrect),
+            answers: roomQuestion.question.answers.map((answer) => ({
+              answerUUID: answer.uuid,
+              content: answer.content,
+              isCorrect: answer.isCorrect,
+              order: answer.order,
+            })),
+          })),
+        },
       },
     };
   }
@@ -145,13 +166,13 @@ export class GatewayService implements IGatewayService {
     }
 
     const room = await this.roomsService.findOne({
-      where: { quiz, status: Not([RoomStatus.DONE]) },
+      where: { uuid: playerPayload.quizRoomUIDD, quiz, status: Not([RoomStatus.DONE]) },
       relations: ['players', 'roomQuestions', 'roomQuestions.question', 'roomQuestions.question.answers'],
       order: { createdAt: 'DESC' },
     });
 
     if (!room) {
-      return { confirm: false, message: 'Room associate with this token does not exist.' };
+      return { confirm: false, message: 'Room associate with this token does not exist.', code: 'room_not_assicated_to_access_token' };
     }
 
     const player = await this.playersService.findOne({ where: { uuid: playerPayload.playerUUID } });
@@ -255,7 +276,7 @@ export class GatewayService implements IGatewayService {
       return { confirm: false, message: 'Quiz associate with quizUUID does not exist.' };
     }
 
-    await this.roomsService.delete({ status: RoomStatus.WAITING_PLAYERS, quiz });
+    await this.roomsService.delete({ status: In([RoomStatus.WAITING_PLAYERS, RoomStatus.PLAYING]), quiz });
 
     const room = await this.roomsService.create(quiz);
 
@@ -348,16 +369,19 @@ export class GatewayService implements IGatewayService {
     const lastQuestion = room.quiz.questions.pop()?.id === nextQuestionId;
 
     await this.roomsService.update({ id: room.id }, { status: lastQuestion ? RoomStatus.DONE : RoomStatus.PLAYING });
+    const updatedRoom = await this.roomsService.findOne({ where: { id: room.id } });
 
     socket.to(room.quiz.uuid).emit('onNextQuestion', {
       confirm: true,
-      message: 'Room Question  created',
+      message: 'Room Question created',
+      roomStatus: updatedRoom.status,
       question: questionToSend,
     });
 
     return {
       confirm: true,
-      message: 'Room Question  created',
+      message: 'Room Question created',
+      roomStatus: updatedRoom.status,
       question: questionToSend,
     };
   }

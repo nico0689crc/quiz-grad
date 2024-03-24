@@ -1,20 +1,26 @@
-'use client';
+"use client";
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { useLocalStorage } from 'src/hooks/use-local-storage';
-import { SettingsValueProps } from '../types';
-import { SettingsContext } from './settings-context';
+import { useLocalStorage } from "src/hooks/use-local-storage";
+import { SettingsValueProps } from "../types";
+import { SettingsContext } from "./settings-context";
 
-const STORAGE_KEY = 'settings';
+const STORAGE_KEY = "settings";
 
 type SettingsProviderProps = {
   children: React.ReactNode;
   defaultSettings: SettingsValueProps;
 };
 
-export function SettingsProvider({ children, defaultSettings }: SettingsProviderProps) {
-  const { localStorage, update, reset } = useLocalStorage(STORAGE_KEY, defaultSettings);
+export function SettingsProvider({
+  children,
+  defaultSettings,
+}: SettingsProviderProps) {
+  const { localStorage, update, reset } = useLocalStorage(
+    STORAGE_KEY,
+    defaultSettings,
+  );
 
   const [isLoading, setIsLoading] = useState(true);
   const [navbarMobileToggle, setNavbarMobileToggle] = useState(false);
@@ -35,8 +41,19 @@ export function SettingsProvider({ children, defaultSettings }: SettingsProvider
       navbarMobileToggle,
       toggleMobileNavbar,
     }),
-    [reset, update, localStorage, isLoading, navbarMobileToggle, toggleMobileNavbar]
+    [
+      reset,
+      update,
+      localStorage,
+      isLoading,
+      navbarMobileToggle,
+      toggleMobileNavbar,
+    ],
   );
 
-  return <SettingsContext.Provider value={memoizedValue}>{children}</SettingsContext.Provider>;
+  return (
+    <SettingsContext.Provider value={memoizedValue}>
+      {children}
+    </SettingsContext.Provider>
+  );
 }

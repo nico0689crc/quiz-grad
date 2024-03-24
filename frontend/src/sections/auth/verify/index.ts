@@ -1,1 +1,1 @@
-export { default as VerifyView } from './verify-view';
+export { default as VerifyView } from "./verify-view";

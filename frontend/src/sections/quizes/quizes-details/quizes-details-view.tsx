@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { Stack } from '@mui/material';
+import { Stack } from "@mui/material";
 
-import { useParams } from '@/hooks/use-params';
-import { useQuiz } from '@/utils/react-query/quiz';
+import { useParams } from "@/hooks/use-params";
+import { useQuiz } from "@/utils/react-query/quiz";
 
-import { LoadingSpinner } from '@/components/loading-spinner';
-import ErrorIllustration from '@/components/illustrations/error-illustration';
-import QuizDetail from './components/quiz-detail';
+import { LoadingSpinner } from "@/components/loading-spinner";
+import ErrorIllustration from "@/components/illustrations/error-illustration";
+import QuizDetail from "./components/quiz-detail";
 
 const QuizesDetailsView = () => {
   const { uuid: quizUUID } = useParams<{ uuid: string }>();

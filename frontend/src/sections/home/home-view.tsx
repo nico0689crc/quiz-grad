@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Stack } from '@mui/material';
-import Hero from './componentes/hero';
+import { Stack } from "@mui/material";
+import Hero from "./componentes/hero";
 
 const HomeView = () => {
   return (

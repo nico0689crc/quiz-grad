@@ -1,36 +1,36 @@
-'use client';
+"use client";
 
-import merge from 'lodash/merge';
+import merge from "lodash/merge";
 // date fns
-import { enUS as enUSAdapter, es as esESAdapter } from 'date-fns/locale';
+import { enUS as enUSAdapter, es as esESAdapter } from "date-fns/locale";
 
 // core (MUI)
-import { enUS as enUSCore, esES as esESCore } from '@mui/material/locale';
+import { enUS as enUSCore, esES as esESCore } from "@mui/material/locale";
 
 // PLEASE REMOVE `LOCAL STORAGE` WHEN YOU CHANGE SETTINGS.
 // ----------------------------------------------------------------------
 
 export const allLangs = [
   {
-    label: 'English',
-    value: 'en',
+    label: "English",
+    value: "en",
     systemValue: merge(enUSCore),
     adapterLocale: enUSAdapter,
-    icon: 'flagpack:gb-nir',
+    icon: "flagpack:gb-nir",
     numberFormat: {
-      code: 'en-US',
-      currency: 'USD',
+      code: "en-US",
+      currency: "USD",
     },
   },
   {
-    label: 'Español',
-    value: 'es',
+    label: "Español",
+    value: "es",
     systemValue: merge(esESCore),
     adapterLocale: esESAdapter,
-    icon: 'flagpack:es',
+    icon: "flagpack:es",
     numberFormat: {
-      code: 'es-Es',
-      currency: 'EUR',
+      code: "es-Es",
+      currency: "EUR",
     },
   },
 ];

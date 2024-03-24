@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { paths } from '@/routes/paths';
-import { useRouter } from '@/hooks/use-router';
-import { useAuthContext } from '../context/auth-provider';
-import { LoadingSpinner } from '@/components/loading-spinner';
+import { useEffect } from "react";
+import { paths } from "@/routes/paths";
+import { useRouter } from "@/hooks/use-router";
+import { useAuthContext } from "../context/auth-provider";
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 type Props = {
   children: React.ReactNode;

@@ -1,6 +1,6 @@
 const ROOTS = {
-  AUTH: 'auth',
-  QUIZ: 'quizes',
+  AUTH: "auth",
+  QUIZ: "quizes",
 };
 
 export const API_ENDPOINTS = {

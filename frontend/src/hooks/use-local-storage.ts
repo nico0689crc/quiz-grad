@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
 export function useLocalStorage<T>(key: string, initialState: T) {
   const [localStorage, SetLocalStorage] = useState<T>(initialState);
@@ -28,7 +28,7 @@ export function useLocalStorage<T>(key: string, initialState: T) {
         };
       });
     },
-    [key]
+    [key],
   );
 
   const update = useCallback(
@@ -37,7 +37,7 @@ export function useLocalStorage<T>(key: string, initialState: T) {
         [name]: updateValue,
       });
     },
-    [updateState]
+    [updateState],
   );
 
   const reset = useCallback(() => {
@@ -84,4 +84,5 @@ export const removeStorage = (key: string) => {
   }
 };
 
-export const getQuizLocalStorageKey = (quizUUID: string) => `STORAGE_KEY_USER_DATA_QUIZ_WEBSOCKET_${quizUUID}`;
+export const getQuizLocalStorageKey = (quizUUID: string) =>
+  `STORAGE_KEY_USER_DATA_QUIZ_WEBSOCKET_${quizUUID}`;
