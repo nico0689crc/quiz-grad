@@ -11,7 +11,7 @@ import { useTranslate } from "@/locales";
 import { selectPlayers } from "@/store/slices/room/roomSlice";
 import QuizPlayerList from "@/sections/quizes/common/quiz-player-list";
 
-const QuizModeratorWaitingPlayers = () => {
+const QuizWaitingPlayers = () => {
   const players = useAppSelector(selectPlayers);
   const { t } = useTranslate();
 
@@ -60,4 +60,4 @@ const QuizModeratorWaitingPlayers = () => {
   );
 };
 
-export default QuizModeratorWaitingPlayers;
+export default QuizWaitingPlayers;

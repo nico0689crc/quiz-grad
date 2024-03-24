@@ -40,7 +40,6 @@ const PlayersBoard = () => {
         alignItems: "start",
         gridTemplateColumns: "repeat(3,60px)",
         gap: 5,
-        height: "100%",
       }}
     >
       <QuizPlayerList players={players} />

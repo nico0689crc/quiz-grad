@@ -34,7 +34,7 @@ import {
 import { setError } from "@/store/slices/common/commonSlice";
 
 import { LocalStorageType, ParamsQuizUUID } from "@/types";
-import { QuizModeratorContext } from "./quiz-moderator-context";
+import { QuizContext } from "./quiz-context";
 
 import { useAuthContext } from "@/components/auth/context/auth-provider";
 
@@ -42,7 +42,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const QuizModeratorProvider = ({ children }: Props) => {
+export const QuizProvider = ({ children }: Props) => {
   const websocket = useWebSocket();
   const dispatch = useAppDispatch();
   const { uuid: quizUUID } = useParams<ParamsQuizUUID>();
@@ -130,8 +130,8 @@ export const QuizModeratorProvider = ({ children }: Props) => {
     [user, quizUUID],
   );
 
-  const setAnswerSelectedHandler = useCallback((answerUUID: string) => {
-    dispatch(setAnswerSelected(answerUUID));
+  const setAnswerSelectedHandler = useCallback((answerUUID: string, checked: boolean) => {
+    dispatch(setAnswerSelected({ answerUUID, checked }));
   }, []);
 
   const sendAnswer = useCallback(() => {
@@ -169,14 +169,24 @@ export const QuizModeratorProvider = ({ children }: Props) => {
       },
     );
     websocket.on.onNewPlayerJoinedNotification(({ players, positions }) => {
-      console.log(positions);
-
       dispatch(setPositions(positions));
       dispatch(setPlayers(players));
     });
     websocket.on.onPlayerDisconnectFromRoom(({ playerUUID }) =>
       dispatch(updatePlayerDisconnected(playerUUID)),
     );
+    websocket.on.onNextQuestion(({ confirm, message, question }) => {
+      if (confirm) {
+        const expiration = new Date();
+        expiration.setSeconds(
+          expiration.getSeconds() + question.secondsToDeliverAnswer,
+        );
+        restart(expiration);
+        dispatch(addQuestion(question));
+      } else {
+        dispatch(setError(message));
+      }
+    });
 
     return () => {
       websocket.connection.socketDisconnect();
@@ -239,8 +249,8 @@ export const QuizModeratorProvider = ({ children }: Props) => {
   );
 
   return (
-    <QuizModeratorContext.Provider value={memoizedValue}>
+    <QuizContext.Provider value={memoizedValue}>
       {children}
-    </QuizModeratorContext.Provider>
+    </QuizContext.Provider>
   );
 };

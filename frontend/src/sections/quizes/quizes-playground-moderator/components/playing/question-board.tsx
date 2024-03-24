@@ -3,7 +3,7 @@ import QuizQuestionItem from "@/sections/quizes/common/quiz-question-item";
 import { RootState, useAppSelector } from "@/store";
 import { selectCurrentQuestion } from "@/store/slices/room/roomSlice";
 import { useTranslate } from "@/locales";
-import { useQuizModeratorContext } from "../../../common/context/use-quiz-moderator-context";
+import { useQuizContext } from "../../../common/context/use-quiz-context";
 
 const QuestionBoard = () => {
   const { t } = useTranslate();
@@ -11,7 +11,7 @@ const QuestionBoard = () => {
   const { quiz, showNextQuestionButton, isLastQuestion, questionsTotal } =
     useAppSelector((state: RootState) => state.room.room);
   const { sendNextQuestion, isRunning, totalSeconds } =
-    useQuizModeratorContext();
+    useQuizContext();
 
   const actionsContent = showNextQuestionButton && !isLastQuestion && (
     <Button variant="contained" onClick={sendNextQuestion}>

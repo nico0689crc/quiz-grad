@@ -4,10 +4,10 @@ import QuizModeratorPlaying from "./playing/quiz-moderator-playing";
 import QuizModeratorWaitingPlayers from "./waiting-players/quiz-moderator-waiting-players";
 import { varFade } from "@/components/animate";
 import { Box } from "@mui/material";
-import { useQuizModeratorContext } from "../../common/context/use-quiz-moderator-context";
+import { useQuizContext } from "../../common/context/use-quiz-context";
 
 const QuizModeratorBoard = () => {
-  const { status } = useQuizModeratorContext();
+  const { status } = useQuizContext();
   return (
     <>
       <AnimatePresence>

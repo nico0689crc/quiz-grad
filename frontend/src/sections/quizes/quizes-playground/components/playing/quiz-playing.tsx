@@ -7,7 +7,7 @@ import PositionBoard from "@/sections/quizes/common/position-board";
 import QuestionBoard from "./question-board";
 import { varFade } from "@/components/animate";
 
-const QuizModeratorPlaying = () => {
+const QuizPlaying = () => {
   const playersBoardMemo = useMemo(() => <PlayersBoard />, []);
   const positionBoardMemo = useMemo(() => <PositionBoard />, []);
 
@@ -21,16 +21,10 @@ const QuizModeratorPlaying = () => {
       }}
     >
       {playersBoardMemo}
-      <Box
-        component={m.div}
-        {...varFade({ durationIn: 2.5 }).inDown}
-        sx={{ width: "100%" }}
-      >
-        <QuestionBoard />
-      </Box>
+      <QuestionBoard />
       {positionBoardMemo}
     </Box>
   );
 };
 
-export default QuizModeratorPlaying;
+export default QuizPlaying;

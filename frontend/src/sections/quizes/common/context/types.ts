@@ -1,6 +1,6 @@
 import { RoomStatusEnum, User } from "@/types";
 
-export type QuizModeratorContextType = {
+export type QuizContextType = {
   user: User | null;
   loading: boolean;
   isRoomOpen: boolean;
@@ -10,6 +10,6 @@ export type QuizModeratorContextType = {
   status: RoomStatusEnum;
   sendNextQuestion: () => void;
   connectToRoom: (userName: string) => void;
-  setAnswerSelectedHandler: (answerUUID: string) => void;
+  setAnswerSelectedHandler: (answerUUID: string, checked: boolean) => void;
   sendAnswer: () => void;
 };

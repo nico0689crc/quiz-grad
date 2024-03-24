@@ -17,13 +17,13 @@ import { selectPlayers, setRoomStatus } from "@/store/slices/room/roomSlice";
 import { useCallback } from "react";
 import { RoomStatusEnum } from "@/types";
 import QuizPlayerList from "@/sections/quizes/common/quiz-player-list";
-import { useQuizModeratorContext } from "../../../common/context/use-quiz-moderator-context";
+import { useQuizContext } from "../../../common/context/use-quiz-context";
 
 const QuizModeratorWaitingPlayers = () => {
   const theme = useTheme();
   const isUpMd = useMediaQuery(theme.breakpoints.up("md"));
   const dispatch = useAppDispatch();
-  const { sendNextQuestion } = useQuizModeratorContext();
+  const { sendNextQuestion } = useQuizContext();
 
   const { room } = useAppSelector((state: RootState) => state.room);
 

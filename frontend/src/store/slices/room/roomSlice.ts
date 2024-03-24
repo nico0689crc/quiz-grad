@@ -42,17 +42,17 @@ export const roomSlice = createSlice({
         ...action.payload,
         isLastQuestion:
           action.payload.questionsTotal ===
-            action.payload.quiz?.questions.length ?? false,
+          action.payload.quiz?.questions.length ?? false,
         quiz: action.payload.quiz
           ? {
-              ...action.payload.quiz,
-              questions: action.payload.quiz?.questions
-                ? action.payload.quiz?.questions.map((question) => ({
-                    ...question,
-                    showButtons: false,
-                  }))
-                : [],
-            }
+            ...action.payload.quiz,
+            questions: action.payload.quiz?.questions
+              ? action.payload.quiz?.questions.map((question) => ({
+                ...question,
+                showButtons: false,
+              }))
+              : [],
+          }
           : null,
       };
     },
@@ -124,7 +124,7 @@ export const roomSlice = createSlice({
         );
       }
     },
-    setAnswerSelected: (state, action: PayloadAction<string>) => {
+    setAnswerSelected: (state, action: PayloadAction<{ answerUUID: string, checked: boolean }>) => {
       const currentQuestionIndex = state.room.quiz?.questions.findIndex(
         (question) => question.currentQuestion,
       );
@@ -136,12 +136,12 @@ export const roomSlice = createSlice({
       ) {
         const currentQuestion = state.room.quiz.questions[currentQuestionIndex];
         const answerSelectedIndex = currentQuestion.answers.findIndex(
-          (answer) => answer.answerUUID === action.payload,
+          (answer) => answer.answerUUID === action.payload.answerUUID,
         );
 
         if (answerSelectedIndex !== undefined && answerSelectedIndex > -1) {
           const answerSelected = currentQuestion.answers[answerSelectedIndex];
-          answerSelected.selected = true;
+          answerSelected.selected = action.payload.checked;
           currentQuestion.answers.splice(
             answerSelectedIndex,
             1,

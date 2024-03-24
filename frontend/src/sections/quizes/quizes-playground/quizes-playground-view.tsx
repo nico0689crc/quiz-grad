@@ -2,15 +2,15 @@
 
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { Stack, Typography } from "@mui/material";
-import { QuizModeratorProvider } from "../common/context/quiz-moderator-provider";
-import { QuizModeratorContext } from "../common/context/quiz-moderator-context";
+import { QuizProvider } from "../common/context/quiz-provider";
+import { QuizContext } from "../common/context/quiz-context";
 import QuizesPlaygroundNewPlayer from "./quizes-playground-new-player";
 import QuizesPlaygroundBoard from "./quizes-playground-board";
 
 export default function QuizPlaygroundView() {
   return (
-    <QuizModeratorProvider>
-      <QuizModeratorContext.Consumer>
+    <QuizProvider>
+      <QuizContext.Consumer>
         {({ loading, user, error }) => (
           <Stack
             sx={{
@@ -77,7 +77,7 @@ export default function QuizPlaygroundView() {
             )} */}
           </Stack>
         )}
-      </QuizModeratorContext.Consumer>
-    </QuizModeratorProvider>
+      </QuizContext.Consumer>
+    </QuizProvider>
   );
 }

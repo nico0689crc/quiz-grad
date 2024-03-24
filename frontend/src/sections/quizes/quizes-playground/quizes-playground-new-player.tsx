@@ -8,10 +8,10 @@ import { Button, Container, Stack, TextField, Typography } from "@mui/material";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { useQuizModeratorContext } from "../common/context/use-quiz-moderator-context";
+import { useQuizContext } from "../common/context/use-quiz-context";
 
 const QuizesPlaygroundNewPlayer = () => {
-  const { connectToRoom } = useQuizModeratorContext();
+  const { connectToRoom } = useQuizContext();
   const { t } = useTranslate();
 
   const schema = Yup.object().shape({

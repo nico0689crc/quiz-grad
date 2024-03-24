@@ -176,7 +176,9 @@
   },
   "playing": {
     "labels": {
-      "next_question_button": "Next question"
+      "next_question_button": "Next question",
+      "send_answer": "Send Answer",
+      "selected": "Selected"
     }
   }
 }
