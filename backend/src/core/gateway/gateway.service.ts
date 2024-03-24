@@ -142,13 +142,6 @@ export class GatewayService implements IGatewayService {
           })),
         },
       },
-      // room: {
-      //   status: room.status,
-      //   roomUUID: room.uuid,
-      //   positions,
-      //   questionsTotal: room.quiz.questions.length,
-      //   quiz: { ...quiz, quizUUID: quiz.uuid, questions: [] },
-      // },
     };
   }
 
