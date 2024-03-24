@@ -3,6 +3,7 @@ import { useQuizContext } from "@/sections/quizes/common/context/use-quiz-contex
 
 import QuizWaitingPlayers from "./components/waiting-players/quiz-waiting-players";
 import QuizPlaying from "./components/playing/quiz-playing";
+import PositionView from "../common/position-view";
 
 const QuizesPlaygroundBoard = () => {
   const { status } = useQuizContext();
@@ -10,6 +11,7 @@ const QuizesPlaygroundBoard = () => {
     <>
       {status === RoomStatusEnum.WAITING_PLAYERS && <QuizWaitingPlayers />}
       {status === RoomStatusEnum.PLAYING && <QuizPlaying />}
+      {status === RoomStatusEnum.DONE && <PositionView />}
     </>
   );
 };

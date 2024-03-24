@@ -14,7 +14,13 @@ const QuizesPlaygroundModeratorView = () => {
     <QuizProvider>
       <QuizContext.Consumer>
         {({ loading, user, isRoomOpen }) => (
-          <Stack spacing={2} direction="row" flexGrow={1} alignItems="center">
+          <Stack
+            spacing={2}
+            direction="row"
+            flexGrow={1}
+            alignItems="center"
+            justifyContent="center"
+          >
             {loading && <LoadingSpinner />}
             {!loading && (!isRoomOpen || (isRoomOpen && !user)) && (
               <StartToPlay />

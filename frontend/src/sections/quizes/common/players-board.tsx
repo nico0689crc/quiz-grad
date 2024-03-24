@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-import { varFade, varZoom } from "@/components/animate";
+import { varZoom } from "@/components/animate";
 import Iconify from "@/components/iconify";
 import { useTranslate } from "@/locales";
 import QuizPlayerList from "@/sections/quizes/common/quiz-player-list";
@@ -49,39 +49,23 @@ const PlayersBoard = () => {
   return (
     <>
       {isUpLg ? (
-        <Box
-          component={m.div}
-          {...varFade({ durationIn: 2, durationOut: 0 }).inLeft}
-          sx={{ width: "100%" }}
-        >
-          <Stack component={Card} px={4} py={2} spacing={2} height="100%">
-            <Typography variant="subtitle1" textAlign="center">
-              {t("common.labels.players")}
-            </Typography>
-            <Divider sx={{ width: "100%" }} />
-            {playersContent}
-          </Stack>
-        </Box>
+        <Stack component={Card} px={4} py={2} spacing={2} height="100%">
+          <Typography variant="subtitle1" textAlign="center">
+            {t("common.labels.players")}
+          </Typography>
+          <Divider sx={{ width: "100%" }} />
+          {playersContent}
+        </Stack>
       ) : (
         <>
-          <Box
-            component={m.div}
-            {...varFade({ durationIn: 1, durationOut: 0 }).inRight}
-            sx={{
-              position: "fixed",
-              top: 70,
-              right: 20,
-            }}
+          <Fab
+            sx={{ position: "absolute", top: 0, right: "60px" }}
+            size="small"
+            color="primary"
+            onClick={() => setOpen(() => true)}
           >
-            <Fab
-              sx={{ position: "relative" }}
-              size="small"
-              color="primary"
-              onClick={() => setOpen(() => true)}
-            >
-              <Iconify icon="fa6-solid:people-group" width={20} />
-            </Fab>
-          </Box>
+            <Iconify icon="fa6-solid:people-group" width={20} />
+          </Fab>
           {open && (
             <Dialog
               maxWidth="xs"

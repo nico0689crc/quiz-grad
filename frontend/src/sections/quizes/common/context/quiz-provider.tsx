@@ -33,7 +33,7 @@ import {
 
 import { setError } from "@/store/slices/common/commonSlice";
 
-import { LocalStorageType, ParamsQuizUUID } from "@/types";
+import { LocalStorageType, ParamsQuizUUID, RoomStatusEnum } from "@/types";
 import { QuizContext } from "./quiz-context";
 
 import { useAuthContext } from "@/components/auth/context/auth-provider";
@@ -178,18 +178,22 @@ export const QuizProvider = ({ children }: Props) => {
     websocket.on.onPlayerDisconnectFromRoom(({ playerUUID }) =>
       dispatch(updatePlayerDisconnected(playerUUID)),
     );
-    websocket.on.onNextQuestion(({ confirm, message, question }) => {
-      if (confirm) {
-        const expiration = new Date();
-        expiration.setSeconds(
-          expiration.getSeconds() + question.secondsToDeliverAnswer,
-        );
-        restart(expiration);
-        dispatch(addQuestion(question));
-      } else {
-        dispatch(setError(message));
-      }
-    });
+    websocket.on.onNextQuestion(
+      ({ confirm, roomStatus, message, question }) => {
+        if (confirm) {
+          const expiration = new Date();
+          expiration.setSeconds(
+            expiration.getSeconds() + question.secondsToDeliverAnswer,
+          );
+          restart(expiration);
+          roomStatus !== RoomStatusEnum.DONE &&
+            dispatch(setRoomStatus(roomStatus));
+          dispatch(addQuestion(question));
+        } else {
+          dispatch(setError(message));
+        }
+      },
+    );
 
     return () => {
       websocket.connection.socketDisconnect();

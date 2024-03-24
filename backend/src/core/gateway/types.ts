@@ -130,6 +130,7 @@ export type OpenQuizRoomToPlayResponse = WebsocketConfirmationResponse & {
 export type SendNextQuestionBody = RoomUUID;
 export type SendNextQuestionResponse = WebsocketConfirmationResponse & {
   question?: Question;
+  roomStatus?: RoomStatus;
 };
 export type SendAnswerQuestionBody = RoomUUID &
   QuestionUUID & {

@@ -86,6 +86,7 @@ export type OnSendNextQuestionResponseType =
 
 export type OnNextQuestionResponseType = WebsocketConfirmationResponseType & {
   question: Question;
+  roomStatus: RoomStatusEnum;
 };
 
 export type OnSendAnswerQuestionResponseType =

@@ -369,16 +369,19 @@ export class GatewayService implements IGatewayService {
     const lastQuestion = room.quiz.questions.pop()?.id === nextQuestionId;
 
     await this.roomsService.update({ id: room.id }, { status: lastQuestion ? RoomStatus.DONE : RoomStatus.PLAYING });
+    const updatedRoom = await this.roomsService.findOne({ where: { id: room.id } });
 
     socket.to(room.quiz.uuid).emit('onNextQuestion', {
       confirm: true,
-      message: 'Room Question  created',
+      message: 'Room Question created',
+      roomStatus: updatedRoom.status,
       question: questionToSend,
     });
 
     return {
       confirm: true,
-      message: 'Room Question  created',
+      message: 'Room Question created',
+      roomStatus: updatedRoom.status,
       question: questionToSend,
     };
   }

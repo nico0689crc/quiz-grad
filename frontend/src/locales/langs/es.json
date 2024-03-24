@@ -178,7 +178,9 @@
     "labels": {
       "next_question_button": "Siguiente pregunta",
       "send_answer": "Enviar Respuesta",
-      "selected": "Seleccionado"
+      "selected": "Seleccionado",
+      "back_quiz": "Volver a Quiz",
+      "back_home": "Volver a Inicio"
     }
   }
 }

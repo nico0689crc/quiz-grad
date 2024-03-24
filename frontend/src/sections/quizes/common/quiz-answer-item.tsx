@@ -54,21 +54,18 @@ export default function QuizAnswerItem({
             }
           />
         )}
-      {isRoomOpen &&
-        !user?.isUserModerator &&
-        !currentQuestion?.showButtons &&
-        !isRunning && (
-          <Chip
-            size="small"
-            variant="outlined"
-            color={isCorrect ? "success" : "error"}
-            label={
-              isCorrect
-                ? t("common.labels.correct")
-                : t("common.labels.incorrect")
-            }
-          />
-        )}
+      {isRoomOpen && !user?.isUserModerator && !isRunning && (
+        <Chip
+          size="small"
+          variant="outlined"
+          color={isCorrect ? "success" : "error"}
+          label={
+            isCorrect
+              ? t("common.labels.correct")
+              : t("common.labels.incorrect")
+          }
+        />
+      )}
       <Typography variant="body1">{content}</Typography>
       {isRoomOpen &&
         !user?.isUserModerator &&
