@@ -8,12 +8,8 @@ const QuizesPlaygroundBoard = () => {
   const { status } = useQuizContext();
   return (
     <>
-      {status === RoomStatusEnum.WAITING_PLAYERS && (
-        <QuizWaitingPlayers />
-      )}
-      {status === RoomStatusEnum.PLAYING && (
-        <QuizPlaying />
-      )}
+      {status === RoomStatusEnum.WAITING_PLAYERS && <QuizWaitingPlayers />}
+      {status === RoomStatusEnum.PLAYING && <QuizPlaying />}
     </>
   );
 };

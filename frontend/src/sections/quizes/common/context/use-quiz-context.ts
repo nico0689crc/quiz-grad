@@ -5,9 +5,7 @@ export const useQuizContext = () => {
   const context = useContext(QuizContext);
 
   if (!context) {
-    throw new Error(
-      "useQuizContext context must be use inside QuizProvider",
-    );
+    throw new Error("useQuizContext context must be use inside QuizProvider");
   }
 
   return context;

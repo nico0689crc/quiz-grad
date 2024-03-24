@@ -130,9 +130,12 @@ export const QuizProvider = ({ children }: Props) => {
     [user, quizUUID],
   );
 
-  const setAnswerSelectedHandler = useCallback((answerUUID: string, checked: boolean) => {
-    dispatch(setAnswerSelected({ answerUUID, checked }));
-  }, []);
+  const setAnswerSelectedHandler = useCallback(
+    (answerUUID: string, checked: boolean) => {
+      dispatch(setAnswerSelected({ answerUUID, checked }));
+    },
+    [],
+  );
 
   const sendAnswer = useCallback(() => {
     if (quiz && roomUUID && question) {
@@ -191,6 +194,7 @@ export const QuizProvider = ({ children }: Props) => {
     return () => {
       websocket.connection.socketDisconnect();
       websocket.off.unMountOnNewPlayerJoinedNotification();
+      websocket.off.unMountOnNextQuestion();
       websocket.off.unMountOnPlayerDisconnectFromRoom();
       dispatch(resetStore());
     };

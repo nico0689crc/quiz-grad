@@ -42,17 +42,17 @@ export const roomSlice = createSlice({
         ...action.payload,
         isLastQuestion:
           action.payload.questionsTotal ===
-          action.payload.quiz?.questions.length ?? false,
+            action.payload.quiz?.questions.length ?? false,
         quiz: action.payload.quiz
           ? {
-            ...action.payload.quiz,
-            questions: action.payload.quiz?.questions
-              ? action.payload.quiz?.questions.map((question) => ({
-                ...question,
-                showButtons: false,
-              }))
-              : [],
-          }
+              ...action.payload.quiz,
+              questions: action.payload.quiz?.questions
+                ? action.payload.quiz?.questions.map((question) => ({
+                    ...question,
+                    showButtons: false,
+                  }))
+                : [],
+            }
           : null,
       };
     },
@@ -124,7 +124,10 @@ export const roomSlice = createSlice({
         );
       }
     },
-    setAnswerSelected: (state, action: PayloadAction<{ answerUUID: string, checked: boolean }>) => {
+    setAnswerSelected: (
+      state,
+      action: PayloadAction<{ answerUUID: string; checked: boolean }>,
+    ) => {
       const currentQuestionIndex = state.room.quiz?.questions.findIndex(
         (question) => question.currentQuestion,
       );

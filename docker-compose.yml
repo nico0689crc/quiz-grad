@@ -49,6 +49,7 @@ services:
       - type: bind
         source: ./backend
         target: /app
+      - /app/node_modules
     command: npm run start:dev
     networks:
       - server-dev

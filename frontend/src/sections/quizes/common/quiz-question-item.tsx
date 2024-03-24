@@ -1,5 +1,13 @@
 import { Question } from "@/types";
-import { Button, Card, Chip, Collapse, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  Chip,
+  Collapse,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import QuizAnswersList from "./quiz-answers-list";
 import Iconify from "@/components/iconify";
 import React, { useState } from "react";
@@ -24,7 +32,9 @@ export default function QuizQuestionItem({
   const [open, setOpen] = useState(index === 0 ? true : false);
   const { t } = useTranslate();
 
-  const { isRoomOpen, user } = useAppSelector((state: RootState) => state.room.room);
+  const { isRoomOpen, user } = useAppSelector(
+    (state: RootState) => state.room.room,
+  );
   const currentQuestion = useAppSelector(selectCurrentQuestion);
   const { sendAnswer, isRunning } = useQuizContext();
 
@@ -55,11 +65,16 @@ export default function QuizQuestionItem({
       </Stack>
       <Typography>{description}</Typography>
       {questionContent}
-      {(isRoomOpen && !user?.isUserModerator && currentQuestion?.showButtons && isRunning) && (
-        <Stack alignItems="center">
-          <Button fullWidth={false} variant="contained" onClick={sendAnswer}>{t("playing.labels.send_answer")}</Button>
-        </Stack>
-      )}
+      {isRoomOpen &&
+        !user?.isUserModerator &&
+        currentQuestion?.showButtons &&
+        isRunning && (
+          <Stack alignItems="center">
+            <Button fullWidth={false} variant="contained" onClick={sendAnswer}>
+              {t("playing.labels.send_answer")}
+            </Button>
+          </Stack>
+        )}
     </Stack>
   );
 }

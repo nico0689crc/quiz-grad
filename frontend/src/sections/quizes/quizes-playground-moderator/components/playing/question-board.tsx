@@ -10,8 +10,7 @@ const QuestionBoard = () => {
   const question = useAppSelector(selectCurrentQuestion);
   const { quiz, showNextQuestionButton, isLastQuestion, questionsTotal } =
     useAppSelector((state: RootState) => state.room.room);
-  const { sendNextQuestion, isRunning, totalSeconds } =
-    useQuizContext();
+  const { sendNextQuestion, isRunning, totalSeconds } = useQuizContext();
 
   const actionsContent = showNextQuestionButton && !isLastQuestion && (
     <Button variant="contained" onClick={sendNextQuestion}>

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Socket } from 'socket.io';
-import { LessThan, Not } from 'typeorm';
+import { LessThan, Not, In } from 'typeorm';
 
 import { Services } from '../constants';
 import { generateAccessToken, generateUUID, verifyAccessToken } from '../helpers';
@@ -43,7 +43,7 @@ export class GatewayService implements IGatewayService {
     @Inject(Services.ROOM_QUESTION_ANSWER) private roomsQuestionAnswerService: IRoomQuestionAnswerService,
     @Inject(Services.PLAYER) private playersService: IPlayerService,
     @Inject(Services.QUIZ) private quizsService: IQuizService
-  ) { }
+  ) {}
 
   async playerDisconnectFromRoom(socket: Socket): Promise<void> {
     const player = await this.playersService.findOne({ where: { socketId: socket.id }, relations: ['room', 'room.quiz'] });
@@ -72,7 +72,6 @@ export class GatewayService implements IGatewayService {
       relations: ['players', 'quiz', 'quiz.questions', 'roomQuestions', 'roomQuestions.question', 'roomQuestions.question.answers'],
       order: { createdAt: 'DESC' },
     });
-
 
     if (!room) {
       return { confirm: false, message: 'Does not exist a room open here.' };
@@ -167,7 +166,7 @@ export class GatewayService implements IGatewayService {
     }
 
     const room = await this.roomsService.findOne({
-      where: { quiz, status: Not([RoomStatus.DONE]) },
+      where: { uuid: playerPayload.quizRoomUIDD, quiz, status: Not([RoomStatus.DONE]) },
       relations: ['players', 'roomQuestions', 'roomQuestions.question', 'roomQuestions.question.answers'],
       order: { createdAt: 'DESC' },
     });
@@ -277,7 +276,7 @@ export class GatewayService implements IGatewayService {
       return { confirm: false, message: 'Quiz associate with quizUUID does not exist.' };
     }
 
-    await this.roomsService.delete({ status: RoomStatus.WAITING_PLAYERS, quiz });
+    await this.roomsService.delete({ status: In([RoomStatus.WAITING_PLAYERS, RoomStatus.PLAYING]), quiz });
 
     const room = await this.roomsService.create(quiz);
 
