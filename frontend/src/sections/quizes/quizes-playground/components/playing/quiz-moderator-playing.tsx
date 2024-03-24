@@ -2,9 +2,9 @@ import { useMemo } from "react";
 import { Box } from "@mui/material";
 import { m } from "framer-motion";
 
-import PlayersBoard from "./players-board";
+import PlayersBoard from "@/sections/quizes/common/players-board";
+import PositionBoard from "@/sections/quizes/common/position-board";
 import QuestionBoard from "./question-board";
-import PositionBoard from "./position-board";
 import { varFade } from "@/components/animate";
 
 const QuizModeratorPlaying = () => {

@@ -8,16 +8,10 @@ import { useQuizModeratorContext } from "@/sections/quizes/common/context/use-qu
 const QuestionBoard = () => {
   const { t } = useTranslate();
   const question = useAppSelector(selectCurrentQuestion);
-  const { quiz, showNextQuestionButton, isLastQuestion, questionsTotal } =
-    useAppSelector((state: RootState) => state.room.room);
-  const { sendNextQuestion, isRunning, totalSeconds } =
-    useQuizModeratorContext();
-
-  const actionsContent = showNextQuestionButton && !isLastQuestion && (
-    <Button variant="contained" onClick={sendNextQuestion}>
-      {t("playing.labels.next_question_button")}
-    </Button>
+  const { quiz, questionsTotal } = useAppSelector(
+    (state: RootState) => state.room.room,
   );
+  const { isRunning, totalSeconds } = useQuizModeratorContext();
 
   return (
     <Stack spacing={3}>
@@ -84,11 +78,7 @@ const QuestionBoard = () => {
       )}
       <Divider sx={{ width: "100%" }} />
       {question && (
-        <QuizQuestionItem
-          question={question}
-          showCollapse={false}
-          actions={actionsContent}
-        />
+        <QuizQuestionItem question={question} showCollapse={false} />
       )}
     </Stack>
   );

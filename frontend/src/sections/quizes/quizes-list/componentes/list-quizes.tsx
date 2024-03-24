@@ -16,8 +16,8 @@ export default function ListQuizes({ quizes }: ListQuizesProps) {
         md: "repeat(2, 1fr)",
       }}
     >
-      {quizes.map((quiz) => (
-        <ItemQuiz key={quiz.quizUUID} quiz={quiz} />
+      {quizes.map((quiz, index) => (
+        <ItemQuiz key={index} quiz={quiz} />
       ))}
     </Box>
   );
