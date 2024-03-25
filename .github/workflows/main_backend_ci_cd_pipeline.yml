@@ -12,20 +12,20 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Create a network for main
-        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker network create quiz-grad-main-network || true
-      - name: Stop old docker container
+      - name: Docker network creation
+        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker network create ${{secrets.DOCKER_NETWORK_NAME_MAIN}} || true
+      - name: Stop current running container
         run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker stop ${{secrets.MYSQL_DATABASE_MAIN}} || true
       - name: Run Docker Container
         run: |
           echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
             --name ${{secrets.MYSQL_DATABASE_MAIN}} \
-            -v data-main-qg:/var/lib/mysql \
+            -v data-main-kanban:/var/lib/mysql \
             -e MYSQL_DATABASE=${{secrets.MYSQL_DATABASE_MAIN}} \
             -e MYSQL_USER=${{secrets.MYSQL_USER_MAIN}} \
             -e MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD_MAIN}} \
             -e MYSQL_ROOT_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD_MAIN}} \
-            --network quiz-grad-main-network \
+            --network ${{secrets.DOCKER_NETWORK_NAME_MAIN}} \
             mysql:8.3.0
 
   build-backend-image-and-push:
@@ -41,40 +41,43 @@ jobs:
           DOCKER_HUB_PASSWORD: ${{secrets.DOCKER_HUB_PASSWORD}}
         run: docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
-      - name: Build the Docker image
+      - name: Build docker image
         run: docker build -t ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main ./backend
 
-      - name: Push to Dockerhub
+      - name: Push docker image to Dockerhub
         run: docker push ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main
 
   pull-backend-image-and-run-container:
     runs-on: self-hosted
     needs: build-backend-image-and-push
     steps:
-      - name: Create a network for main
-        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker network create quiz-grad-main-network || true
+      - name: Docker network creation
+        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker network create ${{secrets.DOCKER_NETWORK_NAME_MAIN}} || true
       - name: Pull Docker image
         run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker pull ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main
-      - name: Stop old docker container
-        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker stop quiz-grad-backend-main || true
+      - name: Stop current running container
+        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker stop kanban-backend-main || true
+      - name: Remove current running container
+        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker rm kanban-backend-main || true
       - name: Run Docker Container
         run: |
-          echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
+          echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker run --restart -d \
             -p ${{secrets.BACKEND_HOST_PORT_MAIN}}:${{secrets.BACKEND_CONTAINER_PORT_MAIN}} \
             -e BACKEND_CONTAINER_PORT=${{secrets.BACKEND_CONTAINER_PORT_MAIN}} \
-            -e MYSQL_HOST=${{secrets.MYSQL_DATABASE_MAIN}} \
-            -e MYSQL_PORT=${{secrets.MYSQL_CONTAINER_PORT_MAIN}} \
-            -e MYSQL_DATABASE=${{secrets.MYSQL_DATABASE_MAIN}} \
-            -e MYSQL_USER=${{secrets.MYSQL_USER_MAIN}} \
-            -e MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD_MAIN}} \
+            -e BACKEND_HOST_DOMAIN=${{secrets.BACKEND_HOST_DOMAIN_MAIN}} \
+            -e DB_HOST=${{secrets.MYSQL_DATABASE_MAIN}} \
+            -e DB_PORT=${{secrets.MYSQL_CONTAINER_PORT_MAIN}} \
+            -e DB_NAME=${{secrets.MYSQL_DATABASE_MAIN}} \
+            -e DB_USER=${{secrets.MYSQL_USER_MAIN}} \
+            -e DB_PASSWORD=${{secrets.MYSQL_PASSWORD_MAIN}} \
             -e FRONTEND_HOST_DOMAIN=${{secrets.FRONTEND_HOST_DOMAIN_MAIN}} \
-            -e COOKIE_SECRET=${{secrets.COOKIE_SECRET_MAIN}} \
+            -e JWT_KEY=${{secrets.JWT_KEY_MAIN}} \
+            -e JWT_EXPIRATION_TIME=${{secrets.JWT_EXPIRATION_TIME_MAIN}} \
             -e SENDGRID_API_KEY=${{secrets.SENDGRID_API_KEY_MAIN}} \
             -e SENDGRID_VERIFIED_EMAIL=${{secrets.SENDGRID_VERIFIED_EMAIL_MAIN}} \
-            -e APP_NAME=${{secrets.APP_NAME}} \
-            -e EMAIL_ADMINISTRATOR=${{secrets.EMAIL_ADMINISTRATOR}} \
-            -e USER_DEMO=${{secrets.USER_DEMO}} \
-            -e PASSWORD_DEMO=${{secrets.PASSWORD_DEMO}} \
-            --name quiz-grad-backend-main \
-            --network quiz-grad-main-network \
+            -e EMAIL_FROM_ADMINISTRATOR=${{secrets.EMAIL_FROM_ADMINISTRATOR_MAIN}} \
+            -e USER_DEMO=${{secrets.USER_DEMO_MAIN}} \
+            -e PASSWORD_DEMO=${{secrets.PASSWORD_DEMO_MAIN}} \
+            --name kanban-backend-main \
+            --network ${{secrets.DOCKER_NETWORK_NAME_MAIN}} \
             ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main
