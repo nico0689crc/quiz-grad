@@ -2,8 +2,8 @@ import { RoomStatusEnum } from "@/types";
 import QuizModeratorPlaying from "./playing/quiz-moderator-playing";
 import QuizModeratorWaitingPlayers from "./waiting-players/quiz-moderator-waiting-players";
 
-import { useQuizContext } from "../../common/context/use-quiz-context";
-import PositionView from "../../common/position-view";
+import { useQuizContext } from "../../common/playground/contexts/use-quiz-context";
+import PositionView from "../../common/playground/position-view";
 
 const QuizModeratorBoard = () => {
   const { status } = useQuizContext();

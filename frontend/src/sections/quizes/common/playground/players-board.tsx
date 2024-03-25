@@ -20,7 +20,7 @@ import { useTheme } from "@mui/material/styles";
 import { varZoom } from "@/components/animate";
 import Iconify from "@/components/iconify";
 import { useTranslate } from "@/locales";
-import QuizPlayerList from "@/sections/quizes/common/quiz-player-list";
+import QuizPlayerList from "@/sections/quizes/common/playground/quiz-player-list";
 import { useAppSelector } from "@/store";
 import { selectPlayers } from "@/store/slices/room/roomSlice";
 import { useState } from "react";

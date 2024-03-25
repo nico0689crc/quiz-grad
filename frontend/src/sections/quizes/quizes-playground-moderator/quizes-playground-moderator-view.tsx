@@ -6,8 +6,8 @@ import { LoadingSpinner } from "@/components/loading-spinner";
 
 import StartToPlay from "./components/start-to-play/start-to-play";
 import QuizModeratorBoard from "./components/quiz-moderator-board";
-import { QuizProvider } from "../common/context/quiz-provider";
-import { QuizContext } from "../common/context/quiz-context";
+import { QuizProvider } from "../common/playground/contexts/quiz-provider";
+import { QuizContext } from "../common/playground/contexts/quiz-context";
 
 const QuizesPlaygroundModeratorView = () => {
   return (

@@ -50,10 +50,10 @@ export type WebsocketPlayersResponseType = {
 
 export type OnNewPlayerJoinedToRoomResponseType =
   WebsocketConfirmationResponseType &
-  WebsocketPlayersResponseType & {
-    player: Player;
-    room: Room;
-  };
+    WebsocketPlayersResponseType & {
+      player: Player;
+      room: Room;
+    };
 
 export type OnCheckQuizRoomIsAvailableResponseType =
   WebsocketConfirmationResponseType;
@@ -70,10 +70,10 @@ export type OnPlayerDisconnectFromRoomResponseType = {
 
 export type OnSendAccessTokenForValidationResponseType =
   WebsocketConfirmationResponseType &
-  WebsocketPlayersResponseType & {
-    room: Room;
-    player: Player;
-  };
+    WebsocketPlayersResponseType & {
+      room: Room;
+      player: Player;
+    };
 
 export type OnOpenRoomToPlayResponseType = WebsocketConfirmationResponseType & {
   player: Player;

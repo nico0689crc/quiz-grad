@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import QuestionBoard from "./question-board";
-import PlayersBoard from "@/sections/quizes/common/players-board";
-import PositionBoard from "@/sections/quizes/common/position-board";
+import PlayersBoard from "@/sections/quizes/common/playground/players-board";
+import PositionBoard from "@/sections/quizes/common/playground/position-board";
 
 const QuizModeratorPlaying = () => {
   const theme = useTheme();

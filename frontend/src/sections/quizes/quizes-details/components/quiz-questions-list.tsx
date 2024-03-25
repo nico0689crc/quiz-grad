@@ -1,6 +1,6 @@
 import { Question } from "@/types";
 import { Stack } from "@mui/material";
-import QuizQuestionItem from "../../common/quiz-question-item";
+import QuizQuestionItem from "../../common/playground/quiz-question-item";
 
 interface QuizQuestionsListProps {
   questions: Question[];

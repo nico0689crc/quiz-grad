@@ -2,8 +2,6 @@
 
 import { useCallback, useEffect, useMemo } from "react";
 import { useTimer } from "react-timer-hook";
-import { faker } from "@faker-js/faker";
-
 import { useParams } from "@/hooks/use-params";
 import {
   getQuizLocalStorageKey,
@@ -215,7 +213,8 @@ export const QuizProvider = ({ children }: Props) => {
             if (confirm) {
               dispatch(initializeRoom({ ...room, players, user }));
             } else {
-              code !== 'room_not_assicated_to_access_token' && dispatch(setError(message));
+              code !== "room_not_assicated_to_access_token" &&
+                dispatch(setError(message));
               removeStorage(getQuizLocalStorageKey(quizUUID));
             }
             dispatch(setLoading(false));

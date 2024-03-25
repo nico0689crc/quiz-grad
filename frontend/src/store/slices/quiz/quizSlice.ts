@@ -3,26 +3,29 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { Quiz } from "@/types";
 
 type QuizState = {
-  quiz: Quiz | null;
-  loading: boolean;
+  quiz: Partial<Quiz>;
 };
 
 const initialState: QuizState = {
-  quiz: null,
-  loading: true,
+  quiz: {
+    title: "",
+    description: "",
+    questions: [],
+  },
 };
 
 export const quizSlice = createSlice({
   name: "quiz",
   initialState,
   reducers: {
-    setQuiz: (state, action: PayloadAction<Partial<Quiz>>) => {
-      if (state.quiz) {
-        state.quiz = { ...state.quiz, ...action.payload };
-      }
+    setTitle: (state, action: PayloadAction<string>) => {
+      state.quiz.title = action.payload;
+    },
+    setDescription: (state, action: PayloadAction<string>) => {
+      state.quiz.description = action.payload;
     },
   },
 });
 
-export const { setQuiz } = quizSlice.actions;
+export const { setTitle, setDescription } = quizSlice.actions;
 export default quizSlice.reducer;

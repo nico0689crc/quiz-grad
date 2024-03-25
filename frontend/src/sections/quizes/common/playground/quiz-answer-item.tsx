@@ -2,7 +2,7 @@ import { Checkbox, Chip, Stack, Typography } from "@mui/material";
 import { useTranslate } from "@/locales";
 import { Answer } from "@/types";
 import { RootState, useAppSelector } from "@/store";
-import { useQuizContext } from "./context/use-quiz-context";
+import { useQuizContext } from "./contexts/use-quiz-context";
 import { selectCurrentQuestion } from "@/store/slices/room/roomSlice";
 
 interface QuizAnswerItemProps {

@@ -14,7 +14,7 @@ export default function QuizDetail({ quiz }: { quiz: Quiz }) {
   const { title, description, questions, uuid } = quiz;
 
   return (
-    <Stack className="QuizDetail">
+    <>
       <CustomBreadcrumbs
         heading={title}
         links={[
@@ -62,6 +62,6 @@ export default function QuizDetail({ quiz }: { quiz: Quiz }) {
           <QuizQuestionsList questions={questions} />
         </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 }

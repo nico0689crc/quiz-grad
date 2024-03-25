@@ -182,5 +182,23 @@
       "back_quiz": "Back to Quiz",
       "back_home": "Back to Home"
     }
+  },
+  "quiz_create": {
+    "labels": {
+      "page_title": "Create a quiz"
+    }
+  },
+  "quiz_form": {
+    "labels": {
+      "title": "Title",
+      "description": "Description",
+      "create_quiz_button": "Create Quiz",
+      "create_quiz_button_loading": "Creating Quiz...",
+      "add_question_button": "Add Question"
+    },
+    "validation": {
+      "title_required": "Title is required.",
+      "description_required": "Description is required."
+    }
   }
 }
