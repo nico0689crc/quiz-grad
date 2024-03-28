@@ -38,7 +38,12 @@ jobs:
           ref: ${{ github.ref }}
 
       - name: Testing
-        run: docker build -t ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main-testing --progress=plain --no-cache --target test ./backend
+        run: |
+          docker build -t ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main-testing \
+            --progress=plain \
+            --no-cache \
+            --target test \
+            ./backend
 
       - name: Login Dockerhub
         env:
