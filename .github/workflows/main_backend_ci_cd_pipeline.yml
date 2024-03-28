@@ -9,8 +9,8 @@ on:
   workflow_dispatch:
 jobs:
   build-database:
+    name: Run Database Container
     runs-on: self-hosted
-
     steps:
       - name: Create a network for main
         run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker network create quiz-grad-main-network || true
@@ -29,12 +29,17 @@ jobs:
             mysql:8.3.0
 
   build-backend-image-and-push:
+    name: Test, Build and Push Image
     runs-on: ubuntu-latest
     needs: build-database
     steps:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
+
+      - name: Testing
+        run: docker build -t ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main-testing --progress=plain --no-cache --target test .
+
       - name: Login Dockerhub
         env:
           DOCKER_HUB_USERNAME: ${{secrets.DOCKER_HUB_USERNAME}}

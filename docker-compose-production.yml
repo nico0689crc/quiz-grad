@@ -4,7 +4,7 @@ services:
   #   Setup Database container
   #########################################
   database:
-    container_name: database-prod
+    container_name: quizgrad-database-prod
     image: mysql:8.3.0
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -14,16 +14,16 @@ services:
     ports:
       - "${MYSQL_HOST_PORT}:${MYSQL_CONTAINER_PORT}"
     volumes:
-      - db:/var/lib/mysql
+      - quizgrad-prod-db:/var/lib/mysql
     networks:
-      - server-prod
+      - quizgrad-network-prod
   #########################################
   #   Setup Backend container
   #########################################
   backend:
     depends_on:
       - database
-    container_name: backend-prod
+    container_name: quizgrad-backend-prod
     image: ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_BACKEND_IMAGE}:prod
     build:
       context: ./backend
@@ -46,14 +46,14 @@ services:
     ports:
       - "${BACKEND_HOST_PORT}:${BACKEND_CONTAINER_PORT}"
     networks:
-      - server-prod
+      - quizgrad-network-prod
   #########################################
   #   Setup Frontend container
   #########################################
   frontend:
     depends_on:
       - backend
-    container_name: frontend-prod
+    container_name: quizgrad-frontend-prod
     image: ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_FRONTEND_IMAGE}:prod
     build:
       context: ./frontend
@@ -64,6 +64,6 @@ services:
     ports:
       - "${FRONTEND_HOST_PORT}:${FRONTEND_CONTAINER_PORT}"
 volumes:
-  db:
+  quizgrad-prod-db:
 networks:
-  server-prod:
+  quizgrad-network-prod:
