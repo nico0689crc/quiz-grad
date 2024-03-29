@@ -6,7 +6,7 @@ import CustomBreadcrumbs from "@/components/custom-breadcrumbs";
 import Iconify from "@/components/iconify";
 import { paths } from "@/routes/paths";
 import { Quiz } from "@/types";
-import QuizQuestionsList from "./quiz-questions-list";
+import QuizQuestionsList from "../../common/playground/quiz-questions-list";
 import { RouterLink } from "@/routes/components";
 
 export default function QuizDetail({ quiz }: { quiz: Quiz }) {

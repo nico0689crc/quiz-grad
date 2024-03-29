@@ -12,6 +12,7 @@ import { useBoolean } from "@/hooks/use-boolean";
 
 import QuizFormDetails from "./quiz-form-details";
 import QuizFormQuestionCreateView from "./quiz-form-question/quiz-form-question-view";
+import QuizFormListQuestions from "./quiz-form-list-questions";
 
 const QuizForm = () => {
   const { t } = useTranslate();
@@ -42,6 +43,7 @@ const QuizForm = () => {
       <Divider sx={{ width: "100%" }}>
         <Typography variant="subtitle1">Questions</Typography>
       </Divider>
+      <QuizFormListQuestions />
       <QuizFormQuestionCreateView />
       <Stack alignItems="center">
         <LoadingButton

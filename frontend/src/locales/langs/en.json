@@ -22,6 +22,7 @@
       "editing": "Editing",
       "close": "Close",
       "update": "Update",
+      "save": "Save",
       "updating": "Updating",
       "lets_play": "Lets play!",
       "something_went_wrong": "Something went wrong.",
@@ -194,7 +195,14 @@
       "description": "Description",
       "create_quiz_button": "Create Quiz",
       "create_quiz_button_loading": "Creating Quiz...",
-      "add_question_button": "Add Question"
+      "add_question_button": "Add Question",
+      "add_answer": "Add Answer",
+      "no_questions": "There is no question added yet.",
+      "no_answers": "There is no answer added yet.",
+      "new_question": "New question",
+      "new_answer": "New answer",
+      "answer_content": "Answer",
+      "seconds_to_deliver_answer": "Seconds"
     },
     "validation": {
       "title_required": "Title is required.",

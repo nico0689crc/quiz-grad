@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Quiz } from "@/types";
+import { Answer, Question, Quiz, TypeAnswer } from "@/types";
+import { faker } from "@faker-js/faker";
 
 type QuizState = {
   quiz: Partial<Quiz>;
@@ -24,8 +25,25 @@ export const quizSlice = createSlice({
     setDescription: (state, action: PayloadAction<string>) => {
       state.quiz.description = action.payload;
     },
+    addQuestionToQuiz: (state, action: PayloadAction<Partial<Question>>) => {
+      action?.payload &&
+        state.quiz.questions?.push({
+          title: action.payload.title as string,
+          description: action.payload.description as string,
+          answerCorrect: false,
+          answers: action.payload.answers || [],
+          currentQuestion: false,
+          order: 0,
+          secondsToDeliverAnswer: action.payload.secondsToDeliverAnswer as number,
+          showButtons: false,
+          typeAnswer: TypeAnswer.MULTIPLE_ANSWERS,
+          uuid: faker.string.uuid(),
+          questionUUID: faker.string.uuid(),
+        });
+    },
   },
 });
 
-export const { setTitle, setDescription } = quizSlice.actions;
+export const { setTitle, setDescription, addQuestionToQuiz } =
+  quizSlice.actions;
 export default quizSlice.reducer;

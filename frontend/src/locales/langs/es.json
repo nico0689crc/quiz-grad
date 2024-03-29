@@ -19,6 +19,7 @@
       "remove": "Eliminar",
       "removing": "Eliminando",
       "edit": "Editar",
+      "save": "Guardar",
       "editing": "Editando",
       "close": "Cerrar",
       "update": "Actualizar",
@@ -194,7 +195,14 @@
       "description": "Descripción",
       "create_quiz_button": "Crear Quiz",
       "create_quiz_button_loading": "Creando Quiz...",
-      "add_question_button": "Agregar Pregunta"
+      "add_question_button": "Agregar Pregunta",
+      "add_answer": "Agregar respuesta",
+      "no_questions": "Todavía no se ha agregado ninguna pregunta.",
+      "no_answers": "Todavía no se ha agregado ninguna respuesta.",
+      "new_question": "Nueva pregunta",
+      "new_answer": "Nueva respuesta",
+      "answer_content": "Respuesta",
+      "seconds_to_deliver_answer": "Segundos"
     },
     "validation": {
       "title_required": "Se requiere un título.",
