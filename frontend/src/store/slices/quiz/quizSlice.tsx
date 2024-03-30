@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { Answer, Question, Quiz, TypeAnswer } from "@/types";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { Question, Quiz, TypeAnswer } from "@/types";
 import { faker } from "@faker-js/faker";
 
 type QuizState = {
@@ -34,11 +34,13 @@ export const quizSlice = createSlice({
           answers: action.payload.answers || [],
           currentQuestion: false,
           order: 0,
-          secondsToDeliverAnswer: action.payload.secondsToDeliverAnswer as number,
+          secondsToDeliverAnswer: action.payload
+            .secondsToDeliverAnswer as number,
           showButtons: false,
           typeAnswer: TypeAnswer.MULTIPLE_ANSWERS,
           uuid: faker.string.uuid(),
           questionUUID: faker.string.uuid(),
+          status: "CREATED",
         });
     },
   },

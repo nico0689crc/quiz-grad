@@ -1,3 +1,4 @@
+import { useCallback, useContext } from "react";
 import { AnimatePresence, m } from "framer-motion";
 
 import {
@@ -9,29 +10,36 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useBoolean } from "@/hooks/use-boolean";
+import { QuizFormContext } from "../context/quiz-form-context";
 
 import Iconify from "@/components/iconify";
 import TextMaxLine from "@/components/text-max-line";
-import { useTranslate } from "@/locales";
-import { Answer } from "@/types";
 import { varFade } from "@/components/animate";
-import { useCallback, useContext } from "react";
-import { QuizFormAnswerContext } from "../context/quiz-form-answer-context";
+
+import { useTranslate } from "@/locales";
+import { useBoolean } from "@/hooks/use-boolean";
+
+import { Answer, Question } from "@/types";
+import QuizFormAnswer from "../quiz-form-answer/quiz-form-answer";
 
 type PropsType = {
   answer: Partial<Answer>;
+  question: Partial<Question>;
   index: number;
 };
 
-const QuizFormItemAnswer = ({ answer, index }: PropsType) => {
+const QuizFormItemAnswer = ({ answer, question, index }: PropsType) => {
   const { t } = useTranslate();
   const editAnswerView = useBoolean(false);
   const removeAnswerView = useBoolean(false);
-  const { removeAnswer } = useContext(QuizFormAnswerContext);
+  const { removeAnswer, questionToCreate } = useContext(QuizFormContext);
 
   const removeAnswerHandler = useCallback(() => {
-    answer.answerUUID && removeAnswer(answer.answerUUID);
+    answer.answerUUID &&
+      removeAnswer(
+        question?.questionUUID! ?? questionToCreate?.questionUUID!,
+        answer.answerUUID,
+      );
   }, []);
 
   return (
@@ -48,8 +56,12 @@ const QuizFormItemAnswer = ({ answer, index }: PropsType) => {
         {removeAnswerView.value && (
           <m.div key="remover" {...varFade().in}>
             <Stack spacing={2}>
-              <Typography textAlign="center">Desea eliminar?</Typography>
-              <Stack alignItems="center" direction="row" spacing={2}>
+              <Typography textAlign="center">
+                {t("quiz_form.labels.remove_answer", {
+                  answer_content: answer.content,
+                })}
+              </Typography>
+              <Stack justifyContent="center" direction="row" spacing={2}>
                 <Button
                   size="small"
                   variant="outlined"
@@ -70,6 +82,15 @@ const QuizFormItemAnswer = ({ answer, index }: PropsType) => {
             </Stack>
           </m.div>
         )}
+        {editAnswerView.value && (
+          <m.div key="remover" {...varFade().in}>
+            <QuizFormAnswer
+              answerFormView={editAnswerView}
+              answer={answer}
+              question={question}
+            />
+          </m.div>
+        )}
         {!editAnswerView.value && !removeAnswerView.value && (
           <m.div key="question" {...varFade().in}>
             <Stack spacing={1}>
@@ -79,7 +100,7 @@ const QuizFormItemAnswer = ({ answer, index }: PropsType) => {
                 alignItems="center"
                 width="100%"
               >
-                <Typography variant="subtitle1">{`${t("common.labels.question")} ${++index}`}</Typography>
+                <Typography variant="subtitle1">{`${t("common.labels.answer")} ${++index}`}</Typography>
                 <Stack direction="row">
                   <Tooltip title={t("common.labels.edit")} placement="top">
                     <IconButton

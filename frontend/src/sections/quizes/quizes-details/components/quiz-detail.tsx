@@ -1,5 +1,3 @@
-"use client";
-
 import { Button, Stack, Typography } from "@mui/material";
 import { useTranslate } from "@/locales";
 import CustomBreadcrumbs from "@/components/custom-breadcrumbs";
@@ -58,9 +56,12 @@ export default function QuizDetail({ quiz }: { quiz: Quiz }) {
       />
       <Stack px={{ xs: 1, mb: 5 }} spacing={5}>
         <Typography variant="body1">{description}</Typography>
-        <Stack>
-          <QuizQuestionsList questions={questions} />
-        </Stack>
+        <QuizQuestionsList
+          questions={questions.map((question) => ({
+            ...question,
+            status: "CREATED",
+          }))}
+        />
       </Stack>
     </>
   );

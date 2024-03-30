@@ -2,18 +2,17 @@ import { Box, Card, Typography } from "@mui/material";
 
 import { useTranslate } from "@/locales";
 
-import { RootState, useAppSelector } from "@/store";
-
 import QuizQuestionsList from "@/sections/quizes/common/playground/quiz-questions-list";
+import { useQuizFormContext } from "../context/quiz-form-provider";
 
 const QuizFormListQuestions = () => {
   const { t } = useTranslate();
-  const { questions } = useAppSelector((state: RootState) => state.quiz.quiz);
+  const { questions } = useQuizFormContext();
 
   return (
     <>
       {questions && questions.length > 0 ? (
-        <QuizQuestionsList questions={questions} />
+        <QuizQuestionsList questions={questions} showMutationActions={true} />
       ) : (
         <Box
           component={Card}

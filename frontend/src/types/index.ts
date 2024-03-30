@@ -59,7 +59,8 @@ export type Question = {
   currentQuestion: boolean;
   answerCorrect: boolean;
   showButtons: boolean;
-  answers: Answer[];
+  answers: Partial<Answer>[];
+  status: "CREATING" | "CREATED";
 };
 
 export type Quiz = {

@@ -1,33 +1,37 @@
-import { Form, useForm } from "react-hook-form";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useTranslate } from "@/locales";
-import { useCallback, useContext } from "react";
-import LoadingButton from "@/components/loading-button/loading-button";
-import { addQuestion } from "@/store/slices/room/roomSlice";
+import { useCallback, useEffect } from "react";
+import { Controller, Form, useForm } from "react-hook-form";
+
 import {
   Stack,
-  Card,
   Typography,
   TextField,
-  Divider,
-  Button,
   IconButton,
   Tooltip,
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import { ReturnType } from "@/hooks/use-boolean";
+
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import { useTranslate } from "@/locales";
+import { useQuizFormContext } from "../context/quiz-form-provider";
+
 import Iconify from "@/components/iconify";
-import { QuizFormAnswerContext } from "../context/quiz-form-answer-context";
+
+import { ReturnType } from "@/hooks/use-boolean";
+import { Answer, Question } from "@/types";
 
 type PropsType = {
   answerFormView: ReturnType;
+  answer?: Partial<Answer>;
+  question?: Partial<Question>;
 };
 
-const QuizFormAnswer = ({ answerFormView }: PropsType) => {
+const QuizFormAnswer = ({ answerFormView, answer, question }: PropsType) => {
   const { t } = useTranslate();
-  const { addAnswer } = useContext(QuizFormAnswerContext);
+
+  const { addAnswer, updateAnswer, questionToCreate } = useQuizFormContext();
 
   const schema = Yup.object().shape({
     content: Yup.string().required(t("quiz_form.validation.title_required")),
@@ -46,17 +50,42 @@ const QuizFormAnswer = ({ answerFormView }: PropsType) => {
     defaultValues: { content: "", isCorrect: false },
   });
 
+  useEffect(() => {
+    if (answer) {
+      reset({
+        content: answer.content,
+        isCorrect: answer.isCorrect,
+      });
+    }
+  }, [answer]);
+
   const onClickMutateAnswerHandler = useCallback(async () => {
     const result = await trigger();
+
+    console.log(answer);
+    console.log(question);
     if (result) {
-      addAnswer({
-        content: getValues("content"),
-        isCorrect: getValues("isCorrect"),
-      });
       answerFormView.onToggle();
+
+      if (answer) {
+        updateAnswer(
+          question?.questionUUID ?? questionToCreate?.questionUUID!,
+          answer.answerUUID!,
+          {
+            content: getValues("content"),
+            isCorrect: getValues("isCorrect"),
+          },
+        );
+      } else {
+        addAnswer(question?.questionUUID! ?? questionToCreate?.questionUUID!, {
+          content: getValues("content"),
+          isCorrect: getValues("isCorrect"),
+        });
+      }
+
       reset();
     }
-  }, []);
+  }, [questionToCreate]);
 
   const onCancelHandler = useCallback(() => {
     answerFormView.onToggle();
@@ -68,13 +97,17 @@ const QuizFormAnswer = ({ answerFormView }: PropsType) => {
       <Stack
         spacing={3}
         sx={{
-          borderLeft: (theme) => `2px solid ${theme.palette.primary.main}`,
-          pl: 2,
-          py: 2,
+          ...(!answer && {
+            borderLeft: (theme) => `2px solid ${theme.palette.primary.main}`,
+            pl: 2,
+            py: 2,
+          }),
         }}
       >
         <Typography variant="subtitle1">
-          {t("quiz_form.labels.new_answer")}
+          {answer
+            ? t("quiz_form.labels.edit_answer")
+            : t("quiz_form.labels.new_answer")}
         </Typography>
         <Stack
           direction={{ sx: "column", md: "row" }}
@@ -98,8 +131,16 @@ const QuizFormAnswer = ({ answerFormView }: PropsType) => {
               sx={{ flexGrow: 1 }}
             />
             <FormControlLabel
-              control={<Checkbox {...register("isCorrect")} />}
               label={t("common.labels.correct")}
+              control={
+                <Controller
+                  name="isCorrect"
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox {...field} checked={field["value"] ?? false} />
+                  )}
+                />
+              }
             />
           </Stack>
 

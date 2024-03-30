@@ -13,6 +13,7 @@ import { useBoolean } from "@/hooks/use-boolean";
 import QuizFormDetails from "./quiz-form-details";
 import QuizFormQuestionCreateView from "./quiz-form-question/quiz-form-question-view";
 import QuizFormListQuestions from "./quiz-form-list-questions";
+import { QuizFormProvider } from "./context/quiz-form-provider";
 
 const QuizForm = () => {
   const { t } = useTranslate();
@@ -35,27 +36,29 @@ const QuizForm = () => {
   }, []);
 
   return (
-    <Stack spacing={3}>
-      <Divider sx={{ width: "100%" }}>
-        <Typography variant="subtitle1">Quiz's details</Typography>
-      </Divider>
-      <QuizFormDetails methods={methods} />
-      <Divider sx={{ width: "100%" }}>
-        <Typography variant="subtitle1">Questions</Typography>
-      </Divider>
-      <QuizFormListQuestions />
-      <QuizFormQuestionCreateView />
-      <Stack alignItems="center">
-        <LoadingButton
-          disabled={mutateRequest.value}
-          variant="contained"
-          onClick={onClickMutateQuizHandler}
-          color="primary"
-          label={t("quiz_form.labels.create_quiz_button")}
-          loadingLabel={t("quiz_form.labels.create_quiz_button_loading")}
-        />
+    <QuizFormProvider>
+      <Stack spacing={3}>
+        <Divider sx={{ width: "100%" }}>
+          <Typography variant="subtitle1">Quiz's details</Typography>
+        </Divider>
+        <QuizFormDetails methods={methods} />
+        <Divider sx={{ width: "100%" }}>
+          <Typography variant="subtitle1">Questions</Typography>
+        </Divider>
+        <QuizFormListQuestions />
+        <QuizFormQuestionCreateView />
+        <Stack alignItems="center">
+          <LoadingButton
+            disabled={mutateRequest.value}
+            variant="contained"
+            onClick={onClickMutateQuizHandler}
+            color="primary"
+            label={t("quiz_form.labels.create_quiz_button")}
+            loadingLabel={t("quiz_form.labels.create_quiz_button_loading")}
+          />
+        </Stack>
       </Stack>
-    </Stack>
+    </QuizFormProvider>
   );
 };
 

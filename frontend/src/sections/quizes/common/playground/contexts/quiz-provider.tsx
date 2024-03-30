@@ -143,7 +143,11 @@ export const QuizProvider = ({ children }: Props) => {
       const answers =
         question.answers
           .filter((answer) => answer.selected)
-          .map(({ answerUUID }) => ({ answerUUID })) ?? [];
+          .map(({ answerUUID }) => {
+            return {
+              answerUUID: answerUUID as string,
+            };
+          }) ?? [];
 
       websocket.emit.onSendAnswerQuestion(
         { roomUUID, questionUUID: question.questionUUID, answers },

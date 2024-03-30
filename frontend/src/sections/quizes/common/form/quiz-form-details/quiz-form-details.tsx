@@ -1,10 +1,8 @@
 import { ChangeEvent, useCallback } from "react";
+import { Form, UseFormReturn } from "react-hook-form";
 import { Stack, Card, TextField } from "@mui/material";
-
 import { useTranslate } from "@/locales";
-import { useAppDispatch } from "@/store";
-import { setDescription, setTitle } from "@/store/slices/quiz/quizSlice";
-import { Form, UseFormReturn, useFormContext } from "react-hook-form";
+import { useQuizFormContext } from "../context/quiz-form-provider";
 
 type FieldsType = {
   title: string;
@@ -23,18 +21,18 @@ const QuizFormDetails = ({
   },
 }: PropsType) => {
   const { t } = useTranslate();
-  const dispatch = useAppDispatch();
+  const { setDetails } = useQuizFormContext();
 
   const onTitleChangeHandler = useCallback(
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      dispatch(setTitle(event.target.value));
+      setDetails({ title: event.target.value });
     },
     [],
   );
 
   const onDescriptionChangeHandler = useCallback(
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      dispatch(setDescription(event.target.value));
+      setDetails({ description: event.target.value });
     },
     [],
   );

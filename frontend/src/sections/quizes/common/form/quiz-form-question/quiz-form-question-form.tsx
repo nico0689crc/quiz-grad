@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Form, useForm } from "react-hook-form";
 import {
   Button,
@@ -10,30 +10,35 @@ import {
   Typography,
 } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import { useTranslate } from "@/locales";
 import LoadingButton from "@/components/loading-button/loading-button";
 import { useBoolean } from "@/hooks/use-boolean";
 import QuizFormAnswer from "../quiz-form-answer";
-import { useAppDispatch } from "@/store";
-import { addQuestionToQuiz } from "@/store/slices/quiz/quizSlice";
+import { useQuizFormContext } from "../context/quiz-form-provider";
+import { Question } from "@/types";
 
 type PropsType = {
   questionFormToggle: () => void;
+  question?: Partial<Question>;
 };
 
-const QuizFormQuestionForm = ({ questionFormToggle }: PropsType) => {
-  const addQuestion = useBoolean(false);
-  const dispatch = useAppDispatch();
-
+const QuizFormQuestionForm = ({ questionFormToggle, question }: PropsType) => {
   const { t } = useTranslate();
+  const addQuestion = useBoolean(false);
+  const {
+    questionToCreate,
+    removeQuestion,
+    updateQuestion: updateQuestionMutation,
+  } = useQuizFormContext();
 
   const schema = Yup.object().shape({
     title: Yup.string().required(t("quiz_form.validation.title_required")),
     description: Yup.string().required(
       t("quiz_form.validation.description_required"),
     ),
-    secondsToDeliverAnswer: Yup.number().min(0).default(() => 45)
+    secondsToDeliverAnswer: Yup.number()
+      .min(0)
+      .default(() => 45),
   });
 
   const {
@@ -42,36 +47,57 @@ const QuizFormQuestionForm = ({ questionFormToggle }: PropsType) => {
     formState: { errors },
     register,
     reset,
-    getValues
-  } = useForm<{ title: string, description: string, secondsToDeliverAnswer: number }>({
+    getValues,
+  } = useForm<{
+    title: string;
+    description: string;
+    secondsToDeliverAnswer: number;
+  }>({
     resolver: yupResolver(schema),
     defaultValues: { title: "", description: "" },
   });
 
   const onClickMutateQuestionHandler = useCallback(async () => {
     const result = await trigger();
+
     if (result) {
-      dispatch(addQuestionToQuiz({
-        title: getValues('title'),
-        description: getValues('description'),
-        secondsToDeliverAnswer: getValues('secondsToDeliverAnswer')
-      }))
+      updateQuestionMutation(
+        question?.questionUUID ?? (questionToCreate?.questionUUID as string),
+        {
+          status: "CREATED",
+          title: getValues("title"),
+          secondsToDeliverAnswer: getValues("secondsToDeliverAnswer"),
+          description: getValues("description"),
+        },
+      );
+      questionFormToggle();
+      reset();
     }
   }, []);
 
   const onCancelHandler = useCallback(() => {
+    !question && removeQuestion(questionToCreate?.questionUUID!);
     questionFormToggle();
     reset();
+  }, [questionToCreate?.questionUUID]);
+
+  useEffect(() => {
+    question &&
+      reset({
+        ...question,
+      });
   }, []);
 
   return (
-    <Stack component={Card} spacing={3} sx={{ p: 3 }}>
+    <>
       <Form control={control} style={{ width: "100%" }}>
         <Stack spacing={3}>
           <Typography variant="subtitle1">
-            {t("quiz_form.labels.new_question")}
+            {question
+              ? t("quiz_form.labels.edit_question")
+              : t("quiz_form.labels.new_question")}
           </Typography>
-          <Stack direction='row' spacing={1}>
+          <Stack direction="row" spacing={1}>
             <TextField
               {...register("title")}
               size="small"
@@ -95,7 +121,6 @@ const QuizFormQuestionForm = ({ questionFormToggle }: PropsType) => {
             multiline
             size="small"
             maxRows={4}
-
             label={t("quiz_form.labels.description")}
             error={!!errors.description}
             helperText={errors.description?.message}
@@ -103,7 +128,7 @@ const QuizFormQuestionForm = ({ questionFormToggle }: PropsType) => {
         </Stack>
       </Form>
 
-      <QuizFormAnswer />
+      <QuizFormAnswer question={question! ?? questionToCreate!} />
 
       <Divider sx={{ width: "100%" }} />
 
@@ -117,11 +142,15 @@ const QuizFormQuestionForm = ({ questionFormToggle }: PropsType) => {
           variant="contained"
           onClick={onClickMutateQuestionHandler}
           color="primary"
-          label={t("quiz_form.labels.create_quiz_button")}
+          label={
+            question
+              ? t("quiz_form.labels.edit_quiz_button")
+              : t("quiz_form.labels.create_quiz_button")
+          }
           loadingLabel={t("quiz_form.labels.create_quiz_button_loading")}
         />
       </Stack>
-    </Stack>
+    </>
   );
 };
 

@@ -6,7 +6,7 @@ import { useQuizContext } from "./contexts/use-quiz-context";
 import { selectCurrentQuestion } from "@/store/slices/room/roomSlice";
 
 interface QuizAnswerItemProps {
-  answer: Answer;
+  answer: Partial<Answer>;
 }
 
 export default function QuizAnswerItem({
@@ -50,7 +50,10 @@ export default function QuizAnswerItem({
         isRunning && (
           <Checkbox
             onChange={(event) =>
-              setAnswerSelectedHandler(answerUUID, event.target.checked)
+              setAnswerSelectedHandler(
+                answerUUID as string,
+                event.target.checked,
+              )
             }
           />
         )}
