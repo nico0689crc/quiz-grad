@@ -30,21 +30,21 @@ COPY --chown=node:node . .
 
 FROM development as build
 
-ENV NODE_ENV production
-
 COPY --chown=node:node --from=development /app/node_modules ./node_modules
 
 COPY --chown=node:node . .
 
 RUN npm run build
 
-RUN npm ci --legacy-peer-deps && npm cache clean --force
-
 #########################################
 #   PRODUCTION STAGE
 ########################################
 
 FROM build as production
+
+ENV NODE_ENV production
+
+RUN npm ci --legacy-peer-deps && npm cache clean --force
 
 COPY --chown=node:node --from=build /app/dist dist
 
