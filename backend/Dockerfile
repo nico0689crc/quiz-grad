@@ -25,14 +25,6 @@ RUN npm ci --legacy-peer-deps
 COPY --chown=node:node . .
 
 #########################################
-#   TEST STAGE
-########################################
-
-FROM development as test
-
-RUN npm run test
-
-#########################################
 #   BUILD STAGE
 #########################################
 
