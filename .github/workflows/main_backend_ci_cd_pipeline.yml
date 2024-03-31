@@ -66,18 +66,13 @@ jobs:
       - name: Run Docker Container
         run: |
           echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
-            # Enviroments' values
             -e MYSQL_DATABASE=${{secrets.MYSQL_DATABASE_MAIN}} \
             -e MYSQL_USER=${{secrets.MYSQL_USER_MAIN}} \
             -e MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD_MAIN}} \
             -e MYSQL_ROOT_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD_MAIN}} \
-            # Container's name
             --name ${{env.DOCKER_DATABASE_CONTAINER_NAME}} \
-            # Volume's name
             -v ${{env.DOCKER_VOLUME_NAME}}:/var/lib/mysql \
-            # Network's name
             --network ${{env.DOCKER_NETWORK_NAME}} \
-            # Image's name
             mysql:8.3.0
 
   pull-backend-image-and-run-container:
@@ -96,9 +91,7 @@ jobs:
       - name: Run Docker Container
         run: |
           echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
-            # Ports
             -p ${{secrets.BACKEND_HOST_PORT_MAIN}}:${{secrets.BACKEND_CONTAINER_PORT_MAIN}} \
-            # Enviroments' values
             -e BACKEND_CONTAINER_PORT=${{secrets.BACKEND_CONTAINER_PORT_MAIN}} \
             -e MYSQL_HOST=${{secrets.MYSQL_DATABASE_MAIN}} \
             -e MYSQL_PORT=${{secrets.MYSQL_CONTAINER_PORT_MAIN}} \
@@ -113,8 +106,6 @@ jobs:
             -e EMAIL_ADMINISTRATOR=${{secrets.EMAIL_ADMINISTRATOR}} \
             -e USER_DEMO=${{secrets.USER_DEMO}} \
             -e PASSWORD_DEMO=${{secrets.PASSWORD_DEMO}} \
-            # Container's name
             --name ${{env.DOCKER_BACKEND_CONTAINER_NAME}} \
-            # Network's name
             --network ${{env.DOCKER_NETWORK_NAME}} \
             ${{env.DOCKER_IMAGE_TAG}}
