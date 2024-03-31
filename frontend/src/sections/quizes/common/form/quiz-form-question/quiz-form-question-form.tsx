@@ -144,10 +144,10 @@ const QuizFormQuestionForm = ({ questionFormToggle, question }: PropsType) => {
           color="primary"
           label={
             question
-              ? t("quiz_form.labels.edit_quiz_button")
-              : t("quiz_form.labels.create_quiz_button")
+              ? t("quiz_form.labels.edit_question")
+              : t("quiz_form.labels.add_question_button")
           }
-          loadingLabel={t("quiz_form.labels.create_quiz_button_loading")}
+          loadingLabel={t("common.labels.creating")}
         />
       </Stack>
     </>

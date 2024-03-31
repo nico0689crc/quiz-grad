@@ -15,7 +15,7 @@ export class Answer {
   @Column({ nullable: false })
   content: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   order: number;
 
   @Column({ nullable: false })

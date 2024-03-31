@@ -24,7 +24,7 @@ export class Question {
   @Column({ nullable: true, type: 'text' })
   description: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   order: number;
 
   @Column({ default: 15 })
@@ -33,6 +33,7 @@ export class Question {
   @Column({
     type: 'enum',
     enum: TypeAnswer,
+    default: TypeAnswer.SINGLE_ANSWER
   })
   typeAnswer: TypeAnswer;
 

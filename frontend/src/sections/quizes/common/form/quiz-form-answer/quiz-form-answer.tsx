@@ -62,14 +62,12 @@ const QuizFormAnswer = ({ answerFormView, answer, question }: PropsType) => {
   const onClickMutateAnswerHandler = useCallback(async () => {
     const result = await trigger();
 
-    console.log(answer);
-    console.log(question);
     if (result) {
       answerFormView.onToggle();
 
       if (answer) {
         updateAnswer(
-          question?.questionUUID ?? questionToCreate?.questionUUID!,
+          question?.questionUUID! ?? questionToCreate?.questionUUID!,
           answer.answerUUID!,
           {
             content: getValues("content"),

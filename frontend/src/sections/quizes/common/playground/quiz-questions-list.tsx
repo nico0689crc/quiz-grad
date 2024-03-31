@@ -19,7 +19,7 @@ export default function QuizQuestionsList({
         {questions
           .filter((question) => question.status !== "CREATING")
           .map((question, index) => (
-            <m.div key={question.questionUUID} {...varFade().in}>
+            <m.div key={question.questionUUID ?? question.uuid} {...varFade().in}>
               <QuizQuestionItem
                 key={index}
                 question={question}

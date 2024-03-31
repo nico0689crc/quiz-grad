@@ -5,6 +5,7 @@ import { paths } from "@/routes/paths";
 import CustomBreadcrumbs from "@/components/custom-breadcrumbs";
 import { useTranslate } from "@/locales";
 import QuizForm from "../common/form/quiz-form";
+import { QuizFormProvider } from "../common/form/context/quiz-form-provider";
 
 const QuizesCreateView = () => {
   const { t } = useTranslate();
@@ -31,7 +32,9 @@ const QuizesCreateView = () => {
           px: { xs: 1, mb: 5 },
         }}
       />
-      <QuizForm />
+      <QuizFormProvider>
+        <QuizForm />
+      </QuizFormProvider>
     </Stack>
   );
 };

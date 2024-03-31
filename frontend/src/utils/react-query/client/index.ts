@@ -1,4 +1,6 @@
 import {
+  Question,
+  Quiz,
   QuizQueryOptions,
   QuizResponseCollection,
   QuizResponseIndividual,
@@ -17,9 +19,17 @@ class Client {
       HttpClient.get<QuizResponseIndividual>(
         `${API_ENDPOINTS.QUIZES.ROOT}/${uuid}`,
       ),
-    post: () => {},
-    put: () => {},
-    delete: () => {},
+    post: (data: {
+      title: string;
+      description: string;
+      questions: Partial<Question>[];
+    }) =>
+      HttpClient.post<QuizResponseIndividual>(
+        API_ENDPOINTS.QUIZES.ROOT,
+        data,
+      ),
+    put: () => { },
+    delete: () => { },
   };
 }
 

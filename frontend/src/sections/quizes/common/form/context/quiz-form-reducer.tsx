@@ -31,7 +31,7 @@ export const reducer = (state: StateType, action: ActionTypes) => {
           ...state.questions
             .map((question) => ({
               ...question,
-              answer: question.answers?.map((answer) => ({ ...answer })),
+              answers: question.answers?.map((answer) => ({ ...answer })),
             }))
             .filter(
               (question) => payload.questionUUID !== question.questionUUID,
@@ -62,7 +62,7 @@ export const reducer = (state: StateType, action: ActionTypes) => {
         questions: [
           ...state.questions.map((question) => ({
             ...question,
-            answer: question.answers?.map((answer) => ({ ...answer })),
+            answers: question.answers?.map((answer) => ({ ...answer })),
           })),
         ],
       };
@@ -126,19 +126,48 @@ export const reducer = (state: StateType, action: ActionTypes) => {
           answers: question.answers?.map((answer) => ({ ...answer })),
         })),
       };
+    case ActionsEnum.UPDATE_ANSWER:
+      if (!payload.questionUUID || !payload.answerUUID || !payload.answer) {
+        return state;
+      }
+
+      questionIndex = state.questions.findIndex(
+        (question) => question.questionUUID === payload.questionUUID,
+      );
+
+      if (questionIndex < 0) {
+        return state;
+      }
+
+      const answerIndex = state.questions[questionIndex].answers?.findIndex(answer => answer.answerUUID === payload.answerUUID);
+      const answerUpdated = {
+        ...state.questions[questionIndex].answers?.find(answer => answer.answerUUID === payload.answerUUID),
+        ...payload.answer
+      }
+
+      state.questions[questionIndex].answers?.splice(answerIndex!, 1, answerUpdated)
+
+      return {
+        ...state,
+        questions: [
+          ...state.questions.map((question) => ({
+            ...question,
+            answers: question.answers?.map((answer) => ({ ...answer })),
+          })),
+        ],
+      };
     case ActionsEnum.SET_DETAILS:
       return {
         ...state,
-        ...(action.payload.title && { title: action.payload.title }),
-        ...(action.payload.description && {
-          description: action.payload.description,
+        ...(payload.title && { title: payload.title }),
+        ...(payload.description && {
+          description: payload.description,
         }),
         questions: state.questions.map((question) => ({
           ...question,
           answers: question.answers?.map((answer) => ({ ...answer })),
         })),
       };
-    case ActionsEnum.UPDATE_ANSWER:
     default:
       return state;
   }

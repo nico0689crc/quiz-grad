@@ -25,9 +25,6 @@ export class CreateQuestionDto {
   @IsPositive()
   secondsToDeliverAnswer: number;
 
-  @IsEnum(TypeAnswer)
-  typeAnswer: TypeAnswer;
-
   @ValidateNested({})
   @Type(() => CreateAnswerDto)
   answers: CreateAnswerDto[];
@@ -42,10 +39,6 @@ export class CreateQuizeDto {
   @IsString()
   @IsNotEmpty()
   description: string;
-
-  @IsNotEmpty()
-  @IsPositive()
-  maxPlayerAmount: number;
 
   @ValidateNested()
   @Type(() => CreateQuestionDto)

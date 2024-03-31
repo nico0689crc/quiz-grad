@@ -31,7 +31,7 @@ export default function ItemQuiz({ quiz }: ItemQuizProps) {
         elevation={10}
         sx={{ backgroundColor: "background.paper" }}
       >
-        <Stack sx={{ p: (theme) => theme.spacing(3, 3, 2, 3) }}>
+        <Stack sx={{ p: (theme) => theme.spacing(3, 3, 2, 3), flexGrow: 1 }}>
           <Stack
             direction="row"
             alignItems="center"
