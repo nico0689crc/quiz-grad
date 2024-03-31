@@ -7,12 +7,11 @@ on:
       - "backend/**"
   workflow_dispatch:
 env:
-  # General
   SHH_USER_PASSWORD: ${{secrets.SHH_USER_PASSWORD}}
   DOCKER_HUB_USERNAME: ${{secrets.DOCKER_HUB_USERNAME}}
   DOCKER_HUB_PASSWORD: ${{secrets.DOCKER_HUB_PASSWORD}}
 
-  DOCKER_IMAGE_TAG: ${{env.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main
+  DOCKER_IMAGE_TAG: ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main
 
   DOCKER_NETWORK_NAME: quiz-grad-main-network
   DOCKER_VOLUME_NAME: data-main-qg
