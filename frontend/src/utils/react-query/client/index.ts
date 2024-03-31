@@ -24,12 +24,9 @@ class Client {
       description: string;
       questions: Partial<Question>[];
     }) =>
-      HttpClient.post<QuizResponseIndividual>(
-        API_ENDPOINTS.QUIZES.ROOT,
-        data,
-      ),
-    put: () => { },
-    delete: () => { },
+      HttpClient.post<QuizResponseIndividual>(API_ENDPOINTS.QUIZES.ROOT, data),
+    put: () => {},
+    delete: () => {},
   };
 }
 

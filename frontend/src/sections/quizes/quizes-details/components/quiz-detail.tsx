@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import { useTranslate } from "@/locales";
 import CustomBreadcrumbs from "@/components/custom-breadcrumbs";
 import Iconify from "@/components/iconify";
@@ -56,12 +56,28 @@ export default function QuizDetail({ quiz }: { quiz: Quiz }) {
       />
       <Stack px={{ xs: 1, mb: 5 }} spacing={5}>
         <Typography variant="body1">{description}</Typography>
-        <QuizQuestionsList
-          questions={questions.map((question) => ({
-            ...question,
-            status: "CREATED",
-          }))}
-        />
+        {questions && questions.length > 0 ? (
+          <QuizQuestionsList
+            questions={questions.map((question) => ({
+              ...question,
+              status: "CREATED",
+            }))}
+          />
+        ) : (
+          <Box
+            component={Card}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              p: 2,
+            }}
+          >
+            <Typography variant="subtitle2">
+              {t("quiz_form.labels.no_questions")}
+            </Typography>
+          </Box>
+        )}
       </Stack>
     </>
   );

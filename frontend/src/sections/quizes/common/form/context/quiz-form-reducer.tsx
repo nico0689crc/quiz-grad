@@ -7,6 +7,22 @@ export const reducer = (state: StateType, action: ActionTypes) => {
   let questionIndex: number;
   let questionToUpdate: Partial<Question>;
   switch (type) {
+    case ActionsEnum.INIT:
+      if (!payload.questions || !payload.title || !payload.description) {
+        return state;
+      }
+
+      return {
+        ...state,
+        title: payload.title,
+        description: payload.description,
+        questions: payload.questions.map(question => ({
+          ...question,
+          answers: question.answers.map(answer => ({
+            ...answer
+          }))
+        }))
+      }
     case ActionsEnum.ADD_QUESTION:
       if (!payload.question) {
         return state;
@@ -139,13 +155,21 @@ export const reducer = (state: StateType, action: ActionTypes) => {
         return state;
       }
 
-      const answerIndex = state.questions[questionIndex].answers?.findIndex(answer => answer.answerUUID === payload.answerUUID);
+      const answerIndex = state.questions[questionIndex].answers?.findIndex(
+        (answer) => answer.answerUUID === payload.answerUUID,
+      );
       const answerUpdated = {
-        ...state.questions[questionIndex].answers?.find(answer => answer.answerUUID === payload.answerUUID),
-        ...payload.answer
-      }
+        ...state.questions[questionIndex].answers?.find(
+          (answer) => answer.answerUUID === payload.answerUUID,
+        ),
+        ...payload.answer,
+      };
 
-      state.questions[questionIndex].answers?.splice(answerIndex!, 1, answerUpdated)
+      state.questions[questionIndex].answers?.splice(
+        answerIndex!,
+        1,
+        answerUpdated,
+      );
 
       return {
         ...state,

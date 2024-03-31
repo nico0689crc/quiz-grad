@@ -40,15 +40,12 @@ export const useQuiz = (uuid: string) => {
 
 export const useCreateQuiz = () => {
   const { replace } = useRouter();
-  const { mutate: createQuiz, isLoading } = useMutation(
-    client.quizes.post,
-    {
-      onSuccess({ data }: QuizResponseIndividual) {
-        console.log(data);
-        replace(`${paths.quizes.root}/${data.uuid}`)
-      },
+  const { mutate: createQuiz, isLoading } = useMutation(client.quizes.post, {
+    onSuccess({ data }: QuizResponseIndividual) {
+      console.log(data);
+      replace(`${paths.quizes.root}/${data.uuid}`);
     },
-  );
+  });
 
   return {
     createQuiz,

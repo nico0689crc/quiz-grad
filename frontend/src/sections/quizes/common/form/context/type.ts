@@ -4,6 +4,7 @@ export type QuizFormContextType = {
   title: string;
   description: string;
   questions: Partial<Question>[];
+  initQuiz: (title: string, description: string, question: Question[]) => void;
   addQuestion: (question: Partial<Question>) => void;
   removeQuestion: (questionUUID: string) => void;
   updateQuestion: (questionUUID: string, question: Partial<Question>) => void;
@@ -25,6 +26,7 @@ export type StateType = {
 };
 
 export enum ActionsEnum {
+  INIT = "INIT",
   ADD_QUESTION = "ADD_QUESTION",
   REMOVE_QUESTION = "REMOVE_QUESTION",
   UPDATE_QUESTION = "UPDATE_QUESTION",
@@ -42,6 +44,7 @@ export type ActionTypes = {
     questionUUID: string;
     answerUUID: string;
     question: Partial<Question>;
+    questions: Question[];
     answer: Partial<Answer>;
   }>;
 };

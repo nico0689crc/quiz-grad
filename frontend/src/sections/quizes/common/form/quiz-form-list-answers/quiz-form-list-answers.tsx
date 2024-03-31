@@ -15,7 +15,7 @@ const QuizFormListAnswers = ({ question }: PropsTypes) => {
       <AnimatePresence>
         {question?.answers &&
           question.answers.map((answer, index) => (
-            <m.div key={answer.answerUUID} {...varFade().in}>
+            <m.div key={answer.uuid ?? answer.answerUUID} {...varFade().in}>
               <QuizFormItemAnswer
                 question={question}
                 key={answer.answerUUID}

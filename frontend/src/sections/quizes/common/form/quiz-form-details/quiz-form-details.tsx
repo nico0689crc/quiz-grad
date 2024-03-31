@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback } from "react";
+import { ChangeEvent, useCallback, useEffect } from "react";
 import { Form, UseFormReturn } from "react-hook-form";
 import { Stack, Card, TextField } from "@mui/material";
 import { useTranslate } from "@/locales";
@@ -18,10 +18,11 @@ const QuizFormDetails = ({
     control,
     register,
     formState: { errors },
+    reset
   },
 }: PropsType) => {
   const { t } = useTranslate();
-  const { setDetails } = useQuizFormContext();
+  const { setDetails, title, description } = useQuizFormContext();
 
   const onTitleChangeHandler = useCallback(
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -36,6 +37,10 @@ const QuizFormDetails = ({
     },
     [],
   );
+
+  useEffect(() => {
+    reset({ title, description })
+  }, [title, description])
 
   return (
     <Form control={control}>

@@ -16,18 +16,16 @@ export default function QuizQuestionsList({
   return (
     <Stack spacing={5}>
       <AnimatePresence>
-        {questions
-          .filter((question) => question.status !== "CREATING")
-          .map((question, index) => (
-            <m.div key={question.questionUUID ?? question.uuid} {...varFade().in}>
-              <QuizQuestionItem
-                key={index}
-                question={question}
-                index={index}
-                showMutationActions={showMutationActions}
-              />
-            </m.div>
-          ))}
+        {questions.map((question, index) => (
+          <m.div key={question.questionUUID ?? question.uuid} {...varFade().in}>
+            <QuizQuestionItem
+              key={index}
+              question={question}
+              index={index}
+              showMutationActions={showMutationActions}
+            />
+          </m.div>
+        ))}
       </AnimatePresence>
     </Stack>
   );
