@@ -28,7 +28,7 @@ const PositionContent = () => {
         </Stack>
       ))}
     </Stack>
-  )
-}
+  );
+};
 
 export default PositionContent;

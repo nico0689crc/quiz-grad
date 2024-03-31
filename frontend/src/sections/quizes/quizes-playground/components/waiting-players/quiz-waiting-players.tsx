@@ -9,7 +9,7 @@ import {
 import { useAppSelector } from "@/store";
 import { useTranslate } from "@/locales";
 import { selectPlayers } from "@/store/slices/room/roomSlice";
-import QuizPlayerList from "@/sections/quizes/common/quiz-player-list";
+import QuizPlayerList from "@/sections/quizes/common/playground/quiz-player-list";
 
 const QuizWaitingPlayers = () => {
   const players = useAppSelector(selectPlayers);

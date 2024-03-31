@@ -10,6 +10,7 @@
       "create_quiz": "Create a Quiz",
       "questions": "Questions",
       "question": "Question",
+      "answer": "Answer",
       "time_left": "Time left:",
       "seconds": "seconds",
       "view": "View",
@@ -22,7 +23,9 @@
       "editing": "Editing",
       "close": "Close",
       "update": "Update",
+      "save": "Save",
       "updating": "Updating",
+      "creating": "Adding...",
       "lets_play": "Lets play!",
       "something_went_wrong": "Something went wrong.",
       "something_went_wrong_2": "We're sorry, it seems that an error occurred while loading the website's title and subtitle. Please try again later or contact technical support if the issue persists.",
@@ -181,6 +184,36 @@
       "selected": "Selected",
       "back_quiz": "Back to Quiz",
       "back_home": "Back to Home"
+    }
+  },
+  "quiz_create": {
+    "labels": {
+      "page_title": "Create a quiz"
+    }
+  },
+  "quiz_form": {
+    "labels": {
+      "title": "Title",
+      "description": "Description",
+      "create_quiz_button": "Create Quiz",
+      "edit_quiz_button": "Edit Quiz",
+      "create_quiz_button_loading": "Creating Quiz...",
+      "add_question_button": "Add Question",
+      "add_answer": "Add Answer",
+      "no_questions": "There is no question added yet.",
+      "no_answers": "There is no answer added yet.",
+      "new_question": "New question",
+      "edit_question": "Edit question",
+      "new_answer": "New answer",
+      "edit_answer": "Edit answer",
+      "remove_answer": "Are you sure you want to remove answer {{answer_content}}?",
+      "remove_question": "Are you sure you want to remove question {{question_title}}?",
+      "answer_content": "Answer",
+      "seconds_to_deliver_answer": "Seconds"
+    },
+    "validation": {
+      "title_required": "Title is required.",
+      "description_required": "Description is required."
     }
   }
 }

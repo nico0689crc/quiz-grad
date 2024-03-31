@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { API_ENDPOINTS } from "./client/api-endpoints";
 import {
   QuizQueryOptions,
@@ -6,6 +6,8 @@ import {
   QuizResponseIndividual,
 } from "../../types";
 import client from "./client";
+import { useRouter } from "@/hooks/use-router";
+import { paths } from "@/routes/paths";
 
 export const useQuizes = (options?: Partial<QuizQueryOptions>) => {
   const { data, isLoading, error } = useQuery<QuizResponseCollection, Error>(
@@ -33,5 +35,20 @@ export const useQuiz = (uuid: string) => {
     quiz: data?.data,
     isLoading,
     error,
+  };
+};
+
+export const useCreateQuiz = () => {
+  const { replace } = useRouter();
+  const { mutate: createQuiz, isLoading } = useMutation(client.quizes.post, {
+    onSuccess({ data }: QuizResponseIndividual) {
+      console.log(data);
+      replace(`${paths.quizes.root}/${data.uuid}`);
+    },
+  });
+
+  return {
+    createQuiz,
+    isLoading,
   };
 };

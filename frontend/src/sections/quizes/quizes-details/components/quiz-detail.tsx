@@ -1,12 +1,10 @@
-"use client";
-
-import { Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import { useTranslate } from "@/locales";
 import CustomBreadcrumbs from "@/components/custom-breadcrumbs";
 import Iconify from "@/components/iconify";
 import { paths } from "@/routes/paths";
 import { Quiz } from "@/types";
-import QuizQuestionsList from "./quiz-questions-list";
+import QuizQuestionsList from "../../common/playground/quiz-questions-list";
 import { RouterLink } from "@/routes/components";
 
 export default function QuizDetail({ quiz }: { quiz: Quiz }) {
@@ -14,7 +12,7 @@ export default function QuizDetail({ quiz }: { quiz: Quiz }) {
   const { title, description, questions, uuid } = quiz;
 
   return (
-    <Stack className="QuizDetail">
+    <>
       <CustomBreadcrumbs
         heading={title}
         links={[
@@ -58,10 +56,29 @@ export default function QuizDetail({ quiz }: { quiz: Quiz }) {
       />
       <Stack px={{ xs: 1, mb: 5 }} spacing={5}>
         <Typography variant="body1">{description}</Typography>
-        <Stack>
-          <QuizQuestionsList questions={questions} />
-        </Stack>
+        {questions && questions.length > 0 ? (
+          <QuizQuestionsList
+            questions={questions.map((question) => ({
+              ...question,
+              status: "CREATED",
+            }))}
+          />
+        ) : (
+          <Box
+            component={Card}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              p: 2,
+            }}
+          >
+            <Typography variant="subtitle2">
+              {t("quiz_form.labels.no_questions")}
+            </Typography>
+          </Box>
+        )}
       </Stack>
-    </Stack>
+    </>
   );
 }

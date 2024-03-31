@@ -1,9 +1,9 @@
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import QuizQuestionItem from "@/sections/quizes/common/quiz-question-item";
+import QuizQuestionItem from "@/sections/quizes/common/playground/quiz-question-item";
 import { RootState, useAppSelector } from "@/store";
 import { selectCurrentQuestion } from "@/store/slices/room/roomSlice";
 import { useTranslate } from "@/locales";
-import { useQuizContext } from "../../../common/context/use-quiz-context";
+import { useQuizContext } from "../../../common/playground/contexts/use-quiz-context";
 
 const QuestionBoard = () => {
   const { t } = useTranslate();

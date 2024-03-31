@@ -16,8 +16,8 @@ import Image from "@/components/image";
 import { selectPlayers, setRoomStatus } from "@/store/slices/room/roomSlice";
 import { useCallback } from "react";
 import { RoomStatusEnum } from "@/types";
-import QuizPlayerList from "@/sections/quizes/common/quiz-player-list";
-import { useQuizContext } from "../../../common/context/use-quiz-context";
+import QuizPlayerList from "@/sections/quizes/common/playground/quiz-player-list";
+import { useQuizContext } from "../../../common/playground/contexts/use-quiz-context";
 
 const QuizModeratorWaitingPlayers = () => {
   const theme = useTheme();

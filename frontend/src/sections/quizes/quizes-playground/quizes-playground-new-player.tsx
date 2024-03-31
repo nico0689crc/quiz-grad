@@ -8,7 +8,7 @@ import { Button, Container, Stack, TextField, Typography } from "@mui/material";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { useQuizContext } from "../common/context/use-quiz-context";
+import { useQuizContext } from "../common/playground/contexts/use-quiz-context";
 
 const QuizesPlaygroundNewPlayer = () => {
   const { connectToRoom } = useQuizContext();

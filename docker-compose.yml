@@ -4,7 +4,7 @@ services:
   #   Setup Database container
   #########################################
   database:
-    container_name: database-dev
+    container_name: quizgrad-database-dev
     image: mysql:8.3.0
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -14,16 +14,16 @@ services:
     ports:
       - "${MYSQL_HOST_PORT}:${MYSQL_CONTAINER_PORT}"
     volumes:
-      - db:/var/lib/mysql
+      - quizgrad-dev-db:/var/lib/mysql
     networks:
-      - server-dev
+      - quizgrad-network-dev
   #########################################
   #   Setup Backend container
   #########################################
   backend:
     depends_on:
       - database
-    container_name: backend-dev
+    container_name: quizgrad-backend-dev
     image: ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_BACKEND_IMAGE}:dev
     build:
       context: ./backend
@@ -52,14 +52,14 @@ services:
       - /app/node_modules
     command: npm run start:dev
     networks:
-      - server-dev
+      - quizgrad-network-dev
   #########################################
   #   Setup Frontend container
   #########################################
   frontend:
     depends_on:
       - backend
-    container_name: frontend-dev
+    container_name: quizgrad-frontend-dev
     image: ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_FRONTEND_IMAGE}:dev
     build:
       context: ./frontend
@@ -75,8 +75,9 @@ services:
       - type: bind
         source: ./frontend
         target: /app
+      - /app/node_modules
     command: npm run dev
 volumes:
-  db:
+  quizgrad-dev-db:
 networks:
-  server-dev:
+  quizgrad-network-dev:

@@ -2,8 +2,8 @@
 
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { Stack, Typography } from "@mui/material";
-import { QuizProvider } from "../common/context/quiz-provider";
-import { QuizContext } from "../common/context/quiz-context";
+import { QuizProvider } from "../common/playground/contexts/quiz-provider";
+import { QuizContext } from "../common/playground/contexts/quiz-context";
 import QuizesPlaygroundNewPlayer from "./quizes-playground-new-player";
 import QuizesPlaygroundBoard from "./quizes-playground-board";
 
