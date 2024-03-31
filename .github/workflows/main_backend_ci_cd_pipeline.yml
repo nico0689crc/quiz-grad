@@ -81,7 +81,7 @@ jobs:
 
   pull-backend-image-and-run-container:
     runs-on: self-hosted
-    needs: build-backend-image-and-push
+    needs: build-database
     steps:
       - name: Network Creation
         run: echo $SHH_USER_PASSWORD | sudo -S docker network create $DOCKER_NETWORK_NAME || true
