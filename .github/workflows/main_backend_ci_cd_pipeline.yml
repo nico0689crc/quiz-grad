@@ -62,14 +62,14 @@ jobs:
     needs: build-test-push-docker-image
     steps:
       - name: Network Creation
-        run: echo $SHH_USER_PASSWORD | sudo -S docker network create ${{env.DOCKER_NETWORK_NAME}} || true
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker network create ${{env.DOCKER_NETWORK_NAME}} || true
 
       - name: Stop Current Running Container
-        run: echo $SHH_USER_PASSWORD | sudo -S docker stop ${{env.DOCKER_DATABASE_CONTAINER_NAME}} || true
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker stop ${{env.DOCKER_DATABASE_CONTAINER_NAME}} || true
 
       - name: Run Docker Container
         run: |
-          echo $SHH_USER_PASSWORD | sudo -S docker run --rm -d \
+          echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
             # Enviroments' values
             -e MYSQL_DATABASE=${{secrets.MYSQL_DATABASE_MAIN}} \
             -e MYSQL_USER=${{secrets.MYSQL_USER_MAIN}} \
@@ -89,17 +89,17 @@ jobs:
     needs: build-database
     steps:
       - name: Network Creation
-        run: echo $SHH_USER_PASSWORD | sudo -S docker network create ${{env.DOCKER_NETWORK_NAME}} || true
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker network create ${{env.DOCKER_NETWORK_NAME}} || true
 
       - name: Stop Current Running Container
-        run: echo $SHH_USER_PASSWORD | sudo -S docker stop ${{env.DOCKER_BACKEND_CONTAINER_NAME}} || true
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker stop ${{env.DOCKER_BACKEND_CONTAINER_NAME}} || true
 
       - name: Pull Docker Image
-        run: echo $SHH_USER_PASSWORD | sudo -S docker pull ${{env.DOCKER_IMAGE_TAG}}
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker pull ${{env.DOCKER_IMAGE_TAG}}
 
       - name: Run Docker Container
         run: |
-          echo $SHH_USER_PASSWORD | sudo -S docker run --rm -d \
+          echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
             # Ports
             -p ${{secrets.BACKEND_HOST_PORT_MAIN}}:${{secrets.BACKEND_CONTAINER_PORT_MAIN}} \
             # Enviroments' values
