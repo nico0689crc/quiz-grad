@@ -31,7 +31,7 @@ env:
   MYSQL_USER: ${{secrets.MYSQL_USER_MAIN}}
   MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD_MAIN}}
   MYSQL_ROOT_PASSWORD: ${{secrets.MYSQL_ROOT_PASSWORD_MAIN}}
-  BACKEND_HOST_PORT_MAIN: ${{secrets.BACKEND_HOST_PORT_MAIN_MAIN}}
+  BACKEND_HOST_PORT: ${{secrets.BACKEND_HOST_PORT_MAIN}}
   BACKEND_CONTAINER_PORT: ${{secrets.BACKEND_CONTAINER_PORT_MAIN}}
   FRONTEND_HOST_DOMAIN: ${{secrets.FRONTEND_HOST_DOMAIN_MAIN}}
 
@@ -82,10 +82,10 @@ jobs:
       - name: Run Docker Container
         run: |
           echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
-            -e MYSQL_DATABASE=${{env.MYSQL_DATABASE_MAIN}} \
-            -e MYSQL_USER=${{env.MYSQL_USER_MAIN}} \
-            -e MYSQL_PASSWORD=${{env.MYSQL_PASSWORD_MAIN}} \
-            -e MYSQL_ROOT_PASSWORD=${{env.MYSQL_ROOT_PASSWORD_MAIN}} \
+            -e MYSQL_DATABASE=${{env.MYSQL_DATABASE}} \
+            -e MYSQL_USER=${{env.MYSQL_USER}} \
+            -e MYSQL_PASSWORD=${{env.MYSQL_PASSWORD}} \
+            -e MYSQL_ROOT_PASSWORD=${{env.MYSQL_ROOT_PASSWORD}} \
             --name ${{env.DOCKER_DATABASE_CONTAINER_NAME}} \
             -v ${{env.DOCKER_VOLUME_NAME}}:/var/lib/mysql \
             --network ${{env.DOCKER_NETWORK_NAME}} \
@@ -107,17 +107,17 @@ jobs:
       - name: Run Docker Container
         run: |
           echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
-            -p ${{env.BACKEND_HOST_PORT_MAIN}}:${{env.BACKEND_CONTAINER_PORT_MAIN}} \
-            -e BACKEND_CONTAINER_PORT=${{env.BACKEND_CONTAINER_PORT_MAIN}} \
-            -e MYSQL_HOST=${{env.MYSQL_DATABASE_MAIN}} \
-            -e MYSQL_PORT=${{env.MYSQL_CONTAINER_PORT_MAIN}} \
-            -e MYSQL_DATABASE=${{env.MYSQL_DATABASE_MAIN}} \
-            -e MYSQL_USER=${{env.MYSQL_USER_MAIN}} \
-            -e MYSQL_PASSWORD=${{env.MYSQL_PASSWORD_MAIN}} \
-            -e FRONTEND_HOST_DOMAIN=${{env.FRONTEND_HOST_DOMAIN_MAIN}} \
-            -e COOKIE_SECRET=${{env.COOKIE_SECRET_MAIN}} \
-            -e SENDGRID_API_KEY=${{env.SENDGRID_API_KEY_MAIN}} \
-            -e SENDGRID_VERIFIED_EMAIL=${{env.SENDGRID_VERIFIED_EMAIL_MAIN}} \
+            -p ${{env.BACKEND_HOST_PORT}}:${{env.BACKEND_CONTAINER_PORT}} \
+            -e BACKEND_CONTAINER_PORT=${{env.BACKEND_CONTAINER_PORT}} \
+            -e MYSQL_HOST=${{env.MYSQL_DATABASE}} \
+            -e MYSQL_PORT=${{env.MYSQL_CONTAINER_PORT}} \
+            -e MYSQL_DATABASE=${{env.MYSQL_DATABASE}} \
+            -e MYSQL_USER=${{env.MYSQL_USER}} \
+            -e MYSQL_PASSWORD=${{env.MYSQL_PASSWORD}} \
+            -e FRONTEND_HOST_DOMAIN=${{env.FRONTEND_HOST_DOMAIN}} \
+            -e COOKIE_SECRET=${{env.COOKIE_SECRET}} \
+            -e SENDGRID_API_KEY=${{env.SENDGRID_API_KEY}} \
+            -e SENDGRID_VERIFIED_EMAIL=${{env.SENDGRID_VERIFIED_EMAIL}} \
             -e APP_NAME=${{env.APP_NAME}} \
             -e EMAIL_ADMINISTRATOR=${{env.EMAIL_ADMINISTRATOR}} \
             -e USER_DEMO=${{env.USER_DEMO}} \
