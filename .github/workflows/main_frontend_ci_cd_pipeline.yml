@@ -50,10 +50,10 @@ jobs:
       - name: Stop Current Running Container
         run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker stop ${{env.DOCKER_FRONTEND_CONTAINER_NAME}} || true
       - name: Pull Docker image
-        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker pull ${{DOCKER_IMAGE}}:${{DOCKER_IMAGE_VERSION_FRONTEND}}
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker pull ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_FRONTEND}}
       - name: Run Docker Container
         run: |
           echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
             -p ${{env.FRONTEND_HOST_PORT}}:${{env.FRONTEND_CONTAINER_PORT}} \
             --name ${{env.DOCKER_FRONTEND_CONTAINER_NAME}} \
-            ${{DOCKER_IMAGE}}:${{DOCKER_IMAGE_VERSION_FRONTEND}}
+            ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_FRONTEND}}
