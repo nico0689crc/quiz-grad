@@ -46,13 +46,14 @@ COPY --chown=node:node . .
 
 RUN npm run build
 
-RUN npm ci --legacy-peer-deps && npm cache clean --force
 
 #########################################
 #   PRODUCTION STAGE
 ########################################
 
 FROM build as production
+
+RUN npm ci --legacy-peer-deps && npm cache clean --force
 
 COPY --chown=node:node --from=build /app/dist dist
 

@@ -1,5 +1,4 @@
 name: main_backend_ci_cd_pipeline
-
 on:
   push:
     branches:
@@ -7,70 +6,98 @@ on:
     paths:
       - "backend/**"
   workflow_dispatch:
-jobs:
-  build-database:
-    name: Run Database Container
-    runs-on: self-hosted
-    steps:
-      - name: Create a network for main
-        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker network create quiz-grad-main-network || true
-      - name: Stop old docker container
-        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker stop ${{secrets.MYSQL_DATABASE_MAIN}} || true
-      - name: Run Docker Container
-        run: |
-          echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
-            --name ${{secrets.MYSQL_DATABASE_MAIN}} \
-            -v data-main-qg:/var/lib/mysql \
-            -e MYSQL_DATABASE=${{secrets.MYSQL_DATABASE_MAIN}} \
-            -e MYSQL_USER=${{secrets.MYSQL_USER_MAIN}} \
-            -e MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD_MAIN}} \
-            -e MYSQL_ROOT_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD_MAIN}} \
-            --network quiz-grad-main-network \
-            mysql:8.3.0
+env:
+  SHH_USER_PASSWORD: ${{secrets.SHH_USER_PASSWORD}}
+  DOCKER_HUB_USERNAME: ${{secrets.DOCKER_HUB_USERNAME}}
+  DOCKER_HUB_PASSWORD: ${{secrets.DOCKER_HUB_PASSWORD}}
 
-  build-backend-image-and-push:
-    name: Test, Build and Push Image
+  DOCKER_IMAGE_VERSION: backend-main
+  DOCKER_IMAGE: ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}
+  DOCKER_IMAGE_TAG: $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION
+
+  DOCKER_NETWORK_NAME: quiz-grad-main-network
+  DOCKER_VOLUME_NAME: data-main-qg
+
+  DOCKER_DATABASE_CONTAINER_NAME: ${{secrets.MYSQL_DATABASE_MAIN}}
+  DOCKER_BACKEND_CONTAINER_NAME: quiz-grad-backend-main
+
+jobs:
+  build-test-push-docker-image:
+    name: Build, Test and Push Docker Image
     runs-on: ubuntu-latest
-    needs: build-database
     steps:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
 
-      # - name: Testing
-      #   run: |
-      #     docker build -t ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main-testing \
-      #       --progress=plain \
-      #       --no-cache \
-      #       --target test \
-      #       ./backend
+      - name: Build Docker Image
+        run: docker build -t $DOCKER_IMAGE_TAG ./backend
 
-      - name: Login Dockerhub
-        env:
-          DOCKER_HUB_USERNAME: ${{secrets.DOCKER_HUB_USERNAME}}
-          DOCKER_HUB_PASSWORD: ${{secrets.DOCKER_HUB_PASSWORD}}
-        run: docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+      - name: Run Prettier
+        run: docker run $DOCKER_IMAGE_TAG sh -c 'npm run format:verify'
 
-      - name: Build the Docker image
-        run: docker build -t ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main ./backend
+      - name: Run ESLint
+        run: docker run $DOCKER_IMAGE_TAG sh -c 'npm run lint'
+
+      - name: Run Tests
+        run: docker run $DOCKER_IMAGE_TAG sh -c 'npm run test'
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_PASSWORD
 
       - name: Push to Dockerhub
-        run: docker push ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main
+        run: docker push $DOCKER_IMAGE_TAG
+
+  build-database:
+    name: Build Database Container
+    runs-on: self-hosted
+    needs: build-test-push-docker-image
+    steps:
+      - name: Network Creation
+        run: echo $SHH_USER_PASSWORD | sudo -S docker network create $DOCKER_NETWORK_NAME || true
+
+      - name: Stop Current Running Container
+        run: echo $SHH_USER_PASSWORD | sudo -S docker stop $DOCKER_DATABASE_CONTAINER_NAME || true
+
+      - name: Run Docker Container
+        run: |
+          echo $SHH_USER_PASSWORD | sudo -S docker run --rm -d \
+            # Enviroments' values
+            -e MYSQL_DATABASE=${{secrets.MYSQL_DATABASE_MAIN}} \
+            -e MYSQL_USER=${{secrets.MYSQL_USER_MAIN}} \
+            -e MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD_MAIN}} \
+            -e MYSQL_ROOT_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD_MAIN}} \
+            # Container's name
+            --name $DOCKER_DATABASE_CONTAINER_NAME \
+            # Volume's name
+            -v $DOCKER_VOLUME_NAME:/var/lib/mysql \
+            # Network's name
+            --network $DOCKER_NETWORK_NAME \
+            # Image's name
+            mysql:8.3.0
 
   pull-backend-image-and-run-container:
     runs-on: self-hosted
     needs: build-backend-image-and-push
     steps:
-      - name: Create a network for main
-        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker network create quiz-grad-main-network || true
-      - name: Pull Docker image
-        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker pull ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main
-      - name: Stop old docker container
-        run: echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker stop quiz-grad-backend-main || true
+      - name: Network Creation
+        run: echo $SHH_USER_PASSWORD | sudo -S docker network create $DOCKER_NETWORK_NAME || true
+
+      - name: Stop Current Running Container
+        run: echo $SHH_USER_PASSWORD | sudo -S docker stop $DOCKER_BACKEND_CONTAINER_NAME || true
+
+      - name: Pull Docker Image
+        run: echo $SHH_USER_PASSWORD | sudo -S docker pull $DOCKER_IMAGE_TAG
+
       - name: Run Docker Container
         run: |
-          echo ${{secrets.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
+          echo $SHH_USER_PASSWORD | sudo -S docker run --rm -d \
+            # Ports
             -p ${{secrets.BACKEND_HOST_PORT_MAIN}}:${{secrets.BACKEND_CONTAINER_PORT_MAIN}} \
+            # Enviroments' values
             -e BACKEND_CONTAINER_PORT=${{secrets.BACKEND_CONTAINER_PORT_MAIN}} \
             -e MYSQL_HOST=${{secrets.MYSQL_DATABASE_MAIN}} \
             -e MYSQL_PORT=${{secrets.MYSQL_CONTAINER_PORT_MAIN}} \
@@ -85,6 +112,8 @@ jobs:
             -e EMAIL_ADMINISTRATOR=${{secrets.EMAIL_ADMINISTRATOR}} \
             -e USER_DEMO=${{secrets.USER_DEMO}} \
             -e PASSWORD_DEMO=${{secrets.PASSWORD_DEMO}} \
-            --name quiz-grad-backend-main \
-            --network quiz-grad-main-network \
-            ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}:backend-main
+            # Container's name
+            --name $DOCKER_BACKEND_CONTAINER_NAME \
+            # Network's name
+            --network $DOCKER_NETWORK_NAME \
+            $DOCKER_IMAGE_TAG
