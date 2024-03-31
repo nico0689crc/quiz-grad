@@ -50,11 +50,11 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: $DOCKER_HUB_USERNAME
-          password: $DOCKER_HUB_PASSWORD
+          username: ${{env.DOCKER_HUB_USERNAME}}
+          password: ${{env.DOCKER_HUB_PASSWORD}}
 
       - name: Push to Dockerhub
-        run: docker push $DOCKER_IMAGE_TAG
+        run: docker push ${{env.DOCKER_IMAGE_TAG}}
 
   build-database:
     name: Build Database Container
@@ -62,10 +62,10 @@ jobs:
     needs: build-test-push-docker-image
     steps:
       - name: Network Creation
-        run: echo $SHH_USER_PASSWORD | sudo -S docker network create $DOCKER_NETWORK_NAME || true
+        run: echo $SHH_USER_PASSWORD | sudo -S docker network create ${{env.DOCKER_NETWORK_NAME}} || true
 
       - name: Stop Current Running Container
-        run: echo $SHH_USER_PASSWORD | sudo -S docker stop $DOCKER_DATABASE_CONTAINER_NAME || true
+        run: echo $SHH_USER_PASSWORD | sudo -S docker stop ${{env.DOCKER_DATABASE_CONTAINER_NAME}} || true
 
       - name: Run Docker Container
         run: |
@@ -76,11 +76,11 @@ jobs:
             -e MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD_MAIN}} \
             -e MYSQL_ROOT_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD_MAIN}} \
             # Container's name
-            --name $DOCKER_DATABASE_CONTAINER_NAME \
+            --name ${{env.DOCKER_DATABASE_CONTAINER_NAME}} \
             # Volume's name
-            -v $DOCKER_VOLUME_NAME:/var/lib/mysql \
+            -v ${{env.DOCKER_VOLUME_NAME}}:/var/lib/mysql \
             # Network's name
-            --network $DOCKER_NETWORK_NAME \
+            --network ${{env.DOCKER_NETWORK_NAME}} \
             # Image's name
             mysql:8.3.0
 
@@ -89,13 +89,13 @@ jobs:
     needs: build-database
     steps:
       - name: Network Creation
-        run: echo $SHH_USER_PASSWORD | sudo -S docker network create $DOCKER_NETWORK_NAME || true
+        run: echo $SHH_USER_PASSWORD | sudo -S docker network create ${{env.DOCKER_NETWORK_NAME}} || true
 
       - name: Stop Current Running Container
-        run: echo $SHH_USER_PASSWORD | sudo -S docker stop $DOCKER_BACKEND_CONTAINER_NAME || true
+        run: echo $SHH_USER_PASSWORD | sudo -S docker stop ${{env.DOCKER_BACKEND_CONTAINER_NAME}} || true
 
       - name: Pull Docker Image
-        run: echo $SHH_USER_PASSWORD | sudo -S docker pull $DOCKER_IMAGE_TAG
+        run: echo $SHH_USER_PASSWORD | sudo -S docker pull ${{env.DOCKER_IMAGE_TAG}}
 
       - name: Run Docker Container
         run: |
@@ -118,7 +118,7 @@ jobs:
             -e USER_DEMO=${{secrets.USER_DEMO}} \
             -e PASSWORD_DEMO=${{secrets.PASSWORD_DEMO}} \
             # Container's name
-            --name $DOCKER_BACKEND_CONTAINER_NAME \
+            --name ${{env.DOCKER_BACKEND_CONTAINER_NAME}} \
             # Network's name
-            --network $DOCKER_NETWORK_NAME \
-            $DOCKER_IMAGE_TAG
+            --network ${{env.DOCKER_NETWORK_NAME}} \
+            ${{env.DOCKER_IMAGE_TAG}}
