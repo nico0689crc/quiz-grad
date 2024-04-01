@@ -35,13 +35,15 @@ const QuizForm = () => {
 
     if (result) {
       createQuiz({
-        title, description, questions: questions.map(question => ({
+        title,
+        description,
+        questions: questions.map((question) => ({
           ...question,
           secondsToDeliverAnswer: +question.secondsToDeliverAnswer!,
-          answers: question?.answers?.map(answer => ({
+          answers: question?.answers?.map((answer) => ({
             ...answer,
-          }))
-        }))
+          })),
+        })),
       });
     }
   }, [title, description, questions]);

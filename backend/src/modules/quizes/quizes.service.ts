@@ -10,7 +10,7 @@ import { generateUUID } from 'src/core/helpers';
 
 @Injectable()
 export class QuizesService implements IQuizService {
-  constructor(@InjectRepository(Quize) private readonly quizRepository: Repository<Quize>) {}
+  constructor(@InjectRepository(Quize) private readonly quizRepository: Repository<Quize>) { }
 
   async create(createQuizeDto: CreateQuizeDto, user: Express.User): Promise<Quize> {
     const quizResult = await this.quizRepository.save({
@@ -99,8 +99,8 @@ export class QuizesService implements IQuizService {
             typeAnswer: question.typeAnswer,
             order: ++index,
             answers: question.answers.map((answer, index) => ({
-              uuid: generateUUID(),
               content: answer.content,
+              uuid: generateUUID(),
               isCorrect: answer.isCorrect,
               order: ++index,
             })),

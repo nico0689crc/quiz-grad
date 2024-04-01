@@ -16,13 +16,13 @@ export const reducer = (state: StateType, action: ActionTypes) => {
         ...state,
         title: payload.title,
         description: payload.description,
-        questions: payload.questions.map(question => ({
+        questions: payload.questions.map((question) => ({
           ...question,
-          answers: question.answers.map(answer => ({
-            ...answer
-          }))
-        }))
-      }
+          answers: question.answers.map((answer) => ({
+            ...answer,
+          })),
+        })),
+      };
     case ActionsEnum.ADD_QUESTION:
       if (!payload.question) {
         return state;
