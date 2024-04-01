@@ -22,6 +22,8 @@ try {
         environmentName = 'other';
       }
       break;
+    case 'workflow_dispatch':
+      environmentName = 'production_pr';
     default:
       core.setFailed(`Unsupported event type: ${eventType}`);
       return;
