@@ -84,8 +84,8 @@ jobs:
   build-database:
     name: Build Database Container
     runs-on: self-hosted
-    environment: ${{needs.retrieve-environment-variable.outputs.environment_name}}
     needs: [build-test-push-docker-image, retrieve-environment-variable]
+    environment: ${{needs.retrieve-environment-variable.outputs.environment_name}}
     steps:
       - name: Network Creation
         run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker network create ${{env.DOCKER_NETWORK_NAME}} || true
