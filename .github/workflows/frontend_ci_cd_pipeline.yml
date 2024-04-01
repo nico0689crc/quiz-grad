@@ -28,6 +28,7 @@ jobs:
 
   build-test-push-docker-image:
     runs-on: ubuntu-latest
+    needs: retrieve-environment-variable
     environment: ${{needs.retrieve-environment-variable.outputs.environment_name}}
     steps:
       - uses: actions/checkout@v3
