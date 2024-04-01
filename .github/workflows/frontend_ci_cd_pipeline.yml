@@ -1,4 +1,4 @@
-name: main_frontend_ci_cd_pipeline
+name: frontend_ci_cd_pipeline
 on:
   push:
     branches:
