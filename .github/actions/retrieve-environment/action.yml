@@ -1,0 +1,11 @@
+name: Retrieve Environment
+
+description: Retrieve the environment based on the event and branch, and sets an output conditionally.
+
+outputs:
+  environment_name:
+    description: Environment name to be used to retrieve the secrets values.
+
+runs:
+  using: "node20"
+  main: "index.js"
