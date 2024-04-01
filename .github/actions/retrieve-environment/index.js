@@ -23,7 +23,7 @@ try {
       }
       break;
     case 'workflow_dispatch':
-      environmentName = 'production_pr';
+      environmentName = 'production';
     default:
       core.setFailed(`Unsupported event type: ${eventType}`);
       return;
