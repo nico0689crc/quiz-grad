@@ -1,6 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsBoolean, IsEnum, IsNotEmpty, IsPositive, IsString, MaxLength, ValidateNested } from 'class-validator';
-import { TypeAnswer } from 'src/modules/questions/entities/question.entity';
+import { IsBoolean, IsNotEmpty, IsPositive, IsString, MaxLength, ValidateNested } from 'class-validator';
 
 export class CreateAnswerDto {
   @IsString()

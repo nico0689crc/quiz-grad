@@ -43,7 +43,7 @@ export class GatewayService implements IGatewayService {
     @Inject(Services.ROOM_QUESTION_ANSWER) private roomsQuestionAnswerService: IRoomQuestionAnswerService,
     @Inject(Services.PLAYER) private playersService: IPlayerService,
     @Inject(Services.QUIZ) private quizsService: IQuizService
-  ) { }
+  ) {}
 
   async playerDisconnectFromRoom(socket: Socket): Promise<void> {
     const player = await this.playersService.findOne({ where: { socketId: socket.id }, relations: ['room', 'room.quiz'] });

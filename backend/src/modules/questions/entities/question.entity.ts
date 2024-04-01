@@ -33,7 +33,7 @@ export class Question {
   @Column({
     type: 'enum',
     enum: TypeAnswer,
-    default: TypeAnswer.SINGLE_ANSWER
+    default: TypeAnswer.SINGLE_ANSWER,
   })
   typeAnswer: TypeAnswer;
 

@@ -1,0 +1,145 @@
+name: main_backend_ci_cd_pipeline
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "backend/**"
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "backend/**"
+  workflow_dispatch:
+env:
+  #########################################
+  #   GENERAL
+  #########################################
+  SHH_USER_PASSWORD: ${{secrets.SHH_USER_PASSWORD}}
+  DOCKER_HUB_USERNAME: ${{secrets.DOCKER_HUB_USERNAME}}
+  DOCKER_HUB_PASSWORD: ${{secrets.DOCKER_HUB_PASSWORD}}
+  DOCKER_IMAGE: ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}
+  APP_NAME: ${{secrets.APP_NAME}}
+  COOKIE_SECRET: ${{secrets.COOKIE_SECRET}}
+  SENDGRID_API_KEY: ${{secrets.SENDGRID_API_KEY}}
+  SENDGRID_VERIFIED_EMAIL: ${{secrets.SENDGRID_VERIFIED_EMAIL}}
+  EMAIL_ADMINISTRATOR: ${{secrets.EMAIL_ADMINISTRATOR}}
+  USER_DEMO: ${{secrets.USER_DEMO}}
+  PASSWORD_DEMO: ${{secrets.PASSWORD_DEMO}}
+  #########################################
+  #   ENVIRONMENT
+  #########################################
+  DOCKER_IMAGE_VERSION_BACKEND: ${{secrets.DOCKER_IMAGE_VERSION_BACKEND}}
+  DOCKER_NETWORK_NAME: ${{secrets.DOCKER_NETWORK_NAME}}
+  DOCKER_VOLUME_NAME: ${{secrets.DOCKER_VOLUME_NAME}}
+  DOCKER_DATABASE_CONTAINER_NAME: ${{secrets.DOCKER_DATABASE_CONTAINER_NAME}}
+  DOCKER_BACKEND_CONTAINER_NAME: ${{secrets.DOCKER_BACKEND_CONTAINER_NAME}}
+  DOCKER_FRONTEND_CONTAINER_NAME: ${{secrets.DOCKER_FRONTEND_CONTAINER_NAME}}
+  MYSQL_HOST: ${{secrets.DOCKER_DATABASE_CONTAINER_NAME}}
+  MYSQL_PORT: ${{secrets.MYSQL_PORT}}
+  MYSQL_DATABASE: ${{secrets.MYSQL_DATABASE}}
+  MYSQL_USER: ${{secrets.MYSQL_USER}}
+  MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
+  MYSQL_ROOT_PASSWORD: ${{secrets.MYSQL_ROOT_PASSWORD}}
+  FRONTEND_HOST_DOMAIN: ${{secrets.FRONTEND_HOST_DOMAIN}}
+  BACKEND_HOST_PORT: ${{secrets.BACKEND_HOST_PORT}}
+  BACKEND_CONTAINER_PORT: ${{secrets.BACKEND_CONTAINER_PORT}}
+jobs:
+  retrieve-environment-variable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Retrieve Environment Workflow
+        uses: ./.github/workflows/retrieve_environment.yml
+  build-test-push-docker-image:
+    name: Build, Test and Push Docker Image
+    needs: retrieve-environment-variable
+    runs-on: ubuntu-latest
+    environment: ${{needs.retrieve-environment-variable.outputs.environment_name}}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Build Docker Image
+        run: docker build -t ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_BACKEND}} --target=build ./backend
+
+      - name: Run Prettier
+        run: docker run ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_BACKEND}} sh -c 'npm run format:verify'
+
+      - name: Run ESLint
+        run: docker run ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_BACKEND}} sh -c 'npm run lint'
+
+      # - name: Run Tests
+      #   run: docker run ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_BACKEND}} sh -c 'npm run test'
+
+      - name: Build Docker Image Production
+        run: docker build -t ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_BACKEND}} ./backend
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{env.DOCKER_HUB_USERNAME}}
+          password: ${{env.DOCKER_HUB_PASSWORD}}
+
+      - name: Push to Dockerhub
+        run: docker push ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_BACKEND}}
+
+  build-database:
+    name: Build Database Container
+    runs-on: self-hosted
+    environment: ${{needs.retrieve-environment-variable.outputs.environment_name}}
+    needs: [build-test-push-docker-image, retrieve-environment-variable]
+    steps:
+      - name: Network Creation
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker network create ${{env.DOCKER_NETWORK_NAME}} || true
+
+      - name: Stop Current Running Container
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker stop ${{env.DOCKER_DATABASE_CONTAINER_NAME}} || true
+
+      - name: Run Docker Container
+        run: |
+          echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
+            -e MYSQL_DATABASE=${{env.MYSQL_DATABASE}} \
+            -e MYSQL_USER=${{env.MYSQL_USER}} \
+            -e MYSQL_PASSWORD=${{env.MYSQL_PASSWORD}} \
+            -e MYSQL_ROOT_PASSWORD=${{env.MYSQL_ROOT_PASSWORD}} \
+            --name ${{env.DOCKER_DATABASE_CONTAINER_NAME}} \
+            -v ${{env.DOCKER_VOLUME_NAME}}:/var/lib/mysql \
+            --network ${{env.DOCKER_NETWORK_NAME}} \
+            mysql:8.3.0
+
+  pull-backend-image-and-run-container:
+    runs-on: self-hosted
+    needs: [build-database, retrieve-environment-variable]
+    environment: ${{needs.retrieve-environment-variable.outputs.environment_name}}
+    steps:
+      - name: Network Creation
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker network create ${{env.DOCKER_NETWORK_NAME}} || true
+
+      - name: Stop Current Running Container
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker stop ${{env.DOCKER_BACKEND_CONTAINER_NAME}} || true
+
+      - name: Pull Docker Image
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker pull ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_BACKEND}}
+
+      - name: Run Docker Container
+        run: |
+          echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
+            -p ${{env.BACKEND_HOST_PORT}}:${{env.BACKEND_CONTAINER_PORT}} \
+            -e BACKEND_CONTAINER_PORT=${{env.BACKEND_CONTAINER_PORT}} \
+            -e MYSQL_HOST=${{env.MYSQL_HOST}} \
+            -e MYSQL_PORT=${{env.MYSQL_PORT}} \
+            -e MYSQL_DATABASE=${{env.MYSQL_DATABASE}} \
+            -e MYSQL_USER=${{env.MYSQL_USER}} \
+            -e MYSQL_PASSWORD=${{env.MYSQL_PASSWORD}} \
+            -e FRONTEND_HOST_DOMAIN=${{env.FRONTEND_HOST_DOMAIN}} \
+            -e COOKIE_SECRET=${{env.COOKIE_SECRET}} \
+            -e SENDGRID_API_KEY=${{env.SENDGRID_API_KEY}} \
+            -e SENDGRID_VERIFIED_EMAIL=${{env.SENDGRID_VERIFIED_EMAIL}} \
+            -e APP_NAME=${{env.APP_NAME}} \
+            -e EMAIL_ADMINISTRATOR=${{env.EMAIL_ADMINISTRATOR}} \
+            -e USER_DEMO=${{env.USER_DEMO}} \
+            -e PASSWORD_DEMO=${{env.PASSWORD_DEMO}} \
+            --name ${{env.DOCKER_BACKEND_CONTAINER_NAME}} \
+            --network ${{env.DOCKER_NETWORK_NAME}} \
+            ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_BACKEND}}

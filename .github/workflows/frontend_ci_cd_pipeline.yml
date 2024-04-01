@@ -1,0 +1,69 @@
+name: main_frontend_ci_cd_pipeline
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "frontend/**"
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "frontend/**"
+  workflow_dispatch:
+env:
+  SHH_USER_PASSWORD: ${{secrets.SHH_USER_PASSWORD}}
+  DOCKER_HUB_USERNAME: ${{secrets.DOCKER_HUB_USERNAME}}
+  DOCKER_HUB_PASSWORD: ${{secrets.DOCKER_HUB_PASSWORD}}
+  DOCKER_IMAGE: ${{secrets.DOCKER_HUB_USERNAME}}/${{secrets.DOCKER_HUB_APP_IMAGE}}
+  DOCKER_IMAGE_VERSION_FRONTEND: ${{secrets.DOCKER_IMAGE_VERSION_FRONTEND}}
+  BACKEND_HOST_DOMAIN: ${{secrets.BACKEND_HOST_DOMAIN}}
+  FRONTEND_HOST_DOMAIN: ${{secrets.FRONTEND_HOST_DOMAIN}}
+  DOCKER_FRONTEND_CONTAINER_NAME: ${{secrets.DOCKER_FRONTEND_CONTAINER_NAME}}
+  FRONTEND_HOST_PORT: ${{secrets.FRONTEND_HOST_PORT}}
+  FRONTEND_CONTAINER_PORT: ${{secrets.FRONTEND_CONTAINER_PORT}}
+jobs:
+  retrieve-environment-variable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Retrieve Environment Workflow
+        uses: ./.github/workflows/retrieve_environment.yml
+  build-test-push-docker-image:
+    runs-on: ubuntu-latest
+    environment: ${{needs.retrieve-environment-variable.outputs.environment_name}}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Build Docker Image Production
+        run: |
+          docker build -t ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_FRONTEND}} \
+            --build-arg NEXT_PUBLIC_BACKEND_HOST_DOMAIN=${{env.BACKEND_HOST_DOMAIN}} \
+            --build-arg NEXT_PUBLIC_FRONTEND_HOST_DOMAIN=${{env.FRONTEND_HOST_DOMAIN}} \
+            ./frontend
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{env.DOCKER_HUB_USERNAME}}
+          password: ${{env.DOCKER_HUB_PASSWORD}}
+
+      - name: Push to Dockerhub
+        run: docker push ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_FRONTEND}}
+
+  pull-frontend-image-and-run-container:
+    runs-on: self-hosted
+    environment: ${{needs.retrieve-environment-variable.outputs.environment_name}}
+    needs: build-test-push-docker-image
+    steps:
+      - name: Stop Current Running Container
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker stop ${{env.DOCKER_FRONTEND_CONTAINER_NAME}} || true
+      - name: Pull Docker image
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker pull ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_FRONTEND}}
+      - name: Run Docker Container
+        run: |
+          echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
+            -p ${{env.FRONTEND_HOST_PORT}}:${{env.FRONTEND_CONTAINER_PORT}} \
+            --name ${{env.DOCKER_FRONTEND_CONTAINER_NAME}} \
+            ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_FRONTEND}}
