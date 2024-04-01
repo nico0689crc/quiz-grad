@@ -34,13 +34,7 @@ export class QuizesController {
 
     return {
       statusCode: HttpStatus.OK,
-      result: plainToClass(
-        Quize,
-        quizes.map((quiz) => ({
-          ...quiz,
-          title: `${quiz.title} - test`,
-        }))
-      ),
+      result: plainToClass(Quize, quizes),
     };
   }
 
