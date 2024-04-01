@@ -53,8 +53,8 @@ jobs:
 
   pull-frontend-image-and-run-container:
     runs-on: self-hosted
-    environment: ${{needs.retrieve-environment-variable.outputs.environment_name}}
     needs: build-test-push-docker-image
+    environment: ${{needs.retrieve-environment-variable.outputs.environment_name}}
     steps:
       - name: Stop Current Running Container
         run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker stop ${{env.DOCKER_FRONTEND_CONTAINER_NAME}} || true
