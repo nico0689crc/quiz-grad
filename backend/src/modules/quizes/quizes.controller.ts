@@ -13,7 +13,7 @@ import { plainToClass } from 'class-transformer';
 @UseInterceptors(TransformInterceptor)
 @Controller(Routes.QUIZES)
 export class QuizesController {
-  constructor(@Inject(Services.QUIZ) private quizesService: IQuizService) { }
+  constructor(@Inject(Services.QUIZ) private quizesService: IQuizService) {}
 
   @Post()
   @UseGuards(AuthenticatedGuard)
@@ -34,10 +34,13 @@ export class QuizesController {
 
     return {
       statusCode: HttpStatus.OK,
-      result: plainToClass(Quize, quizes.map(quiz => ({
-        ...quiz,
-        title: `${quiz.title} - test`
-      }))),
+      result: plainToClass(
+        Quize,
+        quizes.map((quiz) => ({
+          ...quiz,
+          title: `${quiz.title} - test`,
+        }))
+      ),
     };
   }
 
