@@ -46,13 +46,7 @@ env:
   BACKEND_CONTAINER_PORT: ${{secrets.BACKEND_CONTAINER_PORT}}
 jobs:
   retrieve-environment-variable:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.ref }}
-      - name: Call Retrieve Environment Workflow
-        uses: ./.github/workflows/retrieve_environment.yml
+    uses: ./.github/workflows/retrieve_environment.yml
   build-test-push-docker-image:
     name: Build, Test and Push Docker Image
     needs: retrieve-environment-variable
