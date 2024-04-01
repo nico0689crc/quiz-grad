@@ -16,7 +16,7 @@ export default function QuizEdit({ quiz }: { quiz: Quiz }) {
   const { title, description, questions, uuid } = quiz;
 
   useEffect(() => {
-    initQuiz(title, description, questions)
+    initQuiz(title, description, questions);
   }, []);
 
   return (
@@ -37,7 +37,7 @@ export default function QuizEdit({ quiz }: { quiz: Quiz }) {
             href: `${paths.quizes.root}/${uuid}`,
           },
           {
-            name: t('common.labels.edit'),
+            name: t("common.labels.edit"),
           },
         ]}
         sx={{

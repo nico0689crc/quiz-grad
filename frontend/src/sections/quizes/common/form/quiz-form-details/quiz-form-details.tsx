@@ -18,7 +18,7 @@ const QuizFormDetails = ({
     control,
     register,
     formState: { errors },
-    reset
+    reset,
   },
 }: PropsType) => {
   const { t } = useTranslate();
@@ -39,8 +39,8 @@ const QuizFormDetails = ({
   );
 
   useEffect(() => {
-    reset({ title, description })
-  }, [title, description])
+    reset({ title, description });
+  }, [title, description]);
 
   return (
     <Form control={control}>

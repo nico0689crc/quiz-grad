@@ -17,12 +17,15 @@ type Props = {
 export const QuizFormProvider = ({ children }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const initQuiz = useCallback((title: string, description: string, questions: Question[]) => {
-    dispatch({
-      type: ActionsEnum.INIT,
-      payload: { title, description, questions },
-    });
-  }, []);
+  const initQuiz = useCallback(
+    (title: string, description: string, questions: Question[]) => {
+      dispatch({
+        type: ActionsEnum.INIT,
+        payload: { title, description, questions },
+      });
+    },
+    [],
+  );
 
   const addQuestion = useCallback((question: Partial<Question>) => {
     dispatch({
@@ -108,7 +111,7 @@ export const QuizFormProvider = ({ children }: Props) => {
       removeAnswer,
       updateAnswer,
       setDetails,
-      initQuiz
+      initQuiz,
     }),
     [
       state.questions,
@@ -121,7 +124,7 @@ export const QuizFormProvider = ({ children }: Props) => {
       removeAnswer,
       updateAnswer,
       setDetails,
-      initQuiz
+      initQuiz,
     ],
   );
 
