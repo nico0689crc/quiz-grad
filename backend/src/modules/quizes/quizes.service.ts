@@ -95,8 +95,8 @@ export class QuizesService implements IQuizService {
             uuid: generateUUID(),
             title: question.title,
             description: question.description,
-            secondsToDeliverAnswer: question.secondsToDeliverAnswer,
             typeAnswer: question.typeAnswer,
+            secondsToDeliverAnswer: question.secondsToDeliverAnswer,
             order: ++index,
             answers: question.answers.map((answer, index) => ({
               content: answer.content,
