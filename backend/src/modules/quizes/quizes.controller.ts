@@ -1,17 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseInterceptors,
-  UseGuards,
-  Req,
-  Inject,
-  HttpStatus,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UseGuards, Req, Inject, HttpStatus } from '@nestjs/common';
 import { CreateQuizeDto } from './dto/create-quize.dto';
 import { UpdateQuizeDto } from './dto/update-quize.dto';
 import { TransformInterceptor } from 'src/core/interceptors/transform-interceptor';
@@ -26,7 +13,7 @@ import { plainToClass } from 'class-transformer';
 @UseInterceptors(TransformInterceptor)
 @Controller(Routes.QUIZES)
 export class QuizesController {
-  constructor(@Inject(Services.QUIZ) private quizesService: IQuizService) { }
+  constructor(@Inject(Services.QUIZ) private quizesService: IQuizService) {}
 
   @Post()
   @UseGuards(AuthenticatedGuard)
