@@ -191,6 +191,14 @@
       "page_title": "Crear un quiz"
     }
   },
+  "quiz_delete": {
+    "labels": {
+      "delete_error": "El cuestionario no pudo ser eliminado.",
+      "delete_success": "El cuestionario ha sido eliminado correctamente.",
+      "title_dialog": "Eliminar cuestionario",
+      "content_dialog": "¿Estás seguro de que deseas eliminar este cuestionario?"
+    }
+  },
   "quiz_form": {
     "labels": {
       "title": "Título",

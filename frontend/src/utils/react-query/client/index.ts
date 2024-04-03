@@ -1,9 +1,9 @@
 import {
   Question,
-  Quiz,
   QuizQueryOptions,
   QuizResponseCollection,
   QuizResponseIndividual,
+  ResponseInfo,
 } from "../../../types";
 import { API_ENDPOINTS } from "./api-endpoints";
 import { HttpClient } from "./http-client";
@@ -26,7 +26,10 @@ class Client {
     }) =>
       HttpClient.post<QuizResponseIndividual>(API_ENDPOINTS.QUIZES.ROOT, data),
     put: () => {},
-    delete: () => {},
+    delete: (uuid: string) =>
+      HttpClient.delete<ResponseInfo<null>>(
+        `${API_ENDPOINTS.QUIZES.ROOT}/${uuid}`,
+      ),
   };
 }
 

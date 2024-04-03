@@ -66,7 +66,7 @@ export class QuizesController {
     @Body() updateQuizeDto: UpdateQuizeDto,
     @Req() req: AuthenticatedRequest
   ): Promise<MessageEntityResponse<void>> {
-    this.quizesService.update(uuid, updateQuizeDto, req.user);
+    await this.quizesService.update(uuid, updateQuizeDto, req.user);
 
     return {
       statusCode: HttpStatus.NO_CONTENT,
@@ -76,7 +76,7 @@ export class QuizesController {
   @Delete(':uuid')
   @UseGuards(AuthenticatedGuard)
   async remove(@Param('uuid') uuid: string, @Req() req: AuthenticatedRequest): Promise<MessageEntityResponse<void>> {
-    this.quizesService.remove(uuid, req.user);
+    await this.quizesService.remove(uuid, req.user);
 
     return {
       statusCode: HttpStatus.NO_CONTENT,
