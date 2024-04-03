@@ -11,7 +11,6 @@ import {
   Req,
   Inject,
   HttpStatus,
-  NotFoundException,
 } from '@nestjs/common';
 import { CreateQuizeDto } from './dto/create-quize.dto';
 import { UpdateQuizeDto } from './dto/update-quize.dto';
