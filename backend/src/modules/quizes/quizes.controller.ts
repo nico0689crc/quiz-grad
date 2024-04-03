@@ -1,4 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UseGuards, Req, Inject, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UseGuards,
+  Req,
+  Inject,
+  HttpStatus,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateQuizeDto } from './dto/create-quize.dto';
 import { UpdateQuizeDto } from './dto/update-quize.dto';
 import { TransformInterceptor } from 'src/core/interceptors/transform-interceptor';
@@ -13,7 +27,7 @@ import { plainToClass } from 'class-transformer';
 @UseInterceptors(TransformInterceptor)
 @Controller(Routes.QUIZES)
 export class QuizesController {
-  constructor(@Inject(Services.QUIZ) private quizesService: IQuizService) {}
+  constructor(@Inject(Services.QUIZ) private quizesService: IQuizService) { }
 
   @Post()
   @UseGuards(AuthenticatedGuard)
@@ -66,7 +80,7 @@ export class QuizesController {
     @Body() updateQuizeDto: UpdateQuizeDto,
     @Req() req: AuthenticatedRequest
   ): Promise<MessageEntityResponse<void>> {
-    this.quizesService.update(uuid, updateQuizeDto, req.user);
+    await this.quizesService.update(uuid, updateQuizeDto, req.user);
 
     return {
       statusCode: HttpStatus.NO_CONTENT,
@@ -76,7 +90,7 @@ export class QuizesController {
   @Delete(':uuid')
   @UseGuards(AuthenticatedGuard)
   async remove(@Param('uuid') uuid: string, @Req() req: AuthenticatedRequest): Promise<MessageEntityResponse<void>> {
-    this.quizesService.remove(uuid, req.user);
+    await this.quizesService.remove(uuid, req.user);
 
     return {
       statusCode: HttpStatus.NO_CONTENT,
