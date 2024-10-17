@@ -1,5 +1,4 @@
 import { TypeAnswer } from 'src/modules/questions/entities/question.entity';
-import { Answer } from '../entities';
 
 type AnswerType = {
   uuid: string;
