@@ -17,7 +17,7 @@ export interface IAuthService {
   verifyEmailUser(verifyEmailUserAttributes: VerifyEmailUserAttributes): Promise<MessageEntityResponse<User>>;
   requestResetPassword(requestResetPasswordAttributes: RequestResetPasswordAttributes): Promise<MessageEntityResponse<User>>;
   resetPassword(resetPasswordAttributes: ResetPasswordAttributes): Promise<MessageEntityResponse<User>>;
-  createUserDemo(administratorUser: Express.User): Promise<MessageEntityResponse<User>>;
+  createUserDemo(): Promise<MessageEntityResponse<User>>;
 }
 
 export interface AuthenticatedRequest extends Request {

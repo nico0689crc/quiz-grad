@@ -26,10 +26,10 @@ export class AuthService implements IAuthService {
     private readonly emailService: EmailService
   ) {}
 
-  async createUserDemo(administratorUser: Express.User & { email: string }): Promise<MessageEntityResponse<User>> {
-    if (administratorUser.email !== process.env.EMAIL_ADMINISTRATOR) {
-      throw new UnauthorizedException('User not allowed to perform this action.');
-    }
+  async createUserDemo(): Promise<MessageEntityResponse<User>> {
+    // if (administratorUser.email !== process.env.EMAIL_ADMINISTRATOR) {
+    //   throw new UnauthorizedException('User not allowed to perform this action.');
+    // }
 
     const password = await hash(process.env.PASSWORD_DEMO);
 

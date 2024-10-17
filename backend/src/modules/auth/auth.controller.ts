@@ -46,9 +46,8 @@ export class AuthController {
   }
 
   @Get(Routes.CREATE_USER_DEMO)
-  @UseGuards(AuthenticatedGuard)
-  async createUserDemo(@Req() req: AuthenticatedRequest) {
-    return this.authService.createUserDemo(req.user);
+  async createUserDemo() {
+    return this.authService.createUserDemo();
   }
 
   @Post(Routes.VERIFY_EMAIL)
