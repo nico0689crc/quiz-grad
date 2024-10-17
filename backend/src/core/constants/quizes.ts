@@ -1,4 +1,5 @@
 import { TypeAnswer } from 'src/modules/questions/entities/question.entity';
+import { Answer } from '../entities';
 
 type AnswerType = {
   uuid: string;
@@ -24,6 +25,255 @@ type QuizType = {
 };
 
 export const quizes: QuizType[] = [
+  {
+    "uuid": "a7df54e6-c9b8-4f59-99e2-9bff72f5ad45",
+    "title": "Cybersecurity Fundamentals Quiz",
+    "description": "Test your knowledge of cybersecurity fundamentals. This quiz covers topics such as password safety, malware, firewalls, and online best practices. Ideal for beginners looking to improve their understanding of online security.",
+    "numberOfPlayers": 10,
+    "questions": [
+      {
+        "uuid": "f1e4f9d9-b23f-4f25-bd60-5312f34b9a18",
+        "title": "Password Safety",
+        "description": "Which of the following is considered the most secure type of password?",
+        "secondsToDeliverAnswer": 30,
+        "typeAnswer": TypeAnswer.SINGLE_ANSWER,
+        "answers": [
+          {
+            "uuid": "501cd3f0-2d9e-4f8b-90f2-d1f60b9c4f0b",
+            "content": "12345678",
+            "isCorrect": false
+          },
+          {
+            "uuid": "36e4d9ab-2b9e-4d98-851b-8e5a89d4d649",
+            "content": "Your birthdate",
+            "isCorrect": false
+          },
+          {
+            "uuid": "f27916e6-8a2b-488d-bb1f-45c78809bc6d",
+            "content": "A mix of upper and lowercase letters, numbers, and symbols",
+            "isCorrect": true
+          },
+          {
+            "uuid": "803e69a4-4d94-4e4a-8e5e-5091f982fcb8",
+            "content": "Your pet’s name",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "uuid": "27a4f4cf-d55c-4871-9273-6a96a65f514e",
+        "title": "Types of Malware",
+        "description": "Which of the following is NOT a type of malware?",
+        "secondsToDeliverAnswer": 30,
+        "typeAnswer": TypeAnswer.SINGLE_ANSWER,
+        "answers": [
+          {
+            "uuid": "a7b329b4-5723-4e8f-bb32-123a6d6f26bc",
+            "content": "Virus",
+            "isCorrect": false
+          },
+          {
+            "uuid": "df1d6a7a-19f8-4c53-9f3a-49f2d504b2b4",
+            "content": "Trojan",
+            "isCorrect": false
+          },
+          {
+            "uuid": "f94e6d28-f0d8-442d-8b2a-5bf45a9c144b",
+            "content": "Firewall",
+            "isCorrect": true
+          },
+          {
+            "uuid": "c1b2e8a1-5b98-45f9-9e39-1bde91c7525b",
+            "content": "Spyware",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "uuid": "ba5f541b-b4fc-4418-b5d9-81f5d45e3fc3",
+        "title": "Phishing",
+        "description": "Phishing attacks typically try to steal:",
+        "secondsToDeliverAnswer": 30,
+        "typeAnswer": TypeAnswer.SINGLE_ANSWER,
+        "answers": [
+          {
+            "uuid": "c3e5f5cd-1a6f-4f87-9984-5f9b0c9a09cb",
+            "content": "Personal information like passwords and credit card numbers",
+            "isCorrect": true
+          },
+          {
+            "uuid": "d598f44b-1ed4-4dc9-92cd-12a37d5a16dc",
+            "content": "Your social media followers",
+            "isCorrect": false
+          },
+          {
+            "uuid": "f9cdcd53-56b5-4e10-8c24-b0b7c74c5cb8",
+            "content": "Your computer hardware",
+            "isCorrect": false
+          },
+          {
+            "uuid": "34d89d9b-6a6c-4882-a9b9-3c3a839c25e5",
+            "content": "Your browsing history",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "uuid": "1576e56e-2ad3-4a36-8a3f-bc75c3a0ac9c",
+        "title": "Firewalls",
+        "description": "What is the purpose of a firewall?",
+        "secondsToDeliverAnswer": 30,
+        "typeAnswer": TypeAnswer.SINGLE_ANSWER,
+        "answers": [
+          {
+            "uuid": "b1f79a85-6f7c-49fc-941d-35d0135654de",
+            "content": "To detect and remove viruses",
+            "isCorrect": false
+          },
+          {
+            "uuid": "b5fbc82f-6b7e-4f5f-9d82-fde1d3b527cc",
+            "content": "To block unauthorized access to your network",
+            "isCorrect": true
+          },
+          {
+            "uuid": "f6d33f4f-4635-49b9-bb3d-b12398652b4e",
+            "content": "To monitor your internet browsing history",
+            "isCorrect": false
+          },
+          {
+            "uuid": "7511ad5f-0d3d-4b2b-bc1e-126b6f95ab07",
+            "content": "To store your passwords securely",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "uuid": "b8d4df76-956b-4a9e-b269-7549bc5b6d89",
+    "title": "Cybersecurity Awareness Quiz",
+    "description": "This quiz is designed to enhance your awareness of key cybersecurity threats and best practices. Covering areas like social engineering, secure connections, and data protection, it’s a great way to strengthen your online security skills.",
+    "numberOfPlayers": 12,
+    "questions": [
+      {
+        "uuid": "c72b9b89-2d89-453f-9bc7-cfc5bb7a4b89",
+        "title": "Social Engineering",
+        "description": "What is social engineering in the context of cybersecurity?",
+        "secondsToDeliverAnswer": 30,
+        "typeAnswer": TypeAnswer.SINGLE_ANSWER,
+        "answers": [
+          {
+            "uuid": "432e5c48-d9f1-40c7-83b3-abb5d45f5312",
+            "content": "A method to build secure networks",
+            "isCorrect": false
+          },
+          {
+            "uuid": "b48206ad-d871-4c8c-9440-b97d24423bc7",
+            "content": "A strategy for designing software interfaces",
+            "isCorrect": false
+          },
+          {
+            "uuid": "3cf2292d-936f-4be5-bf97-682342736f13",
+            "content": "Manipulating individuals into giving up confidential information",
+            "isCorrect": true
+          },
+          {
+            "uuid": "9340c619-6791-490e-89a1-04819cf4b34f",
+            "content": "A type of hardware malfunction",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "uuid": "d82fe91a-6c9d-48a2-bb3e-5835d9e3f42d",
+        "title": "Two-Factor Authentication",
+        "description": "What is the main benefit of two-factor authentication (2FA)?",
+        "secondsToDeliverAnswer": 30,
+        "typeAnswer": TypeAnswer.SINGLE_ANSWER,
+        "answers": [
+          {
+            "uuid": "6f4f676d-1f72-4144-823a-d5ff9e14f91a",
+            "content": "It helps prevent phishing attacks",
+            "isCorrect": false
+          },
+          {
+            "uuid": "1f27ae0d-93f2-4e7d-bd4d-dcd6c30a2f44",
+            "content": "It adds an extra layer of security by requiring two forms of verification",
+            "isCorrect": true
+          },
+          {
+            "uuid": "58b59484-b80a-4a8e-b0a5-c529e4c2285b",
+            "content": "It automatically changes your password monthly",
+            "isCorrect": false
+          },
+          {
+            "uuid": "06f1bb18-ef33-4c0d-85a9-3bf78a4db03e",
+            "content": "It ensures encrypted communication between devices",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "uuid": "f4b71d4c-695f-4cb9-b2b2-6b9fdcf074bb",
+        "title": "VPNs",
+        "description": "What does a VPN (Virtual Private Network) primarily do?",
+        "secondsToDeliverAnswer": 30,
+        "typeAnswer": TypeAnswer.SINGLE_ANSWER,
+        "answers": [
+          {
+            "uuid": "75bdfaec-e5c6-44a2-8d16-8ed9d239e2fe",
+            "content": "Blocks ads on websites",
+            "isCorrect": false
+          },
+          {
+            "uuid": "b18a1dfd-6276-4297-9885-2d5d7af9bc85",
+            "content": "Encrypts your internet connection for added privacy",
+            "isCorrect": true
+          },
+          {
+            "uuid": "20a81a6e-12f5-4891-b2ea-4c7c4f9b2b48",
+            "content": "Provides free internet access",
+            "isCorrect": false
+          },
+          {
+            "uuid": "bdbf3b36-4f0b-4049-8d11-bbdf5d501acd",
+            "content": "Repairs your computer’s hardware",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "uuid": "ea15c4bb-2918-4ed5-a9eb-2d7b217fd2b5",
+        "title": "Data Protection",
+        "description": "Which of the following is the best way to protect sensitive data?",
+        "secondsToDeliverAnswer": 30,
+        "typeAnswer": TypeAnswer.SINGLE_ANSWER,
+        "answers": [
+          {
+            "uuid": "536b0db7-f780-44e5-bb36-8fd1e8b94fdd",
+            "content": "Store it on a local device with no backup",
+            "isCorrect": false
+          },
+          {
+            "uuid": "c58b15d2-452e-4bcb-9391-7304bc72f0cd",
+            "content": "Use encryption and strong access controls",
+            "isCorrect": true
+          },
+          {
+            "uuid": "b2fe9e3f-8a64-4bfc-8569-32d41b68db52",
+            "content": "Email it to yourself",
+            "isCorrect": false
+          },
+          {
+            "uuid": "7fe67245-e59a-4d91-81ba-0e28355c0844",
+            "content": "Upload it to a public cloud service without encryption",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },  
   {
     title: 'History Buff Quiz',
     description:
