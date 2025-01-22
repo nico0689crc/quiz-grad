@@ -15,7 +15,7 @@ import { IGatewayService } from './interface';
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:3402', 'https://quizgrad.nicolasarielfernandez.tech', 'http://localhost:3502'],
+    origin: ['http://localhost:3402', 'https://quizgrad.nicolasfernandez.tech', 'http://localhost:3502'],
     credentials: true,
   },
 })
