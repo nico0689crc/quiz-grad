@@ -1,4 +1,4 @@
-# QuizGrad Game (In Progress)
+# QuizGrad Game
 
 **QuizGrad Game** is a full-stack web application that allows users to create quizzes and invite participants to join and play in real-time. It is built with **NestJS**, **NextJS**, **MySQL**, and several other technologies. The application features a responsive user interface, real-time interaction via **Socket.IO**, and the ability to create and manage quizzes.
 
