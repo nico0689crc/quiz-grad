@@ -91,11 +91,12 @@ jobs:
         run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker network create ${{env.DOCKER_NETWORK_NAME}} || true
 
       - name: Stop Current Running Container
-        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker stop ${{env.DOCKER_DATABASE_CONTAINER_NAME}} || true
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker rm -f ${{env.DOCKER_DATABASE_CONTAINER_NAME}} || true
 
       - name: Run Docker Container
         run: |
-          echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
+          echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run -d \
+            --restart unless-stopped \
             -e MYSQL_DATABASE=${{env.MYSQL_DATABASE}} \
             -e MYSQL_USER=${{env.MYSQL_USER}} \
             -e MYSQL_PASSWORD=${{env.MYSQL_PASSWORD}} \
@@ -114,14 +115,15 @@ jobs:
         run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker network create ${{env.DOCKER_NETWORK_NAME}} || true
 
       - name: Stop Current Running Container
-        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker stop ${{env.DOCKER_BACKEND_CONTAINER_NAME}} || true
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker rm -f ${{env.DOCKER_BACKEND_CONTAINER_NAME}} || true
 
       - name: Pull Docker Image
         run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker pull ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_BACKEND}}
 
       - name: Run Docker Container
         run: |
-          echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
+          echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run -d \
+            --restart unless-stopped \
             -p ${{env.BACKEND_HOST_PORT}}:${{env.BACKEND_CONTAINER_PORT}} \
             -e BACKEND_CONTAINER_PORT=${{env.BACKEND_CONTAINER_PORT}} \
             -e MYSQL_HOST=${{env.MYSQL_HOST}} \
