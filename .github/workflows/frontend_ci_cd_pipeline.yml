@@ -57,12 +57,13 @@ jobs:
     environment: ${{needs.retrieve-environment-variable.outputs.environment_name}}
     steps:
       - name: Stop Current Running Container
-        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker stop ${{env.DOCKER_FRONTEND_CONTAINER_NAME}} || true
+        run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker rm -f ${{env.DOCKER_FRONTEND_CONTAINER_NAME}} || true
       - name: Pull Docker image
         run: echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker pull ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_FRONTEND}}
       - name: Run Docker Container
         run: |
-          echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run --rm -d \
+          echo ${{env.SHH_USER_PASSWORD}} | sudo -S docker run -d \
+            --restart unless-stopped \
             -p ${{env.FRONTEND_HOST_PORT}}:${{env.FRONTEND_CONTAINER_PORT}} \
             --name ${{env.DOCKER_FRONTEND_CONTAINER_NAME}} \
             ${{env.DOCKER_IMAGE}}:${{env.DOCKER_IMAGE_VERSION_FRONTEND}}
